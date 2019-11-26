@@ -22,7 +22,7 @@ router.post('/', function (req, res) {
         'organization: ' + String(organization).replace(/:/g, '') + endOfLine +
         'position: ' + String(position).replace(/:/g, '') + endOfLine +
         'text: |' + endOfLine +
-        '  ' + String(composed_text).replace(/$/mgi, yamlEOL) + endOfLine +
+        String(composed_text).replace(endOfLine, yamlEOL) + endOfLine +
         '---' + endOfLine;
 
     var pathname =
