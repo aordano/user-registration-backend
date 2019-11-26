@@ -15,6 +15,7 @@ router.post('/', function (req, res) {
 
 
     var filecontent =
+        '---' + endOfLIne +
         'email: ' + String(email) + endOfLine +
         'name: ' + String(name).replace(/:/g, '') + endOfLine +
         'surname: ' + String(surname).replace(/:/g, '') + endOfLine +
