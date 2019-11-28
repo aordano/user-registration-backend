@@ -21,7 +21,7 @@ router.post('/', function (req, res) {
         'surname: ' + String(surname).replace(/:/g, '') + endOfLine +
         'organization: ' + String(organization).replace(/:/g, '') + endOfLine +
         'position: ' + String(position).replace(/:/g, '') + endOfLine +
-        'text: |' + endOfLine +
+        'text: |' + yamlEOL +
         String(composed_text).replace(endOfLine, yamlEOL) + endOfLine +
         '---' + endOfLine;
 
