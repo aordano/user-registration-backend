@@ -13,7 +13,6 @@ router.post('/', function (req, res) {
     var composed_text = req.body.composed_text;
     var subscribe = req.body.subscribe;
 
-    var yamlEOL = endOfLine + '  ';
     var filecontent =
         '---' + endOfLine +
         'email: ' + String(email) + endOfLine +
@@ -21,8 +20,7 @@ router.post('/', function (req, res) {
         'surname: ' + String(surname).replace(/:/g, '') + endOfLine +
         'organization: ' + String(organization).replace(/:/g, '') + endOfLine +
         'position: ' + String(position).replace(/:/g, '') + endOfLine +
-        'text: |' + yamlEOL +
-        String(composed_text).replace(/(\n)/gmiu, ' ') + endOfLine +
+        'text: ' + String(composed_text).replace(/:/g, '').replace(/($)/gmiu, ' ').replace(/(\n)/gmiu, ' ') + endOfLine +
         '---' + endOfLine;
 
     var pathname =
