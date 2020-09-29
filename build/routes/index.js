@@ -1,11 +1,18 @@
-var express = require('express');
-// const sqlite3 = require('sqlite3').verbose();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PostRoute = void 0;
+var express = require("express");
+var fs = require("fs");
+var os_1 = require("os");
+var SQLite = require("sqlite3");
+var sqlite = SQLite.verbose();
 var router = express.Router();
-var fs = require('fs');
-var endOfLine = require('os').EOL;
 // let db = new sqlite3.Database(':memory:');
 /* POST home page. */
-router.post('/', function (req, res) {
+// TODO Translate this function to typescript 
+// TODO Make changes to save stuff in a SQLite file instead
+// TODO Change the URL of the success page to reflect that is for membership.
+exports.PostRoute = router.post('/', function (req, res) {
     var email = req.body.email;
     var name = req.body.name;
     var surname = req.body.surname;
@@ -13,15 +20,15 @@ router.post('/', function (req, res) {
     var position = req.body.position;
     var composed_text = req.body.composed_text;
     var subscribe = req.body.subscribe;
-    var filecontent = '---' + endOfLine +
-        'email: ' + String(email) + endOfLine +
-        'name: ' + String(name).replace(/:/g, '') + endOfLine +
-        'surname: ' + String(surname).replace(/:/g, '') + endOfLine +
-        'organization: ' + String(organization).replace(/:/g, '') + endOfLine +
-        'position: ' + String(position).replace(/:/g, '') + endOfLine +
-        'text: ' + String(composed_text).replace(/:/g, '').replace(/($)/gmiu, ' ').replace(/(\n)/gmiu, ' ') + endOfLine +
-        '---' + endOfLine;
-    var pathname = "/tmp/membership/" + // TODO Change to SQLite 
+    var filecontent = '---' + os_1.EOL +
+        'email: ' + String(email) + os_1.EOL +
+        'name: ' + String(name).replace(/:/g, '') + os_1.EOL +
+        'surname: ' + String(surname).replace(/:/g, '') + os_1.EOL +
+        'organization: ' + String(organization).replace(/:/g, '') + os_1.EOL +
+        'position: ' + String(position).replace(/:/g, '') + os_1.EOL +
+        'text: ' + String(composed_text).replace(/:/g, '').replace(/($)/gmiu, ' ').replace(/(\n)/gmiu, ' ') + os_1.EOL +
+        '---' + os_1.EOL;
+    var pathname = "/tmp/membership/" +
         String(Date.now()) +
         String(organization).split(' ')[0] + '/';
     var fullpathname = pathname + "index.md";
@@ -36,4 +43,3 @@ router.post('/', function (req, res) {
         res.redirect('https://nodoambiental.org/contactsuccess.html');
     });
 });
-module.exports = router;
