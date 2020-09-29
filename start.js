@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('./build/app');
 var debug = require('debug')('contact-form:server');
 var http = require('http');
 
