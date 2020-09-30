@@ -1,8 +1,28 @@
 {
-    "compilerOptions": {
-      "outDir": "./build",
-      "allowJs": true,
-      "target": "es5",
-    },
-    "include": ["./src/**/*"]
-  }
+  "compilerOptions": {
+    "outDir": "./build",
+    "allowJs": true,
+    "target": "es5",
+  },
+  "include": [
+    "./src/**/*",
+    "./__test__",
+    "./mocks"
+  ],       
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs",
+    "theme": "typedocTheme",
+    "exclude": [
+      "**/*+(index|.spec|.e2e).ts",
+      "**/*+(index|.spec|.e2e).tsx",
+      "**/*+(index|.spec|.e2e|.spec.tsx|.spec.ts).snap",
+      "**/*.js",
+    ]
+  },
+  "exclude": [
+    "./node_modules",
+    "./.vscode",
+    "./coverage",
+  ]
+}

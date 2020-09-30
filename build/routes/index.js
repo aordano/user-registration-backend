@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostRoute = void 0;
 var express = require("express");
 var sqlite3_1 = require("sqlite3");
-var sqlstring_1 = require("sqlstring"); // ? Does this even do something?
+var sqlstring_1 = require("sqlstring");
 var router = express.Router();
 var DatabaseHandler = /** @class */ (function () {
     function DatabaseHandler(location) {
@@ -51,7 +51,7 @@ var DatabaseHandler = /** @class */ (function () {
             if (error) {
                 console.error(error.message);
             }
-            console.log('Connected to the database.');
+            console.log("Connected to the database.");
         });
     };
     DatabaseHandler.prototype.createTable = function (name, fields) {
@@ -72,7 +72,6 @@ var DatabaseHandler = /** @class */ (function () {
         });
     };
     DatabaseHandler.prototype.insertRows = function (table, data) {
-        // TODO Add proper escaping with a prepared statement, for security and avoiding errors in the message text field
         var _this = this;
         var columns = Object.entries(data)[0][1]; // Retrieve columns array
         var allRows = Object.entries(data)[1][1]; // Retrieve rows array
@@ -85,7 +84,9 @@ var DatabaseHandler = /** @class */ (function () {
                         }
                         return value;
                     });
-                    var placeholders = row.map(function () { return "?"; });
+                    var placeholders = row.map(function () {
+                        return "?";
+                    });
                     var query = "INSERT INTO " + table + "(" + columns.join(",") + ") VALUES (" + placeholders.join(",") + ")";
                     _this.database.run(query, escapedValues_1, function (error) {
                         if (error) {
@@ -101,72 +102,72 @@ var DatabaseHandler = /** @class */ (function () {
     };
     DatabaseHandler.prototype.closeDB = function () {
         this.database.close();
-        console.log('Closed the database. \n');
+        console.log("Closed the database. \n");
     };
     return DatabaseHandler;
 }());
 var leadsTable = [
     {
         column: "name",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "organization",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "role",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "email",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "mailing_list",
-        datatype: "INTEGER"
+        datatype: "INTEGER",
     },
     {
         column: "membership_interest",
-        datatype: "INTEGER"
+        datatype: "INTEGER",
     },
     {
         column: "message",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "autokey",
-        datatype: "INTEGER PRIMARY KEY"
-    }
+        datatype: "INTEGER PRIMARY KEY",
+    },
 ];
 var membership_applicantsTable = [
     {
         column: "name",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "ID",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "ID_type",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "zip",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "title",
-        datatype: "TEXT"
+        datatype: "TEXT",
     },
     {
         column: "autokey",
-        datatype: "INTEGER PRIMARY KEY"
-    }
+        datatype: "INTEGER PRIMARY KEY",
+    },
 ];
 /* POST home page. */
-exports.PostRoute = router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.PostRoute = router.post("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var query_kind, leadData, interesadosDB, membershipData, interesadosDB;
     var _a, _b, _c, _d;
     return __generator(this, function (_e) {
@@ -182,17 +183,19 @@ exports.PostRoute = router.post('/', function (req, res) { return __awaiter(void
                         "role",
                         "message",
                         "mailing_list",
-                        "membership_interest"
+                        "membership_interest",
                     ],
-                    rows: [[
+                    rows: [
+                        [
                             req.body.email,
                             req.body.name,
                             (_a = req.body.organization) !== null && _a !== void 0 ? _a : "",
                             (_b = req.body.role) !== null && _b !== void 0 ? _b : "",
                             (_c = req.body.message) !== null && _c !== void 0 ? _c : "",
                             req.body.mailing_list,
-                            req.body.membership_interest
-                        ]]
+                            req.body.membership_interest,
+                        ],
+                    ],
                 };
                 interesadosDB = new DatabaseHandler("./db/interesados.db");
                 return [4 /*yield*/, interesadosDB.openDB()
@@ -215,34 +218,29 @@ exports.PostRoute = router.post('/', function (req, res) { return __awaiter(void
                 return [4 /*yield*/, interesadosDB.closeDB()];
             case 4:
                 _e.sent();
-                res.redirect('https://nodoambiental.org/leadgen_success.html');
+                res.redirect("https://nodoambiental.org/leadgen_success.html");
                 return [3 /*break*/, 6];
             case 5:
                 if (query_kind === "membership") {
                     membershipData = {
-                        columns: [
-                            "name",
-                            "ID_type",
-                            "ID",
-                            "zip",
-                            "title",
-                            "autokey"
-                        ],
-                        rows: [[
+                        columns: ["name", "ID_type", "ID", "zip", "title", "autokey"],
+                        rows: [
+                            [
                                 req.body.name,
                                 req.body.ID_type,
                                 req.body.ID,
                                 req.body.zip,
                                 (_d = req.body.title) !== null && _d !== void 0 ? _d : "",
-                                req.body.autokey
-                            ]]
+                                req.body.autokey,
+                            ],
+                        ],
                     };
                     interesadosDB = new DatabaseHandler("./db/interesados.db");
                     interesadosDB.openDB();
                     interesadosDB.createTable("membership_applicants", membership_applicantsTable);
                     interesadosDB.insertRows("membership_applicants", membershipData);
                     interesadosDB.closeDB();
-                    res.redirect('https://nodoambiental.org/membership_success.html');
+                    res.redirect("https://nodoambiental.org/membership_success.html");
                 }
                 _e.label = 6;
             case 6: return [2 /*return*/];
