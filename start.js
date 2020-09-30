@@ -8,6 +8,8 @@ const app = require('./build/app').app;
 // const debug = require('debug')('contact-form:server');
 const http = require('http');
 
+const port = 9898
+
 /**
  * Create HTTP server.
  */
@@ -58,6 +60,6 @@ const onListening = () => {
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(9898);
+server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);

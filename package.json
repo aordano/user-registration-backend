@@ -5,9 +5,10 @@
   "scripts": {
     "build": "rm -rf ./build/* && tsc",
     "start": "node ./start.js",
-    "try": "npm run build && npm run start"
+    "try": "rm -rf ./build/* && tsc && echo 'Server launched.' && node ./start.js "
   },
   "dependencies": {
+    "@types/sqlstring": "^2.2.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
@@ -16,6 +17,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "sqlite3": "^5.0.0",
+    "sqlstring": "^2.3.2",
     "typescript": "^4.0.3"
   },
   "devDependencies": {

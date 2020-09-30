@@ -1,67 +1,108 @@
 import * as express from "express"
-import * as SQLite from "sqlite3"
+import { Database, Statement} from "sqlite3"
+import { escape } from "sqlstring"
+
+// TODO Documentation!
+
 
 type tableField = {
     column: string,
     datatype: string
 }
 
-type rowField = {
-    column: string,
-    values: (string|number|boolean)[]
+type rowType = (string|number|boolean)[]
+
+type rowFields = {
+    columns: string[],
+    rows: rowType[]
 }
 
 const router = express.Router()
 
 class DatabaseHandler {
-    constructor() {  }
+    constructor(location?: string) {
+        this.filename = location
+      }
 
     private filename: string = ":memory:"
 
-    private database: SQLite.Database
-
-    public setDB(dbname: string) {
-        this.filename = dbname
-    }
+    private database: Database
 
     public openDB() {
-        this.database = new SQLite.Database(this.filename, SQLite.OPEN_READWRITE | SQLite.OPEN_CREATE, (error) => {
+        this.database = new Database(this.filename, (error) => {
             if (error) {
-              console.error(error.message);
+              console.error(error.message)
             }
-            console.log('Connected to the database.');
-          })
+            console.log('Connected to the database.')
+        })
     } 
 
     public createTable(name: string, fields: tableField[]) {
         let columns = ""
-        fields.forEach((field) => {
-            columns = `${columns}, ${Object.keys(field)} ${Object.values(field)}`
+        fields.forEach((field, loopIndex) => {
+            if (loopIndex === 0) {
+                columns = `${field.column} ${field.datatype}`                
+            } else {
+                columns = `${columns}, ${field.column} ${field.datatype}`  
+            }
         })
-        let tableString = `CREATE TABLE IF NOT EXISTS ${name} (${columns})`
 
-        this.database.serialize(() => this.database.run(tableString))
+        const query = `CREATE TABLE IF NOT EXISTS ${name}(${columns})`
+
+        this.database.serialize(() => {
+
+            this.database.run(query)
+            console.log(`Created table ${name} if it does not exist.`)        
+        })
     }
 
-    public insertRows(table: string, data: rowField[]) {
-        const columns = data.map((row) => { return row.column })
-        const values = data.map((column) => { return column.values })
-        const placeholders = values.map(() => { return "(?)" }).join(", ")
-        
-        this.database.serialize(() => {
-            columns.forEach((column) => {
-                this.database.run(
-                    `INSERT INTO ${table}(${column}) VALUES ${placeholders}`,
-                    values[columns.indexOf(column)]),
-                    (error) => {
-                        if (error) {return console.error(error.message)}
-                    }
+    public insertRows(table: string, data: rowFields) {
+
+        const columns = Object.entries(data)[0][1] // Retrieve columns array
+        const allRows = Object.entries(data)[1][1] // Retrieve rows array
+
+        this.database.serialize(() => { 
+            allRows.forEach((row) => {
+
+                if (row.length > 1) {
+                    const escapedValues = row.map((value) => {
+                        if (typeof value === "string") {
+                            return escape(value)
+                        } 
+                        return value
+                    })
+                    const placeholders = row.map(() => { return `?` })
+
+                    const query = `INSERT INTO ${table}(${columns.join(",")}) VALUES (${placeholders.join(",")})`
+
+                    this.database.run(
+                        query,
+                        escapedValues,
+                        (error) => {
+                            if (error) { 
+                                const errorMessage = `Error in data inserting, query failed: \n 
+                                    INSERT INTO ${table}(${columns}) VALUES \n 
+                                    ${escapedValues} \n
+                                    `
+    
+                                console.log(errorMessage)
+                                return console.error(error.message)
+                            }
+                        }
+                    )
+                    
+                    console.log(`Queried an INSERT in table ${table}, columns ${columns} adding ${allRows.length} rows.`)
+                }
+
+                
             })
         })
+
     }
 
     public closeDB() {
         this.database.close()
+        console.log('Closed the database. \n')
     }
 }
 
@@ -129,90 +170,79 @@ const membership_applicantsTable: tableField[] = [
 ]
 
 /* POST home page. */
-// TODO Translate this function to typescript 
-// TODO Make changes to save stuff in a SQLite file instead
-// TODO Change the URL of the success page to reflect that is for membership.
 
-export const PostRoute = router.post('/', function (req, res) {
+export const PostRoute = router.post('/', async (req, res) => {
     
     const query_kind = req.headers["query-kind"]
 
     if (query_kind === "leadgen") {
 
-        const email: string = req.body.email
-        const name: string = req.body.name
-        const organization: string = req.body.organization ?? ""
-        const role: string = req.body.role ?? ""
-        const composed_text: string = req.body.composed_text ?? ""
-        const mailing_list: number = req.body.mailing_list
-        const membership_interest: number = req.body.membership_interest
-        const autokey: string = "NULL"
+        const leadData: rowFields = {
+            columns: [
+                "email",
+                "name",
+                "organization",
+                "role",
+                "message",
+                "mailing_list",
+                "membership_interest"
+            ],
+            rows: [[
+                req.body.email,
+                req.body.name,
+                req.body.organization ?? "",
+                req.body.role ?? "",
+                req.body.message ?? "",
+                req.body.mailing_list,
+                req.body.membership_interest
+            ]]
 
-        const values = Object.entries({
-            email,
-            name,
-            organization,
-            role,
-            composed_text,
-            mailing_list,
-            membership_interest,
-            autokey
-        })
+        } 
+
+        const interesadosDB = new DatabaseHandler("./db/interesados.db")
+
+        await interesadosDB.openDB()
+
+        // console.log(leadsTable)
+        await interesadosDB.createTable("leads", leadsTable)
     
-        const leadData = values.map((field: any[]): rowField => {
-            return {
-                column: field[0],
-                values: field[1]
-            }
-        })
-    
-        const interesadosDB = new DatabaseHandler
-    
-        interesadosDB.setDB("../interesados.db")
-        interesadosDB.openDB()
-    
-        interesadosDB.createTable("leads", leadsTable)
-    
-        interesadosDB.insertRows("leads",leadData)
+        // console.log(leadData)
+        await interesadosDB.insertRows("leads",leadData)
         
-        interesadosDB.closeDB()
+        await interesadosDB.closeDB()
     
         res.redirect('https://nodoambiental.org/leadgen_success.html')
     }
 
-    if (query_kind === "membership") {
+    else if (query_kind === "membership") {
 
-        const name: string = req.body.name
-        const ID_type: string = req.body.ID_type
-        const ID: string = req.body.ID
-        const zip: string = req.body.zip
-        const title: number = req.body.title ?? ""
-        const autokey: number = req.body.autokey
-        
-        const values = Object.entries({
-            name,
-            ID_type,
-            ID,
-            zip,
-            title,
-            autokey
-        })
-    
-        const membershipData = values.map((field: any[]): rowField => {
-            return {
-                column: field[0],
-                values: field[1]
-            }
-        })
+        const membershipData: rowFields = {
+            columns: [
+                "name",
+                "ID_type",
+                "ID",
+                "zip",
+                "title",
+                "autokey"
+            ],
+            rows: [[
+                req.body.name,
+                req.body.ID_type,
+                req.body.ID,
+                req.body.zip,
+                req.body.title ?? "",
+                req.body.autokey
+            ]]
 
-        const interesadosDB = new DatabaseHandler
-    
-        interesadosDB.setDB("../interesados.db")
+        } 
+
+        const interesadosDB = new DatabaseHandler("./db/interesados.db")
+
         interesadosDB.openDB()
 
         interesadosDB.createTable("membership_applicants", membership_applicantsTable)
     
-        interesadosDB.insertRows("leads",membershipData)
+        interesadosDB.insertRows("membership_applicants",membershipData)
         
         interesadosDB.closeDB()
     
