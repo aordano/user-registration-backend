@@ -1,4 +1,17 @@
-// TODO Documentation
+/**
+ * # app.ts
+ *
+ * ---
+ *
+ * Main file, handles Express's methods and defines the use of the routes.
+ *
+ * Currently there's only a main route at the root of the endpoint.
+ *
+ *
+ * @packageDocumentation
+ */
+
+// Imports
 import * as bodyParser from "body-parser"
 import * as cookieParser from "cookie-parser"
 import * as express from "express"
@@ -7,6 +20,7 @@ import * as logger from "morgan"
 import * as path from "path"
 import { PostRoute } from "./routes/index"
 
+// Set-up Express
 export const app = express()
 
 app.use(logger("dev"))
@@ -17,19 +31,20 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, "public")))
 
+// Route selection
 app.use("/", PostRoute)
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use((req, res, next) => {
     next(createerror(404))
 })
 
-// error handler
+// Error handler
 app.use((error, req, res, next) => {
-    // set locals, only providing error in development
+    // Set locals, only providing error in development
     res.locals.message = error.message
     res.locals.error = req.app.get("env") === "development" ? error : {}
 
-    // render the error page
+    // Render the error page
     res.status(error.status || 500)
 })
