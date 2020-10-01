@@ -5,7 +5,8 @@
   "scripts": {
     "build": "rm -rf ./build/* && tsc",
     "start": "node ./start.js",
-    "execute": "bash ./execute.sh"
+    "execute": "bash ./execute.sh",
+    "develop": "rm -rf ./build/* && tsc && echo '---- READY ----' && node ./start.js "
   },
   "dependencies": {
     "@types/sqlstring": "^2.2.1",
@@ -16,6 +17,7 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
+    "rand-token": "^1.0.1",
     "sqlite3": "^5.0.0",
     "sqlstring": "^2.3.2"
   },
