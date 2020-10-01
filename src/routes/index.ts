@@ -10,8 +10,6 @@
  * - membership
  * - verification
  *
- * TODO Verification not yet implemented
- *
  * Each triggers a different action, but they all revolve around parsing the data and storing it in the database.
  * We use SQLite as the database because this is very low-volume so simplicity and portability was much more important than performance.
  *
@@ -30,299 +28,25 @@
  * @packageDocumentation
  */
 
-// TODO Break up file in smaller ones
-
 // Imports
 import * as express from "express"
+import { readFileSync } from "fs"
+import { resolve } from "path"
 import { uid } from "rand-token"
-import { Database } from "sqlite3"
-import { escape } from "sqlstring"
+import * as Types from "../types"
+import * as Utils from "../utils"
 
 // TODO Documentation!
 
-type tableField = {
-    column: string
-    datatype: string
-}
-
-type rowType = (string | number | boolean)[]
-
-type rowFields = {
-    columns: string[]
-    rows: rowType[]
-}
-
-type setType = {
-    column: string
-    data: string | number | null
-}
-
-type rowFieldUpdate = {
-    set: setType[]
-    where: setType
-}
-
-type selectQuery = {
-    column: string
-    data: string
-    operator: "=" | "<>" | "!=" | "<" | ">" | "<=" | ">=" | ""
-}
-
-type extraSelectQuery = {
-    conditionType: "ALL" | "AND" | "ANY" | "BETWEEN" | "EXISTS" | "IN" | "LIKE" | "NOT" | "OR"
-    conditionQuery: selectQuery
-}
-
-type selectField = {
-    columnsToSelect: string[]
-    where: {
-        query: selectQuery
-        extraConditions?: extraSelectQuery[]
-    }
-}
-
-type callbackData = {
-    error: Error
-    result: Record<string, string | number | null | undefined>[]
-    query: string
-    data: selectField
-}
-
 const router = express.Router()
 
-class DatabaseHandler {
-    constructor(location?: string) {
-        this.filename = location
-    }
+const leadsTable: Types.tableField[] = JSON.parse(
+    readFileSync(resolve(__dirname, "../tables/leads.json")).toString()
+)
 
-    public callbackData: callbackData = {
-        error: new Error(""),
-        result: [{ placeholder: "" }],
-        query: "",
-        data: {
-            columnsToSelect: [""],
-            where: {
-                query: {
-                    column: "",
-                    data: "",
-                    operator: "=",
-                },
-            },
-        },
-    }
-
-    private filename = ":memory:"
-
-    private database: Database
-
-    public openDB() {
-        this.database = new Database(this.filename, (error) => {
-            if (error) {
-                console.error(error.message)
-            }
-            console.log("Connected to the database.")
-        })
-    }
-
-    public createTable(name: string, fields: tableField[]) {
-        let columns = ""
-        fields.forEach((field, loopIndex) => {
-            if (loopIndex === 0) {
-                columns = `${field.column} ${field.datatype}`
-            } else {
-                columns = `${columns}, ${field.column} ${field.datatype}`
-            }
-        })
-
-        const query = `CREATE TABLE IF NOT EXISTS ${name}(${columns})`
-
-        this.database.serialize(() => {
-            this.database.run(query)
-            console.log(`Created table ${name} if it does not exist.`)
-        })
-    }
-
-    public insertRows(table: string, data: rowFields) {
-        const columns = Object.entries(data)[0][1] // Retrieve columns array
-        const allRows = Object.entries(data)[1][1] // Retrieve rows array
-
-        this.database.serialize(() => {
-            allRows.forEach((row) => {
-                if (row.length > 1) {
-                    const escapedValues = row.map((value) => {
-                        if (typeof value === "string") {
-                            return escape(value)
-                        }
-                        return value
-                    })
-                    const placeholders = row.map(() => {
-                        return `?`
-                    })
-
-                    const query = `INSERT INTO ${table}(${columns.join(
-                        ","
-                    )}) VALUES (${placeholders.join(",")})`
-
-                    this.database.run(query, escapedValues, (error) => {
-                        if (error) {
-                            const errorMessage = `Error in data inserting, query failed: \n 
-                                    INSERT INTO ${table}(${columns}) VALUES \n 
-                                    ${escapedValues} \n
-                                    `
-
-                            console.log(errorMessage)
-                            return console.error(error.message)
-                        }
-                    })
-
-                    console.log(
-                        `Queried an INSERT in table ${table}, columns ${columns} adding ${allRows.length} rows.`
-                    )
-                }
-            })
-        })
-    }
-
-    public updateRows(table: string, data: rowFieldUpdate[]) {
-        this.database.serialize(() => {
-            data.forEach((queryToExecute, index) => {
-                const sets = Object.entries(queryToExecute)[0][1] as setType[] // Retrieve sets array
-                const where = Object.entries(queryToExecute)[1][1] as setType // Retrieve where object
-
-                let setQuery = `SET `
-                sets.forEach((currentSet, index) => {
-                    if (index + 1 !== sets.length) {
-                        setQuery = `${setQuery} ${currentSet.column} = ${escape(currentSet.data)}, `
-                    } else {
-                        setQuery = `${setQuery} ${currentSet.column} = ${escape(currentSet.data)}`
-                    }
-                })
-                const query = `UPDATE ${table} ${setQuery} WHERE ${where.column} = ${escape(
-                    where.data
-                )}`
-
-                this.database.run(query, [], (error) => {
-                    if (error) {
-                        const errorMessage = `Error in data updating, query failed: \n 
-                            UPDATE ${table} \n
-                            ${setQuery} \n
-                            WHERE ${where.column} = ${escape(where.data)}`
-
-                        console.log(errorMessage)
-                        return console.error(error.message)
-                    }
-                })
-
-                console.log(
-                    `Queried an UPDATE in table ${table}, whith sets \n
-                    ${setQuery} \n
-                    and WHERE ${where.column} = ${escape(where.data)}`
-                )
-            })
-        })
-    }
-
-    public select(table: string, data: selectField[], callback: () => void) {
-        // FIXME See wtf is going on that it outputs before executing the queries
-        data.forEach((select) => {
-            const columns = select.columnsToSelect.join(", ")
-            let whereQuery = `${select.where.query.column} ${select.where.query.operator} ${select.where.query.data}`
-            if (select.where.extraConditions) {
-                // Add extra conditions to the query, if they are present
-                select.where.extraConditions.forEach((conditions) => {
-                    const conditionQuery = `${conditions.conditionType} 
-                    ${conditions.conditionQuery.column} ${conditions.conditionQuery.operator} ${conditions.conditionQuery.data}`
-
-                    whereQuery = `${whereQuery} ${conditions.conditionType} ${conditionQuery}`
-                })
-            }
-            const query = `SELECT ${columns} FROM ${table} WHERE ${whereQuery}`
-
-            this.database.get(query, [], (error, result) => {
-                this.callbackData.data = select
-                this.callbackData.error = error
-                this.callbackData.query = query
-                this.callbackData.result = result
-                callback()
-            })
-        })
-    }
-
-    public closeDB() {
-        this.database.close()
-        console.log("Closed the database. \n")
-    }
-}
-
-const leadsTable: tableField[] = [
-    {
-        column: "name",
-        datatype: "TEXT",
-    },
-    {
-        column: "organization",
-        datatype: "TEXT",
-    },
-    {
-        column: "role",
-        datatype: "TEXT",
-    },
-    {
-        column: "email",
-        datatype: "TEXT",
-    },
-    {
-        column: "mailing_list",
-        datatype: "INTEGER",
-    },
-    {
-        column: "membership_interest",
-        datatype: "INTEGER",
-    },
-    {
-        column: "message",
-        datatype: "TEXT",
-    },
-    {
-        column: "verification_token",
-        datatype: "TEXT UNIQUE",
-    },
-    {
-        column: "autokey",
-        datatype: "INTEGER PRIMARY KEY",
-    },
-]
-
-const membership_applicantsTable: tableField[] = [
-    {
-        column: "name",
-        datatype: "TEXT",
-    },
-    {
-        column: "ID",
-        datatype: "TEXT UNIQUE",
-    },
-    {
-        column: "ID_type",
-        datatype: "TEXT",
-    },
-    {
-        column: "zip",
-        datatype: "TEXT",
-    },
-    {
-        column: "title",
-        datatype: "TEXT",
-    },
-    {
-        column: "message",
-        datatype: "TEXT",
-    },
-    {
-        column: "autokey",
-        datatype: "INTEGER PRIMARY KEY",
-    },
-]
+const membership_applicantsTable: Types.tableField[] = JSON.parse(
+    readFileSync(resolve(__dirname, "../tables/membership_applicants.json")).toString()
+)
 
 /* POST home page. */
 
@@ -330,7 +54,7 @@ export const PostRoute = router.post("/", (req, res) => {
     const query_kind = req.headers["query-kind"]
 
     if (query_kind === "leadgen") {
-        const leadData: rowFields = {
+        const leadData: Types.rowFields = {
             columns: [
                 "email",
                 "name",
@@ -355,7 +79,7 @@ export const PostRoute = router.post("/", (req, res) => {
             ],
         }
 
-        const interesadosDB = new DatabaseHandler("./db/interesados.db")
+        const interesadosDB = new Utils.DB.Handler("./db/interesados.db")
 
         interesadosDB.openDB()
 
@@ -369,7 +93,7 @@ export const PostRoute = router.post("/", (req, res) => {
     }
 
     if (query_kind === "membership") {
-        const membershipData: rowFields = {
+        const membershipData: Types.rowFields = {
             columns: ["name", "ID_type", "ID", "zip", "title", "autokey", "message"],
             rows: [
                 [
@@ -384,7 +108,7 @@ export const PostRoute = router.post("/", (req, res) => {
             ],
         }
 
-        const selectionToMake: selectField[] = [
+        const selectionToMake: Types.selectField[] = [
             {
                 columnsToSelect: ["verification_token"],
                 where: {
@@ -434,7 +158,7 @@ export const PostRoute = router.post("/", (req, res) => {
             res.redirect("https://nodoambiental.org/membership/invalid_data.html")
         }
 
-        const interesadosDB = new DatabaseHandler("./db/interesados.db")
+        const interesadosDB = new Utils.DB.Handler("./db/interesados.db")
 
         interesadosDB.openDB()
 
@@ -443,7 +167,7 @@ export const PostRoute = router.post("/", (req, res) => {
 
     if (query_kind === "verification") {
         if (typeof req.body.autokey === "number") {
-            const updateTokenData: rowFieldUpdate[] = [
+            const updateTokenData: Types.rowFieldUpdate[] = [
                 {
                     set: [
                         {
@@ -457,7 +181,7 @@ export const PostRoute = router.post("/", (req, res) => {
                     },
                 },
             ]
-            const interesadosDB = new DatabaseHandler("./db/interesados.db")
+            const interesadosDB = new Utils.DB.Handler("./db/interesados.db")
 
             interesadosDB.openDB()
 

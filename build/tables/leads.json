@@ -1,0 +1,38 @@
+[
+    {
+        "column": "name",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "organization",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "role",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "email",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "mailing_list",
+        "datatype": "INTEGER"
+    },
+    {
+        "column": "membership_interest",
+        "datatype": "INTEGER"
+    },
+    {
+        "column": "message",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "verification_token",
+        "datatype": "TEXT UNIQUE"
+    },
+    {
+        "column": "autokey",
+        "datatype": "INTEGER PRIMARY KEY"
+    }
+]

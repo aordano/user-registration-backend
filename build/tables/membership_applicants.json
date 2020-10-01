@@ -1,0 +1,30 @@
+[
+    {
+        "column": "name",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "ID",
+        "datatype": "TEXT UNIQUE"
+    },
+    {
+        "column": "ID_type",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "zip",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "title",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "message",
+        "datatype": "TEXT"
+    },
+    {
+        "column": "autokey",
+        "datatype": "INTEGER PRIMARY KEY"
+    }
+]
