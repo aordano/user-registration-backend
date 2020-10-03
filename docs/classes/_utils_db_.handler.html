@@ -1,0 +1,922 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Handler | membership-form</title>
+	<meta name="description" content="Documentation for membership-form">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">membership-form</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/_utils_db_.html">&quot;utils/db&quot;</a>
+				</li>
+				<li>
+					<a href="_utils_db_.handler.html">Handler</a>
+				</li>
+			</ul>
+			<h1>Class Handler</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<a href="#handler" id="handler" style="color: inherit; text-decoration: none;">
+							<h2>Handler</h2>
+						</a>
+					</div>
+					<hr>
+					<a href="#why" id="why" style="color: inherit; text-decoration: none;">
+						<h3>Why</h3>
+					</a>
+					<p>This class is an abstraction to handle a SQLite 3 database.</p>
+					<p>The default API <code>sqlite3</code> uses is complex, and it&#39;s both hard to read and write code that handles queries, so a simpler abstraction was chosen
+					so the main code is cleaner, more explicit and easier to understand.</p>
+					<p>Also I wanted to make the data handling more friendly, so instead of spiting stuff into the API, this abstraction takes JSON object with a defined structure,
+						which makes it harder to make mistakes, simplifies the handling of the data (whether storing it, or modifying it with JS) and makes it more obvious
+					how things are put together.</p>
+					<a href="#how" id="how" style="color: inherit; text-decoration: none;">
+						<h3>How</h3>
+					</a>
+					<p>When a <code>new Handler()</code> is called, we initialize it with the string with the location of the database file, relative of the place where it&#39;s called.</p>
+					<p>It defaults to a DB in memory if called with no argument.</p>
+					<p>This data is transfered to a <code>.filename</code> object to be used to open the DB.</p>
+					<p>Inside <code>Handler</code> there&#39;s the methods for manipulating the database, namely <code>.openDB()</code>, <code>.createTable()</code>, <code>.insertRows()</code>,
+					<code>.updateRows()</code>, <code>.select()</code> and <code>.closeDB()</code>.</p>
+					<p>This methods grab the data given as a JSON object, the table where to operate and constructs a corresponding query, escaped and sanitized (save for
+						stuff that should be defined by code, not by user, like the table structures. If this needs to be dynamic somehow, aditional steps should be took to
+					clean the column names from anything nefarious), and passes it to <code>sqlite3</code>, which performs the operations.</p>
+					<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+						<h3>Usage</h3>
+					</a>
+					<p>You simply create an instance of the class (should be imported as a namespace, so it would be something like <code>import DB from &quot;../utils&quot;</code>)
+					as you usually create an instance of any class:</p>
+					<pre><code class="language-typescript">
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> Utils <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../utils&quot;</span>
+
+<span class="hljs-keyword">const</span> myDB = <span class="hljs-keyword">new</span> Utils.DB.Handler(<span class="hljs-string">&quot;path/to/DB.db&quot;</span>)
+
+</code></pre>
+					<p>Which then can be used freely, with its methods applying only to the database relevant to the instance.</p>
+					<hr>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Handler</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_utils_db_.handler.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_utils_db_.handler.html#database" class="tsd-kind-icon">database</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_utils_db_.handler.html#filename" class="tsd-kind-icon">filename</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_db_.handler.html#closedb" class="tsd-kind-icon">closeDB</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_db_.handler.html#createtable" class="tsd-kind-icon">create<wbr>Table</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_db_.handler.html#insertrows" class="tsd-kind-icon">insert<wbr>Rows</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_db_.handler.html#opendb" class="tsd-kind-icon">openDB</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_db_.handler.html#select" class="tsd-kind-icon">select</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_db_.handler.html#updaterows" class="tsd-kind-icon">update<wbr>Rows</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Object literals</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal tsd-parent-kind-class"><a href="_utils_db_.handler.html#callbackdata" class="tsd-kind-icon">callback<wbr>Data</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Handler<span class="tsd-signature-symbol">(</span>location<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_utils_db_.handler.html" class="tsd-signature-type">Handler</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L86">utils/db.ts:86</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> location: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_utils_db_.handler.html" class="tsd-signature-type">Handler</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="database" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> database</h3>
+					<div class="tsd-signature tsd-kind-icon">database<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Database</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L153">utils/db.ts:153</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<a href="#database" id="database" style="color: inherit; text-decoration: none;">
+								<h2><code>database</code></h2>
+							</a>
+							<hr>
+						</div>
+						<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+							<h3>Description</h3>
+						</a>
+						<p>The library used here, <code>sqlite3</code>, does all the work on a <code>Database</code> object created for the purpose of managing the queries and data.
+							We store that in a private object so it&#39;s there available to be worked on by any of the methods, and being something pertaining to the class,
+						you can have as many databases simultaneously as you want, withouth the posibility of any interference, while mantaining the simplicity of contextuality.</p>
+						<hr>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="filename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> filename</h3>
+					<div class="tsd-signature tsd-kind-icon">filename<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;:memory:&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L138">utils/db.ts:138</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<a href="#filename" id="filename" style="color: inherit; text-decoration: none;">
+								<h2><code>filename</code></h2>
+							</a>
+							<hr>
+						</div>
+						<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+							<h3>Description</h3>
+						</a>
+						<p>This holds the location of the database relative to the source file, defaulting to a in-memory DB. Nothing fancy.</p>
+						<hr>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="closedb" class="tsd-anchor"></a>
+					<h3>closeDB</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">closeDB<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L615">utils/db.ts:615</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<a href="#closedb" id="closedb" style="color: inherit; text-decoration: none;">
+										<h2><code>closeDB()</code></h2>
+									</a>
+									<hr>
+								</div>
+								<p>Closes the opened database to finalize the work being made. Not rocket science.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="createtable" class="tsd-anchor"></a>
+					<h3>create<wbr>Table</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Table<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L259">utils/db.ts:259</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<a href="#createtable" id="createtable" style="color: inherit; text-decoration: none;">
+										<h2><code>createTable()</code></h2>
+									</a>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of the table to create/open.</p>
+									</div>
+								</li>
+								<li>
+									<h5>fields: <span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Fields to be present in the table. This is defined by a JSON object containing a <code>column</code> and <code>datatype</code> property for every
+										field to be present in the table. See {@link Types.tableField} for more info about the structure (spoiler: it has only two properties).</p>
+										<hr>
+										<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+											<h3>Description</h3>
+										</a>
+										<p>This simply iterates over the given fields, building the query, and then passing it to <code>sqlite3</code> to be run.
+											The inputs are not sanitized, because they are assumed to be from a trusted source, given that you&#39;re defining the structure of a
+										table, it is expected you&#39;re reading it from a JSON file where everything is defined, and not available for edition by anyone.</p>
+										<p>If some dynamicity is needed, then there has to be an external way of sanitizing and parsing the data before inputing in here.</p>
+										<p>For now this lacks proper error handling.</p>
+										<hr>
+										<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+											<h3>Usage</h3>
+										</a>
+										<p>Then you open/create the DB, do some stuff, detailed in the examples of every method, and close the database.</p>
+										<p>Once the database is open, you can operate on it:</p>
+										<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { resolve } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;path&quot;</span>
+<span class="hljs-keyword">import</span> { readFileSync } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>
+
+<span class="hljs-keyword">const</span> myFields = <span class="hljs-built_in">JSON</span>.parse(
+     readFileSync(
+         resolve(
+             __dirname,
+             <span class="hljs-string">&quot;../relative/path/to/fields/data.json&quot;</span>
+         )
+     ).toString()
+)
+
+myDB.createTable(<span class="hljs-string">&quot;myTable, myFields&quot;</span>)
+
+</code></pre>
+										<p>The example given produces a string</p>
+										<p><code>CREATE TABLE IF NOT EXISTS myTable (field_1 datatype_1, field_2 datatype_2, ... field_n datatype_n) </code></p>
+										<p>In this example I read the data from a <code>.json</code> file, but it can be from anywhere, if it ends up being formatted as an object,
+										which the method consumes.</p>
+										<hr>
+										<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
+											<h3>Comment</h3>
+										</a>
+										<p>TODO Add error handling to the table creation</p>
+										<hr>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="insertrows" class="tsd-anchor"></a>
+					<h3>insert<wbr>Rows</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">insert<wbr>Rows<span class="tsd-signature-symbol">(</span>table<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.rowFields</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L352">utils/db.ts:352</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<a href="#insertrows" id="insertrows" style="color: inherit; text-decoration: none;">
+										<h2><code>insertRows()</code></h2>
+									</a>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>table: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of the table where to execute the query.</p>
+									</div>
+								</li>
+								<li>
+									<h5>data: <span class="tsd-signature-type">Types.rowFields</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Data, organized in an object where you have separation of concerns between the columns and the data to be input.
+											The data is related column-wise by index, but being independant it allows to have an object where you just grab and modify a tiny bit that you want
+										without meddling with anything else. See {@link Types.rowFields} fore more information about the structure of this data.</p>
+										<hr>
+										<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+											<h3>Description</h3>
+										</a>
+										<p>This function untangles the data given, organizes it and constructs a <code>INSERT</code> query for every row, to be executed sequentially.
+											This function <em>does</em> escape the contents to be inserted, and also loads them parameterized. It <em>does not</em> escape or sanitize the column names, as
+											they are assumed to come from a trusted source (that&#39;s why there&#39;s a separation of concerns and are not mixed together in a simple array). If there&#39;s a
+										need for a user inputted column name, it should be sanitized before getting it into the method.</p>
+										<p>Even if there&#39;s dynamic requeriments to the columns to be
+											changed, it is still asumed that the available pool of column names to select from is from a trusted source, so it would be strange to need direct user input for
+										the column name.</p>
+										<p>The error handling is very basic and should include what to do when there&#39;s an error, besides logging it.</p>
+										<hr>
+										<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+											<h3>Usage</h3>
+										</a>
+										<p>You provide the data to be inserted to the table, and the table name. This data is an object that contains the relevant information
+										about what to put in there, see {@link Types.rowFields}.</p>
+										<pre><code class="language-typescript">
+<span class="hljs-keyword">const</span> myRowsToInsert = {
+     columns: [
+         <span class="hljs-string">&quot;name&quot;</span>,
+         <span class="hljs-string">&quot;surname&quot;</span>
+     ],
+     rows: [
+         [
+             <span class="hljs-string">&quot;John&quot;</span>,
+             <span class="hljs-string">&quot;Smith&quot;</span>
+         ],
+         [
+             <span class="hljs-string">&quot;Johnny&quot;</span>,
+             <span class="hljs-string">&quot;Smithy&quot;</span>
+         ]
+     ]
+}
+
+myDB.insertRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToInsert)
+</code></pre>
+										<p>What this does is grab the data given to it, build a <code>INSERT</code> string query,
+										ask politely <code>sqlite3</code> to insert the data, and log it did so.</p>
+										<p>The example given produces the string <code>INSERT INTO myTable(name, surname) VALUES (&#39;John&#39;, &#39;Smith&#39;), (&#39;Johnny&#39;, &#39;Smithy&#39;)</code></p>
+										<p>It escapes the <em>data</em> to be inserted, meaning what&#39;s inside <code>data.rows</code>, but it <em>does not</em> sanitize nor escape the data
+											present in <code>data.columns</code>. This is by design; it&#39;s a mess to try to escape column names as strings, and it is assumed that the origin of the data
+											that defines <em>where</em> is to be stuff inserted is trustful. That&#39;s why instead of simply doing a nice map or bidimentional array, I opted to
+										split it in an independan property wich you can source from other place safer than the data you&#39;re handling.</p>
+										<p>Maybe in a future release it could be made so the columns are also sanitized.</p>
+										<hr>
+										<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
+											<h3>Comment</h3>
+										</a>
+										<p>TODO Sanitize column names data</p>
+										<p>TODO Better error handling than just a log.</p>
+										<hr>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="opendb" class="tsd-anchor"></a>
+					<h3>openDB</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">openDB<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L190">utils/db.ts:190</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<a href="#opendb" id="opendb" style="color: inherit; text-decoration: none;">
+										<h2><code>openDB()</code></h2>
+									</a>
+									<hr>
+								</div>
+								<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+									<h3>Description</h3>
+								</a>
+								<p>This method simply grabs the filename set when initializing everything, and creates/opens the database according if it exists or not.
+								It has a minor error handling, but it should be better and more descriptive.</p>
+								<hr>
+								<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+									<h3>Usage</h3>
+								</a>
+								<p>Before doing anything, the database must be created/opened:</p>
+								<pre><code class="language-typescript">
+myDB.openDB()
+
+</code></pre>
+								<p>The method creates the DB if it does not exist, and then opens it, or just opens it if it already exists. The DB is opened with RW permissions,
+								maybe in a future release I could include a parameter to define the permissions when opening it.</p>
+								<hr>
+								<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
+									<h3>Comment</h3>
+								</a>
+								<p>TODO Improve error handling of <code>openDB()</code> method.</p>
+								<p>TODO Add parameter to define the permissions when opening the database.</p>
+								<hr>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="select" class="tsd-anchor"></a>
+					<h3>select</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">select<span class="tsd-signature-symbol">(</span>table<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.selectField</span><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L584">utils/db.ts:584</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<a href="#select" id="select" style="color: inherit; text-decoration: none;">
+										<h2><code>select()</code></h2>
+									</a>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>table: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of the table to work with.</p>
+									</div>
+								</li>
+								<li>
+									<h5>data: <span class="tsd-signature-type">Types.selectField</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Data containing the information about how and what to select. The data is nested in a way thet supports the entire spectrum of selection
+										posibilities that SQLite 3 has. See {@link Types.selectField} for more information about its structure.</p>
+									</div>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Function to be executed when the data is finally read. It can be anything.</p>
+										<hr>
+										<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+											<h3>Description</h3>
+										</a>
+										<p>This method has some particularities that the other ones do not have. Everything takes time and the querying of a database is not exempt from this.
+											So it&#39;s expected that queries block the main thread, or children do the work for us. The thing here is that the <code>sqlite3</code> node library being used does
+											not support promises easily, so the execution continues and you have now ay of knowing if the <code>null</code> or <code>undefined</code> you got is a result of the query or
+										if it&#39;s just unset stuff because of race conditions.</p>
+										<p>Therefore, it is important to only continue with execution when this callback is fired. This is a small hack that mimics the behaviour of a <code>.then()</code>, so you keep
+										doing your stuff inside the callback function.</p>
+										<p>The complexity with that is making available the resulting data to the callback function, so the most practical solution was to simply make it available publicly from an object
+										of the instance of <code>Handle()</code> where you&#39;re working. See {@link <code>Handle.callbackData</code>} for a tad bit of info.</p>
+										<p>The ideal thing here would be to set the return type of the <code>select()</code> method as a <code>Promise</code> and deliver the data when it&#39;s fullfilled, so you can use standard tools like <code>await</code> or <code>.then()</code>.
+										This was not made like this because the library expects for stuff to return a <code>Database</code> object, and I wanted to avoid the complexity of doing so. For a future release.</p>
+										<hr>
+										<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+											<h3>Usage</h3>
+										</a>
+										<p>This being the most complex operation in SQLite, is also the most complex operation present here. In this case, the complexity is presented
+											in the shape of a deep data structure, where everything is defined and may be not immediately intuitive. In this way, the complexity is offloaded
+										to the data where is easier to handle, and kept the code simpler.</p>
+										<pre><code class="language-typescript">
+<span class="hljs-keyword">const</span> mySelection = {
+     <span class="hljs-string">&quot;columnsToSelect&quot;</span>: [
+         <span class="hljs-string">&quot;name&quot;</span>,
+         <span class="hljs-string">&quot;surname&quot;</span>
+     ],
+     <span class="hljs-string">&quot;where&quot;</span>: {
+         <span class="hljs-string">&quot;query&quot;</span>: {
+             <span class="hljs-string">&quot;column&quot;</span>: <span class="hljs-string">&quot;name&quot;</span>,
+             <span class="hljs-string">&quot;data&quot;</span>: <span class="hljs-string">&quot;John&quot;</span>,
+             <span class="hljs-string">&quot;operator&quot;</span>: <span class="hljs-string">&quot;=&quot;</span>
+         },
+         <span class="hljs-string">&quot;extraConditions&quot;</span>: [
+             {
+                 <span class="hljs-string">&quot;conditionType&quot;</span>: <span class="hljs-string">&quot;AND&quot;</span>,
+                 <span class="hljs-string">&quot;conditionQuery&quot;</span>: {
+                     <span class="hljs-string">&quot;column&quot;</span>: <span class="hljs-string">&quot;surname&quot;</span>,
+                     <span class="hljs-string">&quot;data&quot;</span>: <span class="hljs-string">&quot;Smith&quot;</span>,
+                     <span class="hljs-string">&quot;operator&quot;</span>: <span class="hljs-string">&quot;=&quot;</span>
+                 }
+             }
+         ]
+     }
+}
+
+myDB.select(<span class="hljs-string">&quot;myTable&quot;</span>, mySelection)
+</code></pre>
+										<p>As with everything, the data complexity is kept in a completely different layer than the implementation, where in a few clean lines you can execute
+										the operations needed.</p>
+										<p>As with everything else too, what this method does is construct a string to be used as a query for the database.</p>
+										<p>In the given example, the query would be:
+										<code>SELECT name, surname FROM myTable WHERE name = &#39;John&#39; AND surname = &#39;Smith&#39;</code>.</p>
+										<hr>
+										<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
+											<h3>Comment</h3>
+										</a>
+										<p>TODO Implement <code>Promise</code> functionality</p>
+										<p>TODO Add missing error handling</p>
+										<hr>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updaterows" class="tsd-anchor"></a>
+					<h3>update<wbr>Rows</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Rows<span class="tsd-signature-symbol">(</span>table<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.rowFieldUpdate</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L463">utils/db.ts:463</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<a href="#updaterows" id="updaterows" style="color: inherit; text-decoration: none;">
+										<h2><code>updateRows()</code></h2>
+									</a>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>table: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of the table to work with.</p>
+									</div>
+								</li>
+								<li>
+									<h5>data: <span class="tsd-signature-type">Types.rowFieldUpdate</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Data to be updated in the given table. This data contains not only the data itself but every part of the <code>UPDATE</code> query to be made,
+										giving flexibility to filter and discriminate according to the needs, without sacrificing ease of use.</p>
+										<p>Basically it&#39;s:</p>
+										<ul>
+											<li>A condition (the <code>WHERE</code>) given in <code>data.where</code>.</li>
+											<li>The set of data to work with, namely the columns and data.</li>
+										</ul>
+										<p>See {@link Types.rowFieldUpdate} for more information about the structure of this data.</p>
+										<hr>
+										<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+											<h3>Description</h3>
+										</a>
+										<p>This function grabs the conditions and data, constructs a <code>UPDATE</code> query escaping <em>the data only</em>, and gets everything into the meat grinder.</p>
+										<p>It currently has a very basic error handling, and it only supports equalities for selection and discrimination, so that should change
+											in a future release.
+										Also the separation of concerns betwheen the data to update (which is escaped) and the vulnerable information is not good enough.</p>
+										<hr>
+										<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+											<h3>Usage</h3>
+										</a>
+										<p>This metod grabs the destination table, and the data and uses it to construct a string with an <code>UPDATE</code> query.</p>
+										<pre><code class="language-typescript">
+<span class="hljs-keyword">const</span> myRowsToUpdate = {
+     <span class="hljs-string">&quot;set&quot;</span>: [
+         {
+             <span class="hljs-string">&quot;column&quot;</span>: <span class="hljs-string">&quot;name&quot;</span>,
+             <span class="hljs-string">&quot;data&quot;</span>: <span class="hljs-string">&quot;New and Tasty John&quot;</span>
+         }
+     ],
+     <span class="hljs-string">&quot;where&quot;</span>: {
+         <span class="hljs-string">&quot;column&quot;</span>: <span class="hljs-string">&quot;name&quot;</span>,
+         <span class="hljs-string">&quot;data&quot;</span>: <span class="hljs-string">&quot;John&quot;</span>
+     }
+}
+
+myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUpdate)
+</code></pre>
+										<p>As with all the other methods, given this class is a glorified wrapper, what this one does is construct a string to query the database to perform
+										the given operation. This fabricates a <code>UPDATE</code> operation.</p>
+										<p>The values present in all the <code>data</code> keys are escaped, and everything else is kept as the input.</p>
+										<p>In the example, the resulting query would be <code>UPDATE myTable SET name = &#39;New and Tasty John&#39; WHERE name = &#39;John&#39;</code></p>
+										<hr>
+										<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
+											<h3>Comment</h3>
+										</a>
+										<p>TODO Maybe the property names from the data given to the method should be renamed to something more obvious and abstracted.</p>
+										<p>TODO Better error handling than only logging.</p>
+										<p>TODO Support all the conditions and comparators of SQLite 3 rather than just equality.</p>
+										<p>TODO Improve separation of concerns for vulnerable data.</p>
+										<hr>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-class">
+					<a name="callbackdata" class="tsd-anchor"></a>
+					<h3>callback<wbr>Data</h3>
+					<div class="tsd-signature tsd-kind-icon">callback<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L112">utils/db.ts:112</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<a href="#callbackdata" id="callbackdata" style="color: inherit; text-decoration: none;">
+								<h2><code>callbackData</code></h2>
+							</a>
+						</div>
+						<hr>
+						<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+							<h3>Description</h3>
+						</a>
+						<p>This object holds the data relevant to a query, so it&#39;s readily available to be consumed by the callback function or something outside
+						the scope of the method that fills this with data.</p>
+						<p>For the structure, see {@link Types.callbackData}, where it&#39;s defined.</p>
+						<p>The idea behind putting this information in a public object from the database originates from the need to avoid race conditions and unmanaged asynchronicity
+							when doing the requests to <code>sqlite3</code>. Given that the library does not supply a <code>Promise</code> when anything is called, and continues execution nonetheless, race conditions
+						are bound to happen where you keep doing stuff synchronously and there&#39;s missing data that appears later.</p>
+						<p>Having this here sidesteps the issue altogether, so when the operation is completed and a callback is executed, you know than from that point onwards this
+						will be populated with your data, and if it&#39;s not, then there&#39;s no data yet. (If we just go with the flow, because we don&#39;t have promises we can&#39;t know if it&#39;s working or the result is empty)</p>
+						<hr>
+					</div>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="callbackdata.error" class="tsd-anchor"></a>
+						<h3>error</h3>
+						<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;&quot;)</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L113">utils/db.ts:113</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="callbackdata.query" class="tsd-anchor"></a>
+						<h3>query</h3>
+						<div class="tsd-signature tsd-kind-icon">query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L115">utils/db.ts:115</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="callbackdata.result" class="tsd-anchor"></a>
+						<h3>result</h3>
+						<div class="tsd-signature tsd-kind-icon">result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>placeholder<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{ placeholder: &quot;&quot; }]</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L114">utils/db.ts:114</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
+						<a name="callbackdata.data" class="tsd-anchor"></a>
+						<h3>data</h3>
+						<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L116">utils/db.ts:116</a></li>
+							</ul>
+						</aside>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+							<a name="callbackdata.data.columnstoselect" class="tsd-anchor"></a>
+							<h3>columns<wbr>ToSelect</h3>
+							<div class="tsd-signature tsd-kind-icon">columns<wbr>ToSelect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&quot;&quot;]</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L117">utils/db.ts:117</a></li>
+								</ul>
+							</aside>
+						</section>
+						<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
+							<a name="callbackdata.data.where" class="tsd-anchor"></a>
+							<h3>where</h3>
+							<div class="tsd-signature tsd-kind-icon">where<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L118">utils/db.ts:118</a></li>
+								</ul>
+							</aside>
+							<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
+								<a name="callbackdata.data.where.query-1" class="tsd-anchor"></a>
+								<h3>query</h3>
+								<div class="tsd-signature tsd-kind-icon">query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+								<aside class="tsd-sources">
+									<ul>
+										<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L119">utils/db.ts:119</a></li>
+									</ul>
+								</aside>
+								<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+									<a name="callbackdata.data.where.query-1.column" class="tsd-anchor"></a>
+									<h3>column</h3>
+									<div class="tsd-signature tsd-kind-icon">column<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
+									<aside class="tsd-sources">
+										<ul>
+											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L120">utils/db.ts:120</a></li>
+										</ul>
+									</aside>
+								</section>
+								<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+									<a name="callbackdata.data.where.query-1.data-1" class="tsd-anchor"></a>
+									<h3>data</h3>
+									<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
+									<aside class="tsd-sources">
+										<ul>
+											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L121">utils/db.ts:121</a></li>
+										</ul>
+									</aside>
+								</section>
+								<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+									<a name="callbackdata.data.where.query-1.operator" class="tsd-anchor"></a>
+									<h3>operator</h3>
+									<div class="tsd-signature tsd-kind-icon">operator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"&#x3D;"</span><span class="tsd-signature-symbol"> = &quot;&#x3D;&quot;</span></div>
+									<aside class="tsd-sources">
+										<ul>
+											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L122">utils/db.ts:122</a></li>
+										</ul>
+									</aside>
+								</section>
+							</section>
+						</section>
+					</section>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_app_.html">&quot;app&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_routes_index_.html">&quot;routes/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_types_index_.html">&quot;types/index&quot;</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/_utils_db_.html">&quot;utils/db&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_utils_index_.html">&quot;utils/index&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="_utils_db_.handler.html" class="tsd-kind-icon">Handler</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="_utils_db_.handler.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_utils_db_.handler.html#database" class="tsd-kind-icon">database</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_utils_db_.handler.html#filename" class="tsd-kind-icon">filename</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_utils_db_.handler.html#closedb" class="tsd-kind-icon">closeDB</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_utils_db_.handler.html#createtable" class="tsd-kind-icon">create<wbr>Table</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_utils_db_.handler.html#insertrows" class="tsd-kind-icon">insert<wbr>Rows</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_utils_db_.handler.html#opendb" class="tsd-kind-icon">openDB</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_utils_db_.handler.html#select" class="tsd-kind-icon">select</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_utils_db_.handler.html#updaterows" class="tsd-kind-icon">update<wbr>Rows</a>
+							</li>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-class">
+								<a href="_utils_db_.handler.html#callbackdata" class="tsd-kind-icon">callback<wbr>Data</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -8,7 +8,4 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-    "todo-tree.filtering.excludeGlobs": [
-        "build/"
-    ]
 }

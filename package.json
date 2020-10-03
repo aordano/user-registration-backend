@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "rm -rf ./build/* && tsc && cpc ./tables ./build/tables",
+    "build": "rm -rf ./build/* && tsc && cp -R ./tables ./build/tables",
     "start": "node ./start.js",
     "execute": "bash ./execute.sh",
     "develop": "rm -rf ./build/* && tsc && cp -R ./tables ./build/tables && echo '---- READY ----' && node ./start.js "

@@ -3,26 +3,32 @@
     "outDir": "./build",
     "allowJs": true,
     "target": "es5",
+    "module": "CommonJS",
+    "moduleResolution": "node"
   },
   "include": [
     "./src/**/*",
     "./__test__",
     "./mocks"
-  ],       
-  "typedocOptions": {
-    "mode": "modules",
-    "out": "docs",
-    "theme": "typedocTheme",
-    "exclude": [
-      "**/*+(index|.spec|.e2e).ts",
-      "**/*+(index|.spec|.e2e).tsx",
-      "**/*+(index|.spec|.e2e|.spec.tsx|.spec.ts).snap",
-      "**/*.js",
-    ]
-  },
+  ],
   "exclude": [
     "./node_modules",
     "./.vscode",
     "./coverage",
-  ]
+  ],
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs",
+    "theme": "typedocTheme",
+    "inputFiles": [
+      "./src",
+      "./src/**/index"
+    ],
+    "exclude": [
+      "**/*+(.spec|.e2e).ts",
+      "**/*+(.spec|.e2e).tsx",
+      "**/*+(index|.spec|.e2e|.spec.tsx|.spec.ts).snap",
+      "**/*.js"
+    ]
+  }
 }

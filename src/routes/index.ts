@@ -38,6 +38,8 @@ import * as Utils from "../utils"
 
 // TODO Documentation!
 
+// TODO Make data fetched from the request is grabbed based on the fields present in the relevant table
+
 const router = express.Router()
 
 const leadsTable: Types.tableField[] = JSON.parse(
