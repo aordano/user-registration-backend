@@ -38,10 +38,9 @@ import * as Utils from "../utils"
 
 // TODO Documentation!
 
-// TODO Make data fetched from the request is grabbed based on the fields present in the relevant table
-
 const router = express.Router()
 
+// Fetch tables data
 const leadsTable: Types.tableField[] = JSON.parse(
     readFileSync(resolve(__dirname, "../tables/leads.json")).toString()
 )
@@ -50,36 +49,28 @@ const membership_applicantsTable: Types.tableField[] = JSON.parse(
     readFileSync(resolve(__dirname, "../tables/membership_applicants.json")).toString()
 )
 
-/* POST home page. */
+const parseRequestData = (request, table: Types.tableField[]): Types.rowFields => {
+    const columns = table.map((field: Types.tableField) => {
+        return field.column
+    })
+    const rows = columns.map((column: string) => {
+        if (column === "verification_token") {
+            return ""
+        }
+        return request.body[column] ?? ""
+    })
+
+    return { columns, rows }
+}
+
+// POST endpoint
 
 export const PostRoute = router.post("/", (req, res) => {
-    const query_kind = req.headers["query-kind"]
+    const query_kind = req.headers["query-kind"] // Header required to know that it's a valid request and not random stuff
 
+    // What to do when information about a lead is to be written into the database
     if (query_kind === "leadgen") {
-        const leadData: Types.rowFields = {
-            columns: [
-                "email",
-                "name",
-                "organization",
-                "role",
-                "message",
-                "mailing_list",
-                "membership_interest",
-                "verification_token",
-            ],
-            rows: [
-                [
-                    req.body.email,
-                    req.body.name,
-                    req.body.organization ?? "",
-                    req.body.role ?? "",
-                    req.body.message ?? "",
-                    req.body.mailing_list,
-                    req.body.membership_interest,
-                    "", // verification token empty string
-                ],
-            ],
-        }
+        const leadData = parseRequestData(req, leadsTable)
 
         const interesadosDB = new Utils.DB.Handler("./db/interesados.db")
 
@@ -95,20 +86,7 @@ export const PostRoute = router.post("/", (req, res) => {
     }
 
     if (query_kind === "membership") {
-        const membershipData: Types.rowFields = {
-            columns: ["name", "ID_type", "ID", "zip", "title", "autokey", "message"],
-            rows: [
-                [
-                    req.body.name,
-                    req.body.ID_type,
-                    req.body.ID,
-                    req.body.zip,
-                    req.body.title ?? "",
-                    req.body.autokey,
-                    req.body.message,
-                ],
-            ],
-        }
+        const membershipData = parseRequestData(req, membership_applicantsTable)
 
         const selectionToMake: Types.selectField[] = [
             {
