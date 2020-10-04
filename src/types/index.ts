@@ -1,5 +1,5 @@
 /**
- * # index.ts
+ * # Types > index.ts
  *
  * ---
  *
@@ -40,7 +40,7 @@
  *
  * ### Comment
  *
- * TODO Bound `datatype` options to what SQLite accepts.
+ * TODO:Patch Bound `datatype` options to what SQLite accepts.
  *
  * ---
  */
@@ -123,7 +123,7 @@ export type rowType = data[]
  *
  * ### Comment
  *
- * TODO Make sure both properties have always the same length.
+ * TODO:Patch Make sure both properties have always the same length.
  *
  * ---
  */
@@ -200,7 +200,7 @@ export type set = {
  *
  * ### Comment
  *
- * TODO Fix aliasing and make it easily understandable.
+ * TODO:Patch Fix aliasing and make it easily understandable.
  *
  * ---
  */
@@ -347,7 +347,7 @@ export type extraSelectQuery = {
  *
  * ### Comment
  *
- * TODO Improve separation of concerns between data and columns/operators to be used.
+ * TODO:Minor Improve separation of concerns between data and columns/operators to be used.
  *
  * ---
  */

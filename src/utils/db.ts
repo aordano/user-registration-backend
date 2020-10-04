@@ -1,5 +1,5 @@
 /**
- * # db.ts
+ * # Utils > db.ts
  *
  * ---
  *
@@ -13,8 +13,6 @@
  * It has one public object, `callbackData`, which makes available the data resulting of a `SELECT` operation, as well as the data originating the request.
  * @packageDocumentation
  */
-
-// TODO Add examples of use in the documentation of every method.
 
 /**
  * * ------------------------------->>
@@ -181,9 +179,9 @@ export class Handler {
      *
      * ### Comment
      *
-     * TODO Improve error handling of `openDB()` method.
+     * TODO:Patch Improve error handling of `openDB()` method.
      *
-     * TODO Add parameter to define the permissions when opening the database.
+     * TODO:Minor Add parameter to define the permissions when opening the database.
      *
      * ---
      */
@@ -252,7 +250,7 @@ export class Handler {
      *
      * ### Comment
      *
-     * TODO Add error handling to the table creation
+     * TODO:Patch Add error handling to the table creation
      *
      * ---
      */
@@ -343,9 +341,9 @@ export class Handler {
      *
      * ### Comment
      *
-     * TODO Sanitize column names data
+     * TODO:Minor Sanitize column names data
      *
-     * TODO Better error handling than just a log.
+     * TODO:Patch Better error handling than just a log.
      *
      * ---
      */
@@ -450,13 +448,13 @@ export class Handler {
      *
      * ### Comment
      *
-     * TODO Maybe the property names from the data given to the method should be renamed to something more obvious and abstracted.
+     * TODO:Minor Maybe the property names from the data given to the method should be renamed to something more obvious and abstracted.
      *
-     * TODO Better error handling than only logging.
+     * TODO:Patch Better error handling than only logging.
      *
-     * TODO Support all the conditions and comparators of SQLite 3 rather than just equality.
+     * TODO:Major Support all the conditions and comparators of SQLite 3 rather than just equality.
      *
-     * TODO Improve separation of concerns for vulnerable data.
+     * TODO:Minor Improve separation of concerns for vulnerable data.
      *
      * ---
      */
@@ -575,9 +573,9 @@ export class Handler {
      *
      * ### Comment
      *
-     * TODO Implement `Promise` functionality
+     * TODO:Minor Implement `Promise` functionality
      *
-     * TODO Add missing error handling
+     * TODO:Patch Add missing error handling
      *
      * ---
      */

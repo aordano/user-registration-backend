@@ -1,5 +1,5 @@
 /**
- * # index.ts
+ * # Utils > index.ts
  *
  * ---
  *
@@ -29,3 +29,4 @@
  */
 
 export * as DB from "./db"
+export * as Functions from "./functions"
