@@ -4,3 +4,4 @@ build
 coverage
 db
 start.js
+docsDependencies

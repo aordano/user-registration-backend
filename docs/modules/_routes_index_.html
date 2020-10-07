@@ -69,8 +69,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<a href="#indexts" id="indexts" style="color: inherit; text-decoration: none;">
-							<h1>index.ts</h1>
+						<a href="#routes-gt-indexts" id="routes-gt-indexts" style="color: inherit; text-decoration: none;">
+							<h1>Routes &gt; index.ts</h1>
 						</a>
 					</div>
 					<hr>
@@ -97,7 +97,7 @@
 					<a href="#membership--post" id="membership--post" style="color: inherit; text-decoration: none;">
 						<h4>membership | <code>POST</code></h4>
 					</a>
-					<p><code>membership</code> grabs the data sent by the membership form page, stores it in the database and triggers an email to <a href="mailto:&#x63;&#111;&#110;&#x74;&#97;&#99;&#116;&#x6f;&#x40;&#110;&#111;&#x64;&#111;&#97;&#x6d;&#98;&#x69;&#101;&#110;&#x74;&#97;&#x6c;&#x2e;&#111;&#x72;&#x67;">&#x63;&#111;&#110;&#x74;&#97;&#99;&#116;&#x6f;&#x40;&#110;&#111;&#x64;&#111;&#97;&#x6d;&#98;&#x69;&#101;&#110;&#x74;&#97;&#x6c;&#x2e;&#111;&#x72;&#x67;</a> informing
+					<p><code>membership</code> grabs the data sent by the membership form page, stores it in the database and triggers an email to <a href="mailto:&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#111;&#x40;&#x6e;&#x6f;&#x64;&#111;&#x61;&#x6d;&#x62;&#x69;&#101;&#x6e;&#116;&#97;&#x6c;&#x2e;&#111;&#114;&#103;">&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#111;&#x40;&#x6e;&#x6f;&#x64;&#111;&#x61;&#x6d;&#x62;&#x69;&#101;&#x6e;&#116;&#97;&#x6c;&#x2e;&#111;&#114;&#103;</a> informing
 					that someon wants to apply for membership.</p>
 				</div>
 			</section>
@@ -122,12 +122,77 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="postroute" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Post<wbr>Route</h3>
-					<div class="tsd-signature tsd-kind-icon">Post<wbr>Route<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Router</span><span class="tsd-signature-symbol"> = router.post(&quot;/&quot;, (req, res) &#x3D;&gt; {const query_kind &#x3D; req.headers[&quot;query-kind&quot;]if (query_kind &#x3D;&#x3D;&#x3D; &quot;leadgen&quot;) {const leadData: Types.rowFields &#x3D; {columns: [&quot;email&quot;,&quot;name&quot;,&quot;organization&quot;,&quot;role&quot;,&quot;message&quot;,&quot;mailing_list&quot;,&quot;membership_interest&quot;,&quot;verification_token&quot;,],rows: [[req.body.email,req.body.name,req.body.organization ?? &quot;&quot;,req.body.role ?? &quot;&quot;,req.body.message ?? &quot;&quot;,req.body.mailing_list,req.body.membership_interest,&quot;&quot;, // verification token empty string],],}const interesadosDB &#x3D; new Utils.DB.Handler(&quot;./db/interesados.db&quot;)interesadosDB.openDB()interesadosDB.createTable(&quot;leads&quot;, leadsTable)interesadosDB.insertRows(&quot;leads&quot;, leadData)interesadosDB.closeDB()res.redirect(&quot;https://nodoambiental.org/leadgen_success.html&quot;)}if (query_kind &#x3D;&#x3D;&#x3D; &quot;membership&quot;) {const membershipData: Types.rowFields &#x3D; {columns: [&quot;name&quot;, &quot;ID_type&quot;, &quot;ID&quot;, &quot;zip&quot;, &quot;title&quot;, &quot;autokey&quot;, &quot;message&quot;],rows: [[req.body.name,req.body.ID_type,req.body.ID,req.body.zip,req.body.title ?? &quot;&quot;,req.body.autokey,req.body.message,],],}const selectionToMake: Types.selectField[] &#x3D; [{columnsToSelect: [&quot;verification_token&quot;],where: {query: {column: &quot;verification_token&quot;,data: &#x60;&quot;${String(req.body.verification_token)}&quot;&#x60;,operator: &quot;&#x3D;&quot;,},},},]const selectCallback &#x3D; () &#x3D;&gt; {if (interesadosDB.callbackData.result !&#x3D;&#x3D; undefined &amp;&amp;interesadosDB.callbackData.result !&#x3D;&#x3D; null &amp;&amp;typeof interesadosDB.callbackData.result &#x3D;&#x3D;&#x3D; &quot;object&quot; &amp;&amp;interesadosDB.callbackData.result.length &#x3D;&#x3D;&#x3D; undefined) {const result &#x3D; Object.entries(interesadosDB.callbackData.result)[0][1]const verification &#x3D;typeof result &#x3D;&#x3D;&#x3D; &quot;string&quot; &amp;&amp; result &#x3D;&#x3D;&#x3D; req.body.verification_token? true: falseif (verification) {interesadosDB.createTable(&quot;membership_applicants&quot;, membership_applicantsTable)interesadosDB.insertRows(&quot;membership_applicants&quot;, membershipData)interesadosDB.closeDB()res.redirect(&quot;https://nodoambiental.org/membership/application_success.html&quot;)return}interesadosDB.closeDB()res.redirect(&quot;https://nodoambiental.org/membership/invalid_token.html&quot;)return}interesadosDB.closeDB()res.redirect(&quot;https://nodoambiental.org/membership/invalid_data.html&quot;)}const interesadosDB &#x3D; new Utils.DB.Handler(&quot;./db/interesados.db&quot;)interesadosDB.openDB()interesadosDB.select(&quot;leads&quot;, selectionToMake, selectCallback)}if (query_kind &#x3D;&#x3D;&#x3D; &quot;verification&quot;) {if (typeof req.body.autokey &#x3D;&#x3D;&#x3D; &quot;number&quot;) {const updateTokenData: Types.rowFieldUpdate[] &#x3D; [{set: [{column: &quot;verification_token&quot;,data: uid(16),},],where: {column: &quot;autokey&quot;,data: req.body.autokey,},},]const interesadosDB &#x3D; new Utils.DB.Handler(&quot;./db/interesados.db&quot;)interesadosDB.openDB()// console.log(leadsTable)interesadosDB.createTable(&quot;leads&quot;, leadsTable)// console.log(leadData)interesadosDB.updateRows(&quot;leads&quot;, updateTokenData)interesadosDB.closeDB()res.redirect(&quot;https://nodoambiental.org/leadgen/verification_success.html&quot;)return}res.redirect(&quot;https://nodoambiental.org/leadgen/invalid_data.html&quot;)}})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Post<wbr>Route<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Router</span><span class="tsd-signature-symbol"> = router.post(&quot;/&quot;, (request, response) &#x3D;&gt; {const query_kind &#x3D; request.headers[&quot;query-kind&quot;] // Header required to know that it&#x27;s a valid request and not random stuffif (query_kind !&#x3D;&#x3D; undefined || query_kind !&#x3D;&#x3D; null) {const query &#x3D; new queryHandler(request, response, {leads: leadsTable,membership: membership_applicantsTable,})switch (query_kind) {case &quot;leadgen&quot;:query.leadgenQuery()// email stuff goes herereturncase &quot;verification&quot;:query.verificationQuery()// email stuff goes herereturncase &quot;membership&quot;:query.membershipQuery()// email stuff goes herereturndefault:return}}})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/routes/index.ts#L53">routes/index.ts:53</a></li>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/routes/index.ts#L124">routes/index.ts:124</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<a href="#postroute" id="postroute" style="color: inherit; text-decoration: none;">
+								<h2><code>PostRoute</code></h2>
+							</a>
+						</div>
+						<hr>
+						<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+							<h3>Description</h3>
+						</a>
+						<p>Handles all the stuff going on in the endpoint.</p>
+						<p>Simply put, someone sends a <code>POST</code> request to the endpoint, and given it has a header <code>query-kind</code> containing, well, the query kind, it
+							will process the data in the body to do databasey stuff. The request expected is <code>application-json</code>, so the body should contain a set of keys and
+						values with all the info.</p>
+						<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+							<h3>Usage</h3>
+						</a>
+						<p>You receive data in a <code>POST</code> request from a contact form present on the main website. This is  a <code>leadgen</code> query-kind.</p>
+						<p>This data is then registered in the database, always even if it&#39;s garbage or anything is dropped in a later step,
+						and an email is triggered to the inbox provided, to verify it.</p>
+						<p>This verification email contains a link pointing back to the endpoint, where the query-kind now is <code>verification</code>, containing simply the primary
+							key generated in the leads table when the data was registered. If the given number matches a entry in the DB, then a hopefully unique token is generated
+						and the data in the leads table is updated with this verification token.</p>
+						<p>Upon verification, <em>another</em> mail is sent saying that everything went smoothly, and prompting the user to contact the organization, opt to become a member
+						donate money or something, and pointing to where&#39;s our cool stuff and that go go check it out.</p>
+						<p>If the user choses to apply for memebership, then it&#39;s redirected to another form where more sensitive data is requested. This form is reached
+							via a <code>GET</code> request containing the verification token assigned to the user. Then when the form is filled, the verification token is passed along it in
+						another <code>POST</code> request to the endpoint, this time with <code>membership</code> query-kind.</p>
+						<p>Given the received verification token is present on the leads table, then the corresponding primary key of the leads table is recorded in the
+						membership table, along all the extra info provided in the last form.</p>
+						<p>Lastly, this triggers <em>yet another</em> email saying that the application was succesfuly processed and that &quot;you can contact us like bla bla etc&quot; and that
+						the organization will be put in contact with them.</p>
+						<p>Frontend should be split in two folders, <code>leadgen</code> and <code>membership</code>, to have the corresponding status page after doing something.</p>
+						<p>Leadgen contains:</p>
+						<ul>
+							<li><p>invalid_data:
+								Redirect to generic error page if there&#39;s garbage data somewhere in the <code>POST</code> request.</p>
+							</li>
+							<li><p>verification_notice:
+								Redirect to status page aknowledging the person&#39;s affiliation and requesting a verification from the email provided.</p>
+							</li>
+							<li><p>verification_success:
+								Redirect to page where the email verification is noted and the person&#39;s welcomed to us.</p>
+							</li>
+						</ul>
+						<p>Membership contains:</p>
+						<ul>
+							<li><p>application_success:
+								Redirect to page saying the application for membership was successful and that we&#39;ll contact them soon enough.</p>
+							</li>
+							<li><p>invalid_token:
+								Redirect to page saying the UID is garbage; this would be in the shape of a generic &quot;Something went wrong :(&quot; display.</p>
+							</li>
+							<li><p>invalid_data:
+								Redirect to a generic error page like in the case of the leadgen, but with minor changes to relate to the membership process.</p>
+							</li>
+						</ul>
+						<hr>
+						<a href="#comments" id="comments" style="color: inherit; text-decoration: none;">
+							<h3>Comments</h3>
+						</a>
+						<p>TODO:Major Add part of the workflow that incorporates donations once that part is more ready to be presented to the world</p>
+						<p>TODO:Minor Add the email stuff; the cleanliness will be important to make sure this file is not a hodgepodge of code thrown together.</p>
+						<hr>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
 					<a name="leadstable" class="tsd-anchor"></a>
@@ -135,7 +200,7 @@
 					<div class="tsd-signature tsd-kind-icon">leads<wbr>Table<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = JSON.parse(readFileSync(resolve(__dirname, &quot;../tables/leads.json&quot;)).toString())</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/routes/index.ts#L43">routes/index.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/routes/index.ts#L43">routes/index.ts:43</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -145,7 +210,7 @@
 					<div class="tsd-signature tsd-kind-icon">membership_<wbr>applicants<wbr>Table<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = JSON.parse(readFileSync(resolve(__dirname, &quot;../tables/membership_applicants.json&quot;)).toString())</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/routes/index.ts#L47">routes/index.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/routes/index.ts#L47">routes/index.ts:47</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -155,7 +220,7 @@
 					<div class="tsd-signature tsd-kind-icon">router<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Router</span><span class="tsd-signature-symbol"> = express.Router()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/routes/index.ts#L41">routes/index.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/routes/index.ts#L40">routes/index.ts:40</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -170,6 +235,9 @@
 					<li class=" tsd-kind-module">
 						<a href="_app_.html">&quot;app&quot;</a>
 					</li>
+					<li class=" tsd-kind-module">
+						<a href="_logic_db_.html">&quot;logic/db&quot;</a>
+					</li>
 					<li class="current tsd-kind-module">
 						<a href="_routes_index_.html">&quot;routes/index&quot;</a>
 					</li>
@@ -178,6 +246,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_utils_db_.html">&quot;utils/db&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_utils_functions_.html">&quot;utils/functions&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_utils_index_.html">&quot;utils/index&quot;</a>
@@ -209,6 +280,7 @@
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 			</ul>
 			<ul class="tsd-legend">

@@ -1,0 +1,474 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>queryHandler | membership-form</title>
+	<meta name="description" content="Documentation for membership-form">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">membership-form</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/_logic_db_.html">&quot;logic/db&quot;</a>
+				</li>
+				<li>
+					<a href="_logic_db_.queryhandler.html">queryHandler</a>
+				</li>
+			</ul>
+			<h1>Class queryHandler</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<a href="#queryhandler" id="queryhandler" style="color: inherit; text-decoration: none;">
+							<h2>queryHandler</h2>
+						</a>
+					</div>
+					<hr>
+					<a href="#why" id="why" style="color: inherit; text-decoration: none;">
+						<h3>Why</h3>
+					</a>
+					<p>This class manages the requests made to the main endpoint.</p>
+					<p>The idea of having it in another place than the route is to make it clean and easy to understand, without bloat.</p>
+					<p>So basically you give this the tables, the request and response objects and it performs all the stuff related to the data and queries to the database.</p>
+					<a href="#how" id="how" style="color: inherit; text-decoration: none;">
+						<h3>How</h3>
+					</a>
+					<p>When a <code>new queryHandler()</code> is called, we initialize it with all the data present in the route.</p>
+					<p>It has no defaults set.</p>
+					<p>This data is transfered to an <code>.request</code>, <code>.response</code> and <code>.tables</code> objects to be inherited from the route def.</p>
+					<p>Inside <code>queryHandler</code> there&#39;s the methods for manipulating the responses and calling the databasey stuff, namely <code>.leadgenQuery()</code>,
+					<code>.verificationQuery()</code> and <code>.membershipQuery()</code>. This methods unsurprisingly handle the leadgen, verification and membership stages of the contact.</p>
+					<p>So basically all the logic <em>related to the database and redirects/responses</em> is defined in here, so this class and its methods are a bit custom, and
+					making this more general would be pointlessly hard.</p>
+					<p>The mini-format used here is to prepend the case to the <code>Query</code> word as the method name, so if you add a method that handles the <code>potato</code> case,
+						you should call it as <code>.potatoQuery()</code>. The class contains internally all the data relevant, given when it&#39;s initialized, so there should be no
+					arguments present in the method call. The idea behind this is to make it super clean and concise in the route.</p>
+					<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+						<h3>Usage</h3>
+					</a>
+					<p>You simply create an instance of the class (should be imported as a namespace, so it would be something like <code>import DB from &quot;../logic&quot;</code>)
+					as you usually create an instance of any class:</p>
+					<pre><code class="language-typescript">
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> Logic <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../logic&quot;</span>
+
+<span class="hljs-keyword">const</span> POSTQuery = <span class="hljs-keyword">new</span> Logic.DB.queryHandler(req, res, myTables)
+
+</code></pre>
+					<p>Then you call what you need according to the cases you&#39;re handling:</p>
+					<pre><code class="language-typescript">
+<span class="hljs-keyword">switch</span> (queryKind) {
+     <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;leadgen&quot;</span>:
+         POSTQuery.leadgenQuery()
+         <span class="hljs-keyword">return</span>
+     <span class="hljs-keyword">default</span>:
+         <span class="hljs-keyword">return</span>
+}
+
+</code></pre>
+					<hr>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">queryHandler</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_logic_db_.queryhandler.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_db_.queryhandler.html#request" class="tsd-kind-icon">request</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_db_.queryhandler.html#response" class="tsd-kind-icon">response</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_db_.queryhandler.html#tables" class="tsd-kind-icon">tables</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_db_.queryhandler.html#leadgenquery" class="tsd-kind-icon">leadgen<wbr>Query</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_db_.queryhandler.html#membershipquery" class="tsd-kind-icon">membership<wbr>Query</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_db_.queryhandler.html#verificationquery" class="tsd-kind-icon">verification<wbr>Query</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new query<wbr>Handler<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Request</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, tables<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>leads<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>membership<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_logic_db_.queryhandler.html" class="tsd-signature-type">queryHandler</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/logic/db.ts#L96">logic/db.ts:96</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>request: <span class="tsd-signature-type">Request</span></h5>
+								</li>
+								<li>
+									<h5>response: <span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>tables: <span class="tsd-signature-symbol">{ </span>leads<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>membership<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>leads<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>membership<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span></h5>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_logic_db_.queryhandler.html" class="tsd-signature-type">queryHandler</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="request" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> request</h3>
+					<div class="tsd-signature tsd-kind-icon">request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/logic/db.ts#L129">logic/db.ts:129</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+								<h3>Description</h3>
+							</a>
+						</div>
+						<p>The request object, no changes, as passed to the route.</p>
+						<hr>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="response" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> response</h3>
+					<div class="tsd-signature tsd-kind-icon">response<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/logic/db.ts#L138">logic/db.ts:138</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+								<h3>Description</h3>
+							</a>
+						</div>
+						<p>The response object, no changes, as passed to the route.</p>
+						<hr>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="tables" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> tables</h3>
+					<div class="tsd-signature tsd-kind-icon">tables<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/logic/db.ts#L120">logic/db.ts:120</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+								<h3>Description</h3>
+							</a>
+						</div>
+						<p>This object holds the table definition data for all the needed tables.</p>
+						<p>The idea is to make it easy for the methods to process the stuff while keeping it clean.</p>
+						<p>Every table definition should be added as a child of the root object feeded to the class, with the key as relevant name of the table.</p>
+						<p>For the structure surrounding the table datatypes see {@link Types.tableField}.</p>
+						<hr>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="leadgenquery" class="tsd-anchor"></a>
+					<h3>leadgen<wbr>Query</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">leadgen<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/logic/db.ts#L214">logic/db.ts:214</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<script src="../assets/js/dagre.js"></script>
+									<script src="../assets/js/nomnoml.js"></script>
+									<script src="../assets/js/custom.js"></script>
+								</div>
+								<hr>
+								<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+									<h3>Description</h3>
+								</a>
+								<p>This method handles the logic behind the leadgen database handling.</p>
+								<p>The idea here is to check that everything&#39;s fine and then write the data to a database table for further use.
+									The data is recorded <em>always</em>, even if it&#39;s duplicate or garbage (as long as all the fields are valid).
+								This is by design. We would want to have everyone recorded for further use if needed.</p>
+								<p>So basically:</p>
+								<div class="diagram" id="leadgenQueryDiagram"></div>
+								<script>
+     var canvas = document.getElementById('leadgen-query-diagram');
+     var source = `
+
+#title: Leadgen Query Diagram
+#stroke: #333333
+#fill: #C9C0FF; D9D0FF
+#lineWidth: 2
+#bendSize: 2
+#edges: rounded
+
+         [<start>s] -> [leadgenQuery() is called]
+         [leadgenQuery() is called] -> [Data is read from the request]
+         [Data is read from the request] -> [Discard garbage data]
+         [Discard garbage data] -> [Redirect to garbage data page]
+         [Redirect to garbage data page] -> [Return with nonzero exit code]
+         [Return with nonzero exit code] -> [<end>e]
+         [Data is read from the request] -> [Write data into the DB]
+         [Write data into the DB] -> [Redirect to mail verification page]
+         [Redirect to mail verification page] -> [Return with zero exit code]
+         [Return with zero exit code] -> [<end>e]
+     `;
+     document.getElementById("leadgenQueryDiagram").appendChild(HTMLStringToElement(nomnoml.renderSvg(source)));
+</script>
+								<hr>
+								<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+									<h3>Usage</h3>
+								</a>
+								<p>Just call it after created the instance of this class.</p>
+								<pre><code class="language-typescript">
+<span class="hljs-keyword">const</span> query = <span class="hljs-keyword">new</span> queryHandler(
+     request,
+     response,
+     {
+         leads: leadsTable,
+         membership: membership_applicantsTable,
+     }
+)
+
+query.leadgenQuery()
+</code></pre>
+								<hr>
+								<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
+									<h3>Comment</h3>
+								</a>
+								<hr>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="membershipquery" class="tsd-anchor"></a>
+					<h3>membership<wbr>Query</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">membership<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/logic/db.ts#L279">logic/db.ts:279</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="verificationquery" class="tsd-anchor"></a>
+					<h3>verification<wbr>Query</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">verification<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/logic/db.ts#L243">logic/db.ts:243</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_app_.html">&quot;app&quot;</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/_logic_db_.html">&quot;logic/db&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_routes_index_.html">&quot;routes/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_types_index_.html">&quot;types/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_utils_db_.html">&quot;utils/db&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_utils_functions_.html">&quot;utils/functions&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_utils_index_.html">&quot;utils/index&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="_logic_db_.queryhandler.html" class="tsd-kind-icon">query<wbr>Handler</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="_logic_db_.queryhandler.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_logic_db_.queryhandler.html#request" class="tsd-kind-icon">request</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_logic_db_.queryhandler.html#response" class="tsd-kind-icon">response</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_logic_db_.queryhandler.html#tables" class="tsd-kind-icon">tables</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_logic_db_.queryhandler.html#leadgenquery" class="tsd-kind-icon">leadgen<wbr>Query</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_logic_db_.queryhandler.html#membershipquery" class="tsd-kind-icon">membership<wbr>Query</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_logic_db_.queryhandler.html#verificationquery" class="tsd-kind-icon">verification<wbr>Query</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

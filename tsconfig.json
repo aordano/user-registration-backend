@@ -24,6 +24,9 @@
       "./src",
       "./src/**/index"
     ],
+    "includes": [
+      "./docsDependencies"
+    ],
     "exclude": [
       "**/*+(.spec|.e2e).ts",
       "**/*+(.spec|.e2e).tsx",

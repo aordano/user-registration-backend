@@ -144,6 +144,7 @@
   hr {
     box-sizing: content-box;
     height: 0;
+    margin-top: 20px;
   }
   
   /**
@@ -1872,13 +1873,20 @@
   }
   dl.tsd-comment-tags dt {
     float: left;
-    padding: 1px 5px;
-    margin: 0 10px 0 0;
+    padding: 2px 5px;
     border-radius: 4px;
-    border: 1px solid #808080;
-    color: #808080;
-    font-size: 0.8em;
+    color: #444;
+    font-size: 15px;
     font-weight: normal;
+    background-color: #EFE5FF;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    font-family: monospace;
+    padding-left: 10px;
+    line-height: 20px;
+    height: 20px;
+    position: relative;
+    margin-right: 10px;
   }
   dl.tsd-comment-tags dd {
     margin: 0 0 10px 0;
@@ -1890,8 +1898,26 @@
   dl.tsd-comment-tags dd pre, dl.tsd-comment-tags dd:after {
     clear: both;
   }
+  dl.tsd-comment-tags dd p strong {
+    color: #46287a;
+    font-weight: normal;
+    margin-left: -10px;
+    background-color: #EFE5FF;
+    padding: 2px 5px;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    font-family: monospace;
+    font-size: 15px;
+    padding-right: 10px;
+    line-height: 20px;
+    padding-bottom: 3.5px;
+  }
   dl.tsd-comment-tags p {
     margin: 0;
+    margin-top: 2px;
+    line-height: 20px;
+    font-size: 15px;
   }
   
   .tsd-panel.tsd-comment .lead {
@@ -2680,3 +2706,12 @@
   img {
     max-width: 100%;
   }
+
+.diagram {
+  margin: 30px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  border: 5px solid rgba(000,000,000,0.10);
+}

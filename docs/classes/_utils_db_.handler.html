@@ -169,7 +169,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L86">utils/db.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L84">utils/db.ts:84</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -191,19 +191,15 @@
 					<div class="tsd-signature tsd-kind-icon">database<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Database</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L153">utils/db.ts:153</a></li>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L141">utils/db.ts:141</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<a href="#database" id="database" style="color: inherit; text-decoration: none;">
-								<h2><code>database</code></h2>
+							<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+								<h3>Description</h3>
 							</a>
-							<hr>
 						</div>
-						<a href="#description" id="description" style="color: inherit; text-decoration: none;">
-							<h3>Description</h3>
-						</a>
 						<p>The library used here, <code>sqlite3</code>, does all the work on a <code>Database</code> object created for the purpose of managing the queries and data.
 							We store that in a private object so it&#39;s there available to be worked on by any of the methods, and being something pertaining to the class,
 						you can have as many databases simultaneously as you want, withouth the posibility of any interference, while mantaining the simplicity of contextuality.</p>
@@ -216,19 +212,15 @@
 					<div class="tsd-signature tsd-kind-icon">filename<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;:memory:&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L138">utils/db.ts:138</a></li>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L129">utils/db.ts:129</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<a href="#filename" id="filename" style="color: inherit; text-decoration: none;">
-								<h2><code>filename</code></h2>
+							<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+								<h3>Description</h3>
 							</a>
-							<hr>
 						</div>
-						<a href="#description" id="description" style="color: inherit; text-decoration: none;">
-							<h3>Description</h3>
-						</a>
 						<p>This holds the location of the database relative to the source file, defaulting to a in-memory DB. Nothing fancy.</p>
 						<hr>
 					</div>
@@ -246,15 +238,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L615">utils/db.ts:615</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L563">utils/db.ts:563</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<a href="#closedb" id="closedb" style="color: inherit; text-decoration: none;">
-										<h2><code>closeDB()</code></h2>
+									<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+										<h3>Description</h3>
 									</a>
-									<hr>
 								</div>
 								<p>Closes the opened database to finalize the work being made. Not rocket science.</p>
 							</div>
@@ -272,15 +263,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L259">utils/db.ts:259</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L232">utils/db.ts:232</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<a href="#createtable" id="createtable" style="color: inherit; text-decoration: none;">
-										<h2><code>createTable()</code></h2>
-									</a>
-								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -295,7 +281,6 @@
 									<div class="tsd-comment tsd-typography">
 										<p>Fields to be present in the table. This is defined by a JSON object containing a <code>column</code> and <code>datatype</code> property for every
 										field to be present in the table. See {@link Types.tableField} for more info about the structure (spoiler: it has only two properties).</p>
-										<hr>
 										<a href="#description" id="description" style="color: inherit; text-decoration: none;">
 											<h3>Description</h3>
 										</a>
@@ -304,7 +289,6 @@
 										table, it is expected you&#39;re reading it from a JSON file where everything is defined, and not available for edition by anyone.</p>
 										<p>If some dynamicity is needed, then there has to be an external way of sanitizing and parsing the data before inputing in here.</p>
 										<p>For now this lacks proper error handling.</p>
-										<hr>
 										<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 											<h3>Usage</h3>
 										</a>
@@ -329,11 +313,10 @@ myDB.createTable(<span class="hljs-string">&quot;myTable, myFields&quot;</span>)
 										<p><code>CREATE TABLE IF NOT EXISTS myTable (field_1 datatype_1, field_2 datatype_2, ... field_n datatype_n) </code></p>
 										<p>In this example I read the data from a <code>.json</code> file, but it can be from anywhere, if it ends up being formatted as an object,
 										which the method consumes.</p>
-										<hr>
 										<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
 											<h3>Comment</h3>
 										</a>
-										<p>TODO Add error handling to the table creation</p>
+										<p>TODO:Patch Add error handling to the table creation</p>
 										<hr>
 									</div>
 								</li>
@@ -352,15 +335,10 @@ myDB.createTable(<span class="hljs-string">&quot;myTable, myFields&quot;</span>)
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L352">utils/db.ts:352</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L317">utils/db.ts:317</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<a href="#insertrows" id="insertrows" style="color: inherit; text-decoration: none;">
-										<h2><code>insertRows()</code></h2>
-									</a>
-								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -376,7 +354,6 @@ myDB.createTable(<span class="hljs-string">&quot;myTable, myFields&quot;</span>)
 										<p>Data, organized in an object where you have separation of concerns between the columns and the data to be input.
 											The data is related column-wise by index, but being independant it allows to have an object where you just grab and modify a tiny bit that you want
 										without meddling with anything else. See {@link Types.rowFields} fore more information about the structure of this data.</p>
-										<hr>
 										<a href="#description" id="description" style="color: inherit; text-decoration: none;">
 											<h3>Description</h3>
 										</a>
@@ -388,7 +365,6 @@ myDB.createTable(<span class="hljs-string">&quot;myTable, myFields&quot;</span>)
 											changed, it is still asumed that the available pool of column names to select from is from a trusted source, so it would be strange to need direct user input for
 										the column name.</p>
 										<p>The error handling is very basic and should include what to do when there&#39;s an error, besides logging it.</p>
-										<hr>
 										<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 											<h3>Usage</h3>
 										</a>
@@ -422,12 +398,11 @@ myDB.insertRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToIn
 											that defines <em>where</em> is to be stuff inserted is trustful. That&#39;s why instead of simply doing a nice map or bidimentional array, I opted to
 										split it in an independan property wich you can source from other place safer than the data you&#39;re handling.</p>
 										<p>Maybe in a future release it could be made so the columns are also sanitized.</p>
-										<hr>
 										<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
 											<h3>Comment</h3>
 										</a>
-										<p>TODO Sanitize column names data</p>
-										<p>TODO Better error handling than just a log.</p>
+										<p>TODO:Minor Sanitize column names data</p>
+										<p>TODO:Patch Better error handling than just a log.</p>
 										<hr>
 									</div>
 								</li>
@@ -446,22 +421,17 @@ myDB.insertRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToIn
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L190">utils/db.ts:190</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L171">utils/db.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<a href="#opendb" id="opendb" style="color: inherit; text-decoration: none;">
-										<h2><code>openDB()</code></h2>
+									<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+										<h3>Description</h3>
 									</a>
-									<hr>
 								</div>
-								<a href="#description" id="description" style="color: inherit; text-decoration: none;">
-									<h3>Description</h3>
-								</a>
 								<p>This method simply grabs the filename set when initializing everything, and creates/opens the database according if it exists or not.
 								It has a minor error handling, but it should be better and more descriptive.</p>
-								<hr>
 								<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 									<h3>Usage</h3>
 								</a>
@@ -472,12 +442,11 @@ myDB.openDB()
 </code></pre>
 								<p>The method creates the DB if it does not exist, and then opens it, or just opens it if it already exists. The DB is opened with RW permissions,
 								maybe in a future release I could include a parameter to define the permissions when opening it.</p>
-								<hr>
 								<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
 									<h3>Comment</h3>
 								</a>
-								<p>TODO Improve error handling of <code>openDB()</code> method.</p>
-								<p>TODO Add parameter to define the permissions when opening the database.</p>
+								<p>TODO:Patch Improve error handling of <code>openDB()</code> method.</p>
+								<p>TODO:Minor Add parameter to define the permissions when opening the database.</p>
 								<hr>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -494,15 +463,10 @@ myDB.openDB()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L584">utils/db.ts:584</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L533">utils/db.ts:533</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<a href="#select" id="select" style="color: inherit; text-decoration: none;">
-										<h2><code>select()</code></h2>
-									</a>
-								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -523,7 +487,6 @@ myDB.openDB()
 									<h5>callback: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Function to be executed when the data is finally read. It can be anything.</p>
-										<hr>
 										<a href="#description" id="description" style="color: inherit; text-decoration: none;">
 											<h3>Description</h3>
 										</a>
@@ -537,7 +500,6 @@ myDB.openDB()
 										of the instance of <code>Handle()</code> where you&#39;re working. See {@link <code>Handle.callbackData</code>} for a tad bit of info.</p>
 										<p>The ideal thing here would be to set the return type of the <code>select()</code> method as a <code>Promise</code> and deliver the data when it&#39;s fullfilled, so you can use standard tools like <code>await</code> or <code>.then()</code>.
 										This was not made like this because the library expects for stuff to return a <code>Database</code> object, and I wanted to avoid the complexity of doing so. For a future release.</p>
-										<hr>
 										<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 											<h3>Usage</h3>
 										</a>
@@ -576,12 +538,11 @@ myDB.select(<span class="hljs-string">&quot;myTable&quot;</span>, mySelection)
 										<p>As with everything else too, what this method does is construct a string to be used as a query for the database.</p>
 										<p>In the given example, the query would be:
 										<code>SELECT name, surname FROM myTable WHERE name = &#39;John&#39; AND surname = &#39;Smith&#39;</code>.</p>
-										<hr>
 										<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
 											<h3>Comment</h3>
 										</a>
-										<p>TODO Implement <code>Promise</code> functionality</p>
-										<p>TODO Add missing error handling</p>
+										<p>TODO:Minor Implement <code>Promise</code> functionality</p>
+										<p>TODO:Patch Add missing error handling</p>
 										<hr>
 									</div>
 									<ul class="tsd-parameters">
@@ -612,15 +573,10 @@ myDB.select(<span class="hljs-string">&quot;myTable&quot;</span>, mySelection)
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L463">utils/db.ts:463</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L420">utils/db.ts:420</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<a href="#updaterows" id="updaterows" style="color: inherit; text-decoration: none;">
-										<h2><code>updateRows()</code></h2>
-									</a>
-								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -641,7 +597,6 @@ myDB.select(<span class="hljs-string">&quot;myTable&quot;</span>, mySelection)
 											<li>The set of data to work with, namely the columns and data.</li>
 										</ul>
 										<p>See {@link Types.rowFieldUpdate} for more information about the structure of this data.</p>
-										<hr>
 										<a href="#description" id="description" style="color: inherit; text-decoration: none;">
 											<h3>Description</h3>
 										</a>
@@ -649,7 +604,6 @@ myDB.select(<span class="hljs-string">&quot;myTable&quot;</span>, mySelection)
 										<p>It currently has a very basic error handling, and it only supports equalities for selection and discrimination, so that should change
 											in a future release.
 										Also the separation of concerns betwheen the data to update (which is escaped) and the vulnerable information is not good enough.</p>
-										<hr>
 										<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 											<h3>Usage</h3>
 										</a>
@@ -674,14 +628,13 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 										the given operation. This fabricates a <code>UPDATE</code> operation.</p>
 										<p>The values present in all the <code>data</code> keys are escaped, and everything else is kept as the input.</p>
 										<p>In the example, the resulting query would be <code>UPDATE myTable SET name = &#39;New and Tasty John&#39; WHERE name = &#39;John&#39;</code></p>
-										<hr>
 										<a href="#comment" id="comment" style="color: inherit; text-decoration: none;">
 											<h3>Comment</h3>
 										</a>
-										<p>TODO Maybe the property names from the data given to the method should be renamed to something more obvious and abstracted.</p>
-										<p>TODO Better error handling than only logging.</p>
-										<p>TODO Support all the conditions and comparators of SQLite 3 rather than just equality.</p>
-										<p>TODO Improve separation of concerns for vulnerable data.</p>
+										<p>TODO:Minor Maybe the property names from the data given to the method should be renamed to something more obvious and abstracted.</p>
+										<p>TODO:Patch Better error handling than only logging.</p>
+										<p>TODO:Major Support all the conditions and comparators of SQLite 3 rather than just equality.</p>
+										<p>TODO:Minor Improve separation of concerns for vulnerable data.</p>
 										<hr>
 									</div>
 								</li>
@@ -699,19 +652,15 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 					<div class="tsd-signature tsd-kind-icon">callback<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L112">utils/db.ts:112</a></li>
+							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L106">utils/db.ts:106</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<a href="#callbackdata" id="callbackdata" style="color: inherit; text-decoration: none;">
-								<h2><code>callbackData</code></h2>
+							<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+								<h3>Description</h3>
 							</a>
 						</div>
-						<hr>
-						<a href="#description" id="description" style="color: inherit; text-decoration: none;">
-							<h3>Description</h3>
-						</a>
 						<p>This object holds the data relevant to a query, so it&#39;s readily available to be consumed by the callback function or something outside
 						the scope of the method that fills this with data.</p>
 						<p>For the structure, see {@link Types.callbackData}, where it&#39;s defined.</p>
@@ -728,7 +677,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 						<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;&quot;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L113">utils/db.ts:113</a></li>
+								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L107">utils/db.ts:107</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -738,7 +687,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 						<div class="tsd-signature tsd-kind-icon">query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L115">utils/db.ts:115</a></li>
+								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L109">utils/db.ts:109</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -748,7 +697,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 						<div class="tsd-signature tsd-kind-icon">result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>placeholder<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{ placeholder: &quot;&quot; }]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L114">utils/db.ts:114</a></li>
+								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L108">utils/db.ts:108</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -758,7 +707,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 						<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L116">utils/db.ts:116</a></li>
+								<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L110">utils/db.ts:110</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -767,7 +716,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 							<div class="tsd-signature tsd-kind-icon">columns<wbr>ToSelect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&quot;&quot;]</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L117">utils/db.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L111">utils/db.ts:111</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -777,7 +726,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 							<div class="tsd-signature tsd-kind-icon">where<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L118">utils/db.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L112">utils/db.ts:112</a></li>
 								</ul>
 							</aside>
 							<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
@@ -786,7 +735,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 								<div class="tsd-signature tsd-kind-icon">query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L119">utils/db.ts:119</a></li>
+										<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L113">utils/db.ts:113</a></li>
 									</ul>
 								</aside>
 								<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -795,7 +744,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 									<div class="tsd-signature tsd-kind-icon">column<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L120">utils/db.ts:120</a></li>
+											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L114">utils/db.ts:114</a></li>
 										</ul>
 									</aside>
 								</section>
@@ -805,7 +754,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 									<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L121">utils/db.ts:121</a></li>
+											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L115">utils/db.ts:115</a></li>
 										</ul>
 									</aside>
 								</section>
@@ -815,7 +764,7 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 									<div class="tsd-signature tsd-kind-icon">operator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"&#x3D;"</span><span class="tsd-signature-symbol"> = &quot;&#x3D;&quot;</span></div>
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/7652f5e/src/utils/db.ts#L122">utils/db.ts:122</a></li>
+											<li>Defined in <a href="https://github.com/aordano/membership-form/blob/fd09695/src/utils/db.ts#L116">utils/db.ts:116</a></li>
 										</ul>
 									</aside>
 								</section>
@@ -835,6 +784,9 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 						<a href="../modules/_app_.html">&quot;app&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/_logic_db_.html">&quot;logic/db&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/_routes_index_.html">&quot;routes/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -842,6 +794,9 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 					</li>
 					<li class="current tsd-kind-module">
 						<a href="../modules/_utils_db_.html">&quot;utils/db&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_utils_functions_.html">&quot;utils/functions&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_utils_index_.html">&quot;utils/index&quot;</a>
@@ -899,13 +854,14 @@ myDB.updateRows(<span class="hljs-string">&quot;myTable&quot;</span>, myRowsToUp
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>

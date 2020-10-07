@@ -10,10 +10,8 @@
  */
 
 /**
- * ## `tableField`
- *
- * @param column Name of the column.
- * @param datatype Datatype to be registered for the column.
+ * @property **column**: Name of the column.
+ * @property **datatype**: Datatype to be registered for the column.
  *
  * ---
  *
@@ -22,8 +20,6 @@
  * Type definition for fields of a table (Giving the name of the column and its datatype).
  *
  * The `datatype` property should be bounded by the datatypes that SQLite 3 accepts, rather than a arbitrary string.
- *
- * ---
  *
  * ### Usage
  *
@@ -35,8 +31,6 @@
  * ```
  *
  * This would be used to construct the `CREATE TABLE` query.
- *
- * ---
  *
  * ### Comment
  *
@@ -50,9 +44,6 @@ export type tableField = {
 }
 
 /**
- * ## `data`
- * ---
- *
  * ### Description
  *
  * Simple discriminator to bound the field information to accepted types.
@@ -62,16 +53,11 @@ export type tableField = {
 type data = string | number | null
 
 /**
- * ## `rowType`
- * ---
- *
  * ### Description
  *
  * Simple discriminator to bound the row information to accepted types.
  *
  * The _Type_ suffix is pointless given that this file is loaded as a namespace.
- *
- * ---
  *
  * ### Comment
  *
@@ -82,10 +68,8 @@ type data = string | number | null
 export type rowType = data[]
 
 /**
- * ## `rowFields`
- *
- * @param columns Array containing the name of the relevant columns.
- * @param rowFields Array containing the data of every row, given it complies with the restrictions imposed by `Types.rowType`.
+ * @property **columns**: Array containing the name of the relevant columns.
+ * @property **rowFields**: Array containing the data of every row, given it complies with the restrictions imposed by `Types.rowType`.
  *
  * ---
  *
@@ -94,8 +78,6 @@ export type rowType = data[]
  * It is important to note that the `rows` array and the `columns` array should be always of the same length, given the indexes have to be
  * referential to match the column to the data of the row; the _nth_ data in `rows` will be written relevant to the _nth_ string in `columns`.
  * Maybe this should be a map instead.
- *
- * ---
  *
  * ### Usage
  *
@@ -119,8 +101,6 @@ export type rowType = data[]
  * ```
  * This would end up in an `INSERT` statement, matching the indexes.
  *
- * ---
- *
  * ### Comment
  *
  * TODO:Patch Make sure both properties have always the same length.
@@ -133,18 +113,14 @@ export type rowFields = {
 }
 
 /**
- * ## `set`
- *
- * @param column Name of the relevant column.
- * @param data Data to be matched in the relevant column.
+ * @property **column**: Name of the relevant column.
+ * @property **data**: Data to be matched in the relevant column.
  *
  * ---
  *
  * ### Description
  *
  * Nothing fancy here, just a small structure to be orderly when referencing a set to discriminate against.
- *
- * ---
  *
  * ### Usage
  *
@@ -157,7 +133,6 @@ export type rowFields = {
  * Here the column `name` would be affected, given the data provided.
  *
  * ---
- *
  */
 export type set = {
     column: string
@@ -165,18 +140,14 @@ export type set = {
 }
 
 /**
- * ## `rowFieldUpdate`
- *
- * @param set Contains all the discriminators to pull data from, when doing an `UPDATE` operation.
- * @param where Discriminator to be used to select the data when performing the operation.
+ * @property **set**: Contains all the discriminators to pull data from, when doing an `UPDATE` operation.
+ * @property **where**: Discriminator to be used to select the data when performing the operation.
  *
  * ---
  *
  * ### Description
  *
  * It's a bit confusing, so maybe it should be _more_ aliased so it's more obvious and expressive what it is and what it is for.
- *
- * ---
  *
  * ### Usage
  *
@@ -196,8 +167,6 @@ export type set = {
  * ```
  * This would be read like `UPDATE <table name> SET name = 'New and Tasty John' WHERE name = "John"`
  *
- * ---
- *
  * ### Comment
  *
  * TODO:Patch Fix aliasing and make it easily understandable.
@@ -210,11 +179,9 @@ export type rowFieldUpdate = {
 }
 
 /**
- * ## `selectQuery`
- *
- * @param column Column where to operate the selection. (left side of the comparation)
- * @param data Data used to select. (right side of the comparation)
- * @param operator Operator to define the kind of comparison.
+ * @property **column**: Column where to operate the selection. (left side of the comparation)
+ * @property **data**: Data used to select. (right side of the comparation)
+ * @property **operator**: Operator to define the kind of comparison.
  *
  * ---
  *
@@ -223,8 +190,6 @@ export type rowFieldUpdate = {
  * This simply provides a bit of bounded structure to define a `WHERE` when making a `SELECT` query. It is just fancy talk, given this
  * is just a simple comparison, but having it split in this way allows to have data coming from different parts without clashing and to
  * be more careful with the sourcing of data without having pointless complexity or wasted resources processing parts that you know are safe.
- *
- * ---
  *
  * ### Usage
  *
@@ -251,10 +216,8 @@ export type selectQuery = {
 }
 
 /**
- * ## `extraSelectQuery`
- *
- * @param conditionType Type of condition relationship.
- * @param conditionQuery Comparison to be made when selecting.
+ * @property **conditionType**: Type of condition relationship.
+ * @property **conditionQuery**: Comparison to be made when selecting.
  *
  * ---
  *
@@ -262,8 +225,6 @@ export type selectQuery = {
  *
  * When you do a `SELECT` operation, the `WHERE` part may contain additional conditions to be met, so this provides structure to define and arbitrary
  * number of extra conditions as needed, without sacrificing the benefits outlined in `Types.selectQuery`
- *
- * ---
  *
  * ### Usage
  *
@@ -284,7 +245,6 @@ export type selectQuery = {
  * So this would end up in a `SELECT` statement as `... WHERE <condition given previously> AND surname = 'Smith'`
  *
  * ---
- *
  */
 export type extraSelectQuery = {
     conditionType: "ALL" | "AND" | "ANY" | "BETWEEN" | "EXISTS" | "IN" | "LIKE" | "NOT" | "OR"
@@ -292,12 +252,10 @@ export type extraSelectQuery = {
 }
 
 /**
- * ## `selectField`
- *
- * @param columnsToSelect Columns to be affected by the selection.
- * @param where Conditions to be met for selection.
- * @param where.query Main condition for the selection
- * @param where.extraConditions Optative additional conditions for selection.
+ * @property **columnsToSelect**: Columns to be affected by the selection.
+ * @property **where**: Conditions to be met for selection.
+ * @property **where.query**: Main condition for the selection
+ * @property **where.extraConditions**: Optative additional conditions for selection.
  *
  * ---
  *
@@ -305,8 +263,6 @@ export type extraSelectQuery = {
  *
  * When you do a `SELECT` operation, the `WHERE` part may contain additional conditions to be met, so this provides structure to define and arbitrary
  * number of extra conditions as needed, without sacrificing the benefits outlined in `Types.selectQuery`. The separation of concerns could be improved.
- *
- * ---
  *
  * ### Usage
  *
@@ -343,8 +299,6 @@ export type extraSelectQuery = {
  * It may seem like pointless complexity but allows a _lot_ of flexibility and separation of concerns of the data. Ordering it this way makes it easier to
  * make it work with stores, like Redux or MobX.
  *
- * ---
- *
  * ### Comment
  *
  * TODO:Minor Improve separation of concerns between data and columns/operators to be used.
@@ -360,12 +314,10 @@ export type selectField = {
 }
 
 /**
- * ## `callbackData`
- *
- * @param error Error output from the request, if any.
- * @param result Rresult of the request, if any.
- * @param query String containing the query to the database.
- * @param data Original data sent to conform the request when invoking `select()`.
+ * @property **error**: Error output from the request, if any.
+ * @property **result**: Result of the request, if any.
+ * @property **query**: String containing the query to the database.
+ * @property **data**: Original data sent to conform the request when invoking `select()`.
  *
  * ---
  *
@@ -374,8 +326,6 @@ export type selectField = {
  * When you perform a `SELECT` operation, once it's completed the method stores the relevant info in an object part of the instance you're currently
  * working on. This object contains the return information from the request (the error and result parameters), the query string and the data passed to the
  * select method.
- *
- * ---
  *
  * ### Usage
  * (more accurately, an example of how the data would be presented)
@@ -405,7 +355,7 @@ export type selectField = {
  * }
  * ```
  *
- * The `result` property is defined as an array of `Record` because alwways the kind of resulting data will be bound by the bound by the allowed
+ * The `result` property is defined as an array of `Record` because always the kind of resulting data will be bound by the allowed
  * types in SQLite, where the output is an object containing a property with the key as the name of the originating column and value as the
  * data it contains.
  *

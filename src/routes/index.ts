@@ -28,7 +28,12 @@
  * @packageDocumentation
  */
 
-// Imports
+/**
+ * * ------------------------------->>
+ * * Imports
+ * * ------------------------------->>
+ */
+
 import * as express from "express"
 import { readFileSync } from "fs"
 import { resolve } from "path"
@@ -37,9 +42,20 @@ import * as Types from "../types"
 
 // TODO Documentation!
 
+/**
+ * * ------------------------------->>
+ * * Router definition
+ * * ------------------------------->>
+ */
+
 const router = express.Router()
 
-// Fetch tables data
+/**
+ * * ----------------------------------------->>
+ * * Data parsing from table definition files
+ * * ----------------------------------------->>
+ */
+
 const leadsTable: Types.tableField[] = JSON.parse(
     readFileSync(resolve(__dirname, "../tables/leads.json")).toString()
 )
@@ -48,7 +64,11 @@ const membership_applicantsTable: Types.tableField[] = JSON.parse(
     readFileSync(resolve(__dirname, "../tables/membership_applicants.json")).toString()
 )
 
-// POST endpoint
+/**
+ * * ------------------------------->>
+ * * Main POST Route
+ * * ------------------------------->>
+ */
 
 /**
  * ## `PostRoute`
@@ -62,8 +82,6 @@ const membership_applicantsTable: Types.tableField[] = JSON.parse(
  * Simply put, someone sends a `POST` request to the endpoint, and given it has a header `query-kind` containing, well, the query kind, it
  * will process the data in the body to do databasey stuff. The request expected is `application-json`, so the body should contain a set of keys and
  * values with all the info.
- *
- * ---
  *
  * ### Usage
  *
@@ -142,7 +160,10 @@ export const PostRoute = router.post("/", (request, response) => {
                 return
             case "membership":
                 query.membershipQuery()
-            // email stuff goes here
+                // email stuff goes here
+                return
+            default:
+                return
         }
     }
 })
