@@ -1,20 +1,15 @@
-/**
- * # Utils > functions.ts
- *
- * ---
- *
- * Generic functions used in the project. May be refactored into specific files arisen the need.
- *
- * ---
- * @packageDocumentation
- */
+// TODO Format the docs of this file correctly
 
 // Imports
 import * as Types from "../types"
 
 /**
+ * ## `parseRequestData()`
+ *
  * @param request Request made to the endpoint.
  * @param table JSON object of the table to handle.
+ *
+ * ---
  *
  * ### Description
  *
@@ -24,6 +19,8 @@ import * as Types from "../types"
  * of the row to update/handle.
  *
  * It returns the row info parsed from the body, matching the field it corresponds to.
+ *
+ * ---
  *
  * ### Usage
  *
@@ -35,11 +32,6 @@ import * as Types from "../types"
  *
  *
  * ```
- *
- * ### Comments
- *
- * TODO:Patch Add typings to the request parameter
- *
  * ---
  */
 export const parseRequestData = (request, table: Types.tableField[]): Types.rowFields => {
