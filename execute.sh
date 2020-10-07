@@ -4,11 +4,13 @@ echo ''
 echo 'Microservice to handle the reception and manipulation of leads or potential members data'
 echo ''
 rm -rf ./build/*
-cp -R ./tables ./build/tables
+mkdir ./build/tables
+cp -R ./tables/* ./build/tables/
 echo 'Previous compilation cleaned.'
 tsc
 echo 'Typescript compiled. Generating docs...'
-typedoc
+typedoc 
+cp -R ./docsDependencies/* ./docs/assets/js/
 echo ''
 echo 'Server launched on port 9898.'
 echo 'Now listening.'
