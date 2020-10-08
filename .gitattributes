@@ -1,0 +1,6 @@
+docsDependencies/* linguist-vendored
+db/interesados.db -linguist-vendored
+typedocTheme/* linguist-vendored
+.vscode/* linguist-vendored
+coverage/* linguist-vendored
+docs/* linguist-documentation
