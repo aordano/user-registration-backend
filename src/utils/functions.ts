@@ -9,8 +9,19 @@
  * @packageDocumentation
  */
 
-// Imports
+/**
+ * * ------------------------------->>
+ * * Imports
+ * * ------------------------------->>
+ */
+
 import * as Types from "../types"
+
+/**
+ * * --------------------------------------------------->>
+ * * Function to parse the request into a proper object
+ * * --------------------------------------------------->>
+ */
 
 /**
  * @param request Request made to the endpoint.
@@ -50,11 +61,25 @@ export const parseRequestData = (request, table: Types.tableField[]): Types.rowF
         // Placeholder lack of data makes sure then can be a check for missing fields
         const placeholderData = undefined
 
-        if (column === "verification_token") {
-            return ""
+        if (column === "verification_token" || column === "autokey") {
+            // TODO:Patch Replace this simple harcoded check with one that reads protected column names from a file
+            return placeholderData
         }
-        return request.body[column] ?? placeholderData
+
+        if (parseSQLiteDatatype(column) === typeof request.body[column]) {
+            return request.body[column]
+        }
+
+        return placeholderData
     })
 
     return { columns, rows }
+}
+
+export const parseSQLiteDatatype = (data: string): string => {
+    if (data.indexOf("TEXT") !== -1 && data.indexOf("INTEGER") === -1) {
+        return "string"
+    } else if (data.indexOf("INTEGER") !== -1 && data.indexOf("TEXT") === -1) {
+        return "number"
+    } else return "null"
 }

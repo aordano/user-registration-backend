@@ -4,8 +4,9 @@ echo ''
 echo 'Microservice to handle the reception and manipulation of leads or potential members data'
 echo ''
 rm -rf ./build/*
-mkdir ./build/tables
-cp -R ./tables/* ./build/tables/
+mkdir ./build/db
+mkdir ./build/db/tables
+cp -R ./db/* ./build/db/
 echo 'Previous compilation cleaned.'
 tsc
 echo 'Typescript compiled. Generating docs...'

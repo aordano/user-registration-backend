@@ -50,7 +50,7 @@ export type tableField = {
  *
  * ---
  */
-type data = string | number | null
+export type data = string | number | null
 
 /**
  * ### Description

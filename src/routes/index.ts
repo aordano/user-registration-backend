@@ -57,11 +57,11 @@ const router = express.Router()
  */
 
 const leadsTable: Types.tableField[] = JSON.parse(
-    readFileSync(resolve(__dirname, "../tables/leads.json")).toString()
+    readFileSync(resolve(__dirname, "../db/tables/leads.json")).toString()
 )
 
 const membership_applicantsTable: Types.tableField[] = JSON.parse(
-    readFileSync(resolve(__dirname, "../tables/membership_applicants.json")).toString()
+    readFileSync(resolve(__dirname, "../db/tables/membership_applicants.json")).toString()
 )
 
 /**

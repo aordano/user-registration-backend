@@ -3,3 +3,4 @@ node_modules
 coverage
 db/*.db
 build/*
+.nyc_output
