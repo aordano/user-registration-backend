@@ -27,6 +27,7 @@
     "includes": [
       "./docsDependencies"
     ],
+    "readme" : "./docs.md",
     "exclude": [
       "**/*+(.spec|.e2e).ts",
       "**/*+(.spec|.e2e).tsx",
