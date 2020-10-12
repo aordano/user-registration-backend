@@ -57,6 +57,9 @@ export const parseRequestData = (request, table: Types.tableField[]): Types.rowF
     const columns = table.map((field: Types.tableField) => {
         return field.column
     })
+    const datatypes = table.map((field: Types.tableField) => {
+        return field.datatype
+    })
     const rows = columns.map((column: string, index) => {
         // Placeholder lack of data makes sure then can be a check for missing fields
         const placeholderData = undefined
@@ -66,7 +69,7 @@ export const parseRequestData = (request, table: Types.tableField[]): Types.rowF
             return placeholderData
         }
 
-        if (parseSQLiteDatatype(column) === typeof request.body[column]) {
+        if (parseSQLiteDatatype(datatypes[index]) === typeof request.body[column]) {
             return request.body[column]
         }
 
@@ -82,4 +85,9 @@ export const parseSQLiteDatatype = (data: string): string => {
     } else if (data.indexOf("INTEGER") !== -1 && data.indexOf("TEXT") === -1) {
         return "number"
     } else return "null"
+}
+
+// Taken from https://stackoverflow.com/questions/55420156/get-arrays-depth-in-javascript
+export const getArrayDepth = (selectedArray: any[]): number => {
+    return Array.isArray(selectedArray) ? 1 + Math.max(...selectedArray.map(getArrayDepth)) : 0
 }

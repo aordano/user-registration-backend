@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-const app = require('./build/app').app;
+const app = require('./build/src/app').app;
 // const debug = require('debug')('contact-form:server');
 const http = require('http');
 

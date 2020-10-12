@@ -36,10 +36,11 @@
 
 import * as express from "express"
 import { readFileSync } from "fs"
+import mjml2html from "mjml"
 import { resolve } from "path"
 import { queryHandler } from "../logic/db"
 import * as Types from "../types"
-
+import * as Utils from "../utils"
 // TODO Documentation!
 
 /**
@@ -57,12 +58,46 @@ const router = express.Router()
  */
 
 const leadsTable: Types.tableField[] = JSON.parse(
-    readFileSync(resolve(__dirname, "../db/tables/leads.json")).toString()
+    readFileSync(resolve(__dirname, "../../db/tables/leads.json")).toString()
 )
 
 const membership_applicantsTable: Types.tableField[] = JSON.parse(
-    readFileSync(resolve(__dirname, "../db/tables/membership_applicants.json")).toString()
+    readFileSync(resolve(__dirname, "../../db/tables/membership_applicants.json")).toString()
 )
+
+/**
+ * * ----------------------------------------->>
+ * * Data parsing from email definitions
+ * * ----------------------------------------->>
+ */
+
+const mailAuthConfig: Types.mailConfig = JSON.parse(
+    readFileSync(resolve(__dirname, "../../email/config/auth.jsonc")).toString()
+)
+
+/**
+ * * ----------------------------------------->>
+ * * Templates and related config parsing
+ * * ----------------------------------------->>
+ */
+
+const subjectVerify: Types.messageConfig = JSON.parse(
+    readFileSync(resolve(__dirname, "../../email/templates/verify_subject.jsonc")).toString()
+)
+
+const templateVerify: Types.MJMLParseResults = mjml2html(
+    readFileSync(resolve(__dirname, "../../email/templates/verify.mjml")).toString(),
+    {
+        minify: true,
+    }
+)
+
+const templates: Types.emailCompositor[] = [
+    {
+        queryKind: "leadgen",
+        body: templateVerify.html,
+    },
+]
 
 /**
  * * ------------------------------->>
@@ -149,19 +184,43 @@ export const PostRoute = router.post("/", (request, response) => {
             leads: leadsTable,
             membership: membership_applicantsTable,
         })
+
+        const email = new Utils.Email.Handler(mailAuthConfig, templates)
         switch (query_kind) {
-            case "leadgen":
-                query.leadgenQuery()
-                // email stuff goes here
+            case "leadgen": {
+                // debugger
+                const exitCode = query.leadgenQuery()
+                email.construct(
+                    "leadgen",
+                    {
+                        from: subjectVerify.from,
+                        to: request.body["email"],
+                        subject: subjectVerify.subject,
+                    },
+                    [
+                        {
+                            target: "nombre",
+                            content: request.body["name"],
+                        },
+                    ],
+                    exitCode
+                )
+                email.send()
                 return
-            case "verification":
-                query.verificationQuery()
-                // email stuff goes here
+            }
+
+            case "verification": {
+                const exitCode = query.verificationQuery()
+                email.construct("verification", {}, exitCode)
+                email.send()
                 return
-            case "membership":
-                query.membershipQuery()
-                // email stuff goes here
+            }
+            case "membership": {
+                const exitCode = query.membershipQuery()
+                email.construct("membership", {}, exitCode)
+                email.send()
                 return
+            }
             default:
                 return
         }

@@ -29,6 +29,7 @@
  */
 
 import { Request, Response } from "express"
+import { resolve } from "path"
 import { uid } from "rand-token"
 import * as Types from "../types"
 import * as Utils from "../utils"
@@ -220,10 +221,19 @@ export class queryHandler {
      *
      * ---
      */
-    public leadgenQuery = (): void => {
+    public leadgenQuery = (): number => {
         const leadData = Utils.Functions.parseRequestData(this.request, this.tables.leads)
 
-        if (leadData.rows.indexOf(undefined) !== -1) {
+        const rowsWithoutProtectedFields = leadData.rows.filter((row, rowIndex) => {
+            if (
+                leadData.columns[rowIndex] !== "verification_token" ||
+                leadData.columns[rowIndex] !== "autokey"
+            ) {
+                return row
+            }
+        })
+
+        if (rowsWithoutProtectedFields.indexOf(undefined) !== -1) {
             // Let's make sure we don't even try to process garbage data.
 
             // ? It is important that the form in the frontend passes the optative elements with some empty placeholder data
@@ -231,10 +241,10 @@ export class queryHandler {
 
             this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
 
-            return
+            return 1
         }
 
-        const interesadosDB = new Utils.DB.Handler("./db/interesados.db")
+        const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../db/interesados.db"))
 
         interesadosDB.openDB()
 
@@ -244,12 +254,12 @@ export class queryHandler {
 
         interesadosDB.closeDB()
 
-        this.response.redirect("https://nodoambiental.org/leadgen/verification_notice.html")
+        this.response.redirect("https://nodoambiental.org/leadgen/contact_success.html")
 
-        return
+        return 0
     }
 
-    public verificationQuery = (): void => {
+    public verificationQuery = (): number => {
         if (typeof this.request.body.autokey === "number") {
             const updateTokenData: Types.rowFieldUpdate[] = [
                 {
@@ -277,15 +287,15 @@ export class queryHandler {
 
             this.response.redirect("https://nodoambiental.org/leadgen/verification_success.html")
 
-            return
+            return 0
         }
 
         this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
 
-        return
+        return 1
     }
 
-    public membershipQuery = (): void => {
+    public membershipQuery = (): number => {
         const membershipData = Utils.Functions.parseRequestData(
             this.request,
             this.tables.membership
@@ -328,21 +338,21 @@ export class queryHandler {
                         "https://nodoambiental.org/membership/application_success.html"
                     )
 
-                    return
+                    return 0
                 }
 
                 interesadosDB.closeDB()
 
                 this.response.redirect("https://nodoambiental.org/membership/invalid_token.html")
 
-                return
+                return 1
             }
 
             interesadosDB.closeDB()
 
             this.response.redirect("https://nodoambiental.org/membership/invalid_data.html")
 
-            return
+            return 2
         }
 
         const interesadosDB = new Utils.DB.Handler("./db/interesados.db")
@@ -353,8 +363,13 @@ export class queryHandler {
         } else {
             interesadosDB.openDB()
 
-            interesadosDB.select("leads", selectionToMake, selectCallback)
-            return
+            let exitCode
+
+            interesadosDB.select("leads", selectionToMake, () => {
+                exitCode = selectCallback()
+            })
+
+            return exitCode // I think this does not work, maybe i should try to await the call
         }
     }
 }

@@ -1,0 +1,9 @@
+{
+    "host": "c1630809.ferozo.com",
+    "port": 465,
+    "secure": true,
+    "auth": {
+        "user": "robot@nodoambiental.org",
+        "pass": "SistemasComputacionales2020"
+    }
+}

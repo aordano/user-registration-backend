@@ -13,10 +13,10 @@
 
 // Imports
 import * as bodyParser from "body-parser"
-import * as cookieParser from "cookie-parser"
-import * as express from "express"
+import cookieParser from "cookie-parser"
+import express from "express"
 import { createerror } from "http-errors"
-import * as logger from "morgan"
+import logger from "morgan"
 import * as path from "path"
 import { PostRoute } from "./routes/index"
 

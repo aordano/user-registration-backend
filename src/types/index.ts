@@ -367,3 +367,48 @@ export type callbackData = {
     query: string
     data: selectField
 }
+
+export type mailConfig = {
+    host: string
+    port: number
+    secure: boolean
+    auth: {
+        user: string
+        pass: string
+    }
+}
+
+export type messageConfig = {
+    from: string
+    to: string
+    subject: string
+}
+
+export type messageHTML = string
+
+export type emailCompositor = {
+    queryKind: string
+    body: messageHTML
+}
+
+export type composedEmail = {
+    messageConfig: messageConfig
+    body: string
+}
+
+interface MJMLParseError {
+    line: number
+    message: string
+    tagName: string
+    formattedMessage: string
+}
+
+export interface MJMLParseResults {
+    html: string
+    errors: MJMLParseError[]
+}
+
+export type templateReplaces = {
+    target: string
+    content: string
+}

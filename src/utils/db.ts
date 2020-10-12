@@ -23,6 +23,7 @@
 import { Database } from "sqlite3"
 import { escape } from "sqlstring"
 import * as Types from "../types"
+import { getArrayDepth } from "./functions"
 
 /**
  * * ------------------------------->>
@@ -320,40 +321,56 @@ export class Handler {
         const columns = Object.entries(data)[0][1] // Retrieve columns array
         const allRows = Object.entries(data)[1][1] // Retrieve rows array
 
+        const doQuery = (escapedValues: Types.data[]) => {
+            const placeholders = escapedValues.map(() => {
+                return `?`
+            })
+
+            const query = `INSERT INTO ${table}(${columns.join(",")}) VALUES (${placeholders.join(
+                ","
+            )})`
+
+            this.database.run(query, escapedValues, (error) => {
+                if (error) {
+                    const errorMessage = `Error in data inserting, query failed: \n 
+                            INSERT INTO ${table}(${columns}) VALUES \n 
+                            ${escapedValues} \n
+                            `
+
+                    console.log(errorMessage)
+                    return console.error(error.message)
+                }
+            })
+
+            console.log(
+                `Queried an INSERT in table ${table}, columns ${columns} adding ${allRows.length} rows.`
+            )
+        }
+
         this.database.serialize(() => {
-            allRows.forEach((row) => {
-                if (row.length > 1) {
+            if (getArrayDepth(allRows) > 1) {
+                allRows.forEach((row) => {
                     const escapedValues = row.map((value) => {
                         if (typeof value === "string") {
                             return escape(value)
                         }
                         return value
                     })
-                    const placeholders = row.map(() => {
-                        return `?`
-                    })
+                    doQuery(escapedValues)
+                })
+            } else {
+                const escapedValues: Types.data[] = []
 
-                    const query = `INSERT INTO ${table}(${columns.join(
-                        ","
-                    )}) VALUES (${placeholders.join(",")})`
-
-                    this.database.run(query, escapedValues, (error) => {
-                        if (error) {
-                            const errorMessage = `Error in data inserting, query failed: \n 
-                                    INSERT INTO ${table}(${columns}) VALUES \n 
-                                    ${escapedValues} \n
-                                    `
-
-                            console.log(errorMessage)
-                            return console.error(error.message)
-                        }
-                    })
-
-                    console.log(
-                        `Queried an INSERT in table ${table}, columns ${columns} adding ${allRows.length} rows.`
-                    )
+                for (let index = 0; index < allRows.length; index += 1) {
+                    if (typeof allRows[index] === "string") {
+                        escapedValues.push(escape(allRows[index]))
+                        continue
+                    }
+                    escapedValues.push(allRows[index] as Types.data) // HACK Dunno how to fix this otherwise
                 }
-            })
+
+                doQuery(escapedValues)
+            }
         })
     }
 

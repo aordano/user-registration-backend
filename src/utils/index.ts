@@ -29,4 +29,5 @@
  */
 
 export * as DB from "./db"
+export * as Email from "./email"
 export * as Functions from "./functions"

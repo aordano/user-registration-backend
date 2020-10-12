@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "npm run develop",
+            "command": "npm run execute",
             "name": "Run program",
             "request": "launch",
             "type": "node-terminal"

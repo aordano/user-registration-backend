@@ -8,4 +8,8 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
+    "todo-tree.filtering.excludeGlobs": [
+        "docsDependencies",
+        "__test__"
+    ]
 }
