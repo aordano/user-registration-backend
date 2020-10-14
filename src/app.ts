@@ -18,7 +18,7 @@ import express from "express"
 import { createerror } from "http-errors"
 import logger from "morgan"
 import * as path from "path"
-import { PostRoute } from "./routes/index"
+import { GetRoute, PostRoute } from "./routes/index"
 
 // Set-up Express
 export const app = express()
@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, "public")))
 
 // Route selection
 app.use("/", PostRoute)
+app.use("/verification", GetRoute)
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

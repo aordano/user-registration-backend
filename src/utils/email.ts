@@ -15,38 +15,32 @@ export class Handler {
     public construct = (
         queryKind: string,
         messageConfig: Types.messageConfig,
-        replacements: Types.templateReplaces[],
-        DBExitCode: number
+        replacements: Types.templateReplaces[]
     ): number => {
         // debugger
-        if (DBExitCode === 0) {
-            const availableQueries = this.mailTemplates.map((composition) => {
-                return composition.queryKind
-            })
+        const availableQueries = this.mailTemplates.map((composition) => {
+            return composition.queryKind
+        })
 
-            const compositionIndex = availableQueries.indexOf(queryKind)
+        const compositionIndex = availableQueries.indexOf(queryKind)
 
-            let htmlBody = this.mailTemplates[compositionIndex].body
+        let htmlBody = this.mailTemplates[compositionIndex].body
 
-            debugger
+        replacements.forEach((replacement, index) => {
+            const target = new RegExp(
+                // eslint-disable-next-line no-useless-escape
+                `\{\{${index + 1}\/\/(${replacement.target})+\/\/\}\}`,
+                "gm"
+            )
+            htmlBody = htmlBody.replace(target, replacement.content)
+        })
 
-            replacements.forEach((replacement, index) => {
-                const target = new RegExp(
-                    `\{\{${index + 1}\/\/(${replacement.target})+\/\/\}\}`,
-                    "gm"
-                )
-                htmlBody = htmlBody.replace(target, replacement.content)
-            })
-
-            this.currentComposition = {
-                messageConfig: messageConfig,
-                body: htmlBody,
-            }
-
-            return 0
+        this.currentComposition = {
+            messageConfig: messageConfig,
+            body: htmlBody,
         }
 
-        return 1
+        return 0
     }
 
     public send = async (): Promise<number> => {

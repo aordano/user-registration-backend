@@ -38,7 +38,7 @@ import * as express from "express"
 import { readFileSync } from "fs"
 import mjml2html from "mjml"
 import { resolve } from "path"
-import { queryHandler } from "../logic/db"
+import * as Logic from "../logic"
 import * as Types from "../types"
 import * as Utils from "../utils"
 // TODO Documentation!
@@ -180,7 +180,7 @@ export const PostRoute = router.post("/", (request, response) => {
     const query_kind = request.headers["query-kind"] // Header required to know that it's a valid request and not random stuff
 
     if (query_kind !== undefined || query_kind !== null) {
-        const query = new queryHandler(request, response, {
+        const query = new Logic.DB.Handler(request, response, {
             leads: leadsTable,
             membership: membership_applicantsTable,
         })
@@ -190,33 +190,31 @@ export const PostRoute = router.post("/", (request, response) => {
             case "leadgen": {
                 // debugger
                 const exitCode = query.leadgenQuery()
-                email.construct(
-                    "leadgen",
-                    {
-                        from: subjectVerify.from,
-                        to: request.body["email"],
-                        subject: subjectVerify.subject,
-                    },
-                    [
+
+                if (exitCode === 0) {
+                    email.construct(
+                        "leadgen",
                         {
-                            target: "nombre",
-                            content: request.body["name"],
+                            from: subjectVerify.from,
+                            to: request.body["email"],
+                            subject: subjectVerify.subject,
                         },
-                    ],
-                    exitCode
-                )
+                        [
+                            {
+                                target: "nombre",
+                                content: request.body["name"],
+                            },
+                        ]
+                    )
+                }
+
                 email.send()
                 return
             }
 
-            case "verification": {
-                const exitCode = query.verificationQuery()
-                email.construct("verification", {}, exitCode)
-                email.send()
-                return
-            }
             case "membership": {
                 const exitCode = query.membershipQuery()
+                // Then grab the data from the request/DB to construct the email
                 email.construct("membership", {}, exitCode)
                 email.send()
                 return
@@ -224,5 +222,25 @@ export const PostRoute = router.post("/", (request, response) => {
             default:
                 return
         }
+    }
+})
+
+export const GetRoute = router.get("/verification", (request, response) => {
+    const query = new Logic.DB.Handler(request, response, {
+        leads: leadsTable,
+        membership: membership_applicantsTable,
+    })
+
+    const email = new Utils.Email.Handler(mailAuthConfig, templates)
+
+    debugger
+
+    const exitCode = query.verificationQuery()
+
+    if (exitCode === 0) {
+        // Then read the user data from the DB and construct the email
+        email.construct("verification", {}, exitCode)
+        email.send()
+        return
     }
 })

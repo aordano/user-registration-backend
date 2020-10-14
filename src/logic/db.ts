@@ -103,7 +103,7 @@ import * as Utils from "../utils"
  *
  * ---
  */
-export class queryHandler {
+export class Handler {
     constructor(
         request: Request,
         response: Response<any>,
@@ -260,22 +260,24 @@ export class queryHandler {
     }
 
     public verificationQuery = (): number => {
-        if (typeof this.request.body.autokey === "number") {
+        if (typeof parseInt(this.request.query.autokey) === "number") {
             const updateTokenData: Types.rowFieldUpdate[] = [
                 {
                     set: [
                         {
                             column: "verification_token",
-                            data: uid(16),
+                            data: uid(32),
                         },
                     ],
                     where: {
                         column: "autokey",
-                        data: this.request.body.autokey,
+                        data: parseInt(this.request.query.autokey),
                     },
                 },
             ]
-            const interesadosDB = new Utils.DB.Handler("./db/interesados.db")
+            const interesadosDB = new Utils.DB.Handler(
+                resolve(__dirname, "../../db/interesados.db")
+            )
 
             interesadosDB.openDB()
 
@@ -355,7 +357,7 @@ export class queryHandler {
             return 2
         }
 
-        const interesadosDB = new Utils.DB.Handler("./db/interesados.db")
+        const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../db/interesados.db"))
 
         if (membershipData.rows.indexOf(undefined) !== -1) {
             this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")

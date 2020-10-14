@@ -439,6 +439,7 @@ export class Handler {
     public updateRows(table: string, data: Types.rowFieldUpdate[]): void {
         this.database.serialize(() => {
             data.forEach((queryToExecute, index) => {
+                debugger
                 const sets = Object.entries(queryToExecute)[0][1] as Types.set[] // Retrieve sets array
                 const where = Object.entries(queryToExecute)[1][1] as Types.set //  Retrieve where object
 
