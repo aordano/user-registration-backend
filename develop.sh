@@ -1,4 +1,6 @@
 #!/bin/bash
+# Load all the cleaning and building process
+bash ./build.sh
 echo 'Server launching on port 9898.'
 echo 'Now listening.'
 echo ''

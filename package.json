@@ -5,7 +5,7 @@
   "scripts": {
     "build": "bash ./build.sh",
     "start": "node ./start.js",
-    "execute": "bash ./execute.sh",
+    "develop": "bash ./develop.sh",
     "test:unit": "mocha -r ts-node/register '__test__/unit/**/*.ts'",
     "test:e2e": "mocha -r ts-node/register '__test__/e2e/**/*.ts'"
   },
