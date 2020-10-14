@@ -1,12 +1,13 @@
 <mjml>
   <mj-head>
-    <mj-title>Verifica tu correo electrónico</mj-title>
+    <mj-title>Verifica tu correo electrónico en Nodo Ambiental</mj-title>
+    <mj-preview>Verificación de correo</mj-preview>
     <mj-attributes>
       <mj-all font-family="Arial, sans-serif"></mj-all>
       <mj-text font-weight="400" font-size="16px" color="#000000" line-height="24px"></mj-text>
       <mj-section padding="0px"></mj-section>
     </mj-attributes>
-    <mj-style>
+    <mj-style inline="inline">
       .cta-button:hover { transform: scale(1.05);  
           filter: brightness(120%) drop-shadow(0px 0px 4px black) hue-rotate(20deg);} 
       .cta-button { transition-duration: 400ms; } 

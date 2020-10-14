@@ -1,12 +1,13 @@
 <mjml>
   <mj-head>
     <mj-title>Gracias por adherirte como miembro a Nodo Ambiental</mj-title>
+    <mj-preview>Adhesión a Nodo Ambiental</mj-preview>
     <mj-attributes>
       <mj-all font-family="Arial, sans-serif"></mj-all>
       <mj-text font-weight="400" font-size="16px" color="#000000" line-height="24px"></mj-text>
       <mj-section padding="0px"></mj-section>
     </mj-attributes>
-    <mj-style>
+    <mj-style inline="inline">
       .cta-button:hover { 
           transform: scale(1.05); 
           filter: brightness(120%) drop-shadow(0px 0px 4px black) hue-rotate(20deg);
@@ -14,7 +15,7 @@
       .cta-button { 
           transition-duration: 400ms; 
           border: 5px solid rgba(255,255,255,0);
-        } 
+        }
       .background { background: repeating-linear-gradient( -45deg, #eee, #eee 2px,
       #fff 2px, #fff 10px ); } 
       .head { background: repeating-linear-gradient(90deg, rgb(134, 209, 176), rgb(161, 196, 235) ); } 
@@ -91,8 +92,8 @@
     </mj-section>
     <mj-section css-class="block cta" border-radius="20px" background-color="#00000015">
       <mj-column width="50%" border-radius="20px" width="100%">     
-        <mj-button css-class="cta-button" align="center" background-color="#70264c" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero ver la Wiki</mj-button>         
-        <mj-button css-class="cta-button" align="center" background-color="#382057" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero preguntar algo</mj-button>   
+        <mj-button css-class="cta-button" align="center" background-color="#70264c" color="#FFFFFF" border-radius="10px" href="https://wiki.nodoambiental.org" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero ver la Wiki</mj-button>         
+        <mj-button css-class="cta-button" align="center" background-color="#382057" color="#FFFFFF" border-radius="10px" href="mailto:contacto@nodoambiental.org" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero preguntar algo</mj-button>   
       </mj-column>
       <mj-column width="50%" border-radius="20px" width="100%">
         <mj-button css-class="cta-button" align="center" background-color="#204a57" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero ver los proyectos</mj-button>
