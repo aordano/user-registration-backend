@@ -32,7 +32,7 @@
     "@types/express": "^4.17.8",
     "@types/mocha": "^8.0.3",
     "@types/mock-express-request": "^0.2.0",
-    "@types/node": "^14.11.7",
+    "@types/node": "^14.11.8",
     "@types/sqlite3": "^3.1.6",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
