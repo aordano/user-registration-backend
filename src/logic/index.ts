@@ -1,1 +1,1 @@
-export * as DB from "./db"
+export * as Registrar from "./registration"

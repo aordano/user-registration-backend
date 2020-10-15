@@ -180,7 +180,7 @@ export const PostRoute = router.post("/", (request, response) => {
     const query_kind = request.headers["query-kind"] // Header required to know that it's a valid request and not random stuff
 
     if (query_kind !== undefined || query_kind !== null) {
-        const query = new Logic.DB.Handler(request, response, {
+        const query = new Logic.Registrar.Handler(request, response, {
             leads: leadsTable,
             membership: membership_applicantsTable,
         })
@@ -188,12 +188,12 @@ export const PostRoute = router.post("/", (request, response) => {
         const email = new Utils.Email.Handler(mailAuthConfig, templates)
         switch (query_kind) {
             case "leadgen": {
-                query.leadgenQuery()
+                query.leadgen()
                 return
             }
 
             case "membership": {
-                const exitCode = query.membershipQuery()
+                const exitCode = query.membership()
                 // Then grab the data from the request/DB to construct the email
                 email.construct("membership", {}, exitCode)
                 email.send()
@@ -206,10 +206,10 @@ export const PostRoute = router.post("/", (request, response) => {
 })
 
 export const GetRoute = router.get("/verification", (request, response) => {
-    const query = new Logic.DB.Handler(request, response, {
+    const query = new Logic.Registrar.Handler(request, response, {
         leads: leadsTable,
         membership: membership_applicantsTable,
     })
 
-    query.verificationQuery()
+    query.verification()
 })

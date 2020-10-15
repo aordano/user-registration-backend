@@ -10,6 +10,11 @@
     },
     "todo-tree.filtering.excludeGlobs": [
         "docsDependencies",
-        "__test__"
+        "node_modules",
+        "build",
+        "__test__",
+        ".git",
+        "docs",
+        "start.js"
     ]
 }

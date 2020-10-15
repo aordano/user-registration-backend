@@ -64,7 +64,7 @@ export const parseRequestData = (request, table: Types.tableField[]): Types.rowF
         // Placeholder lack of data makes sure then can be a check for missing fields
         const placeholderData = undefined
 
-        if (column === "verification_token" || column === "autokey") {
+        if (column === "verification_token" || column === "autokey" || column === "user_token") {
             // TODO:Patch Replace this simple harcoded check with one that reads protected column names from a file
             return placeholderData
         }

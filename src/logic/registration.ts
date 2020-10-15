@@ -56,10 +56,29 @@ const templateVerify: Types.MJMLParseResults = mjml2html(
     }
 )
 
+const subjectVerificationSuccesful: Types.messageConfig = JSON.parse(
+    readFileSync(
+        resolve(__dirname, "../../email/templates/verification_succesful_subject.jsonc")
+    ).toString()
+)
+
+const templateVerificationSuccesful: Types.MJMLParseResults = mjml2html(
+    readFileSync(
+        resolve(__dirname, "../../email/templates/verification_succesful.mjml")
+    ).toString(),
+    {
+        minify: true,
+    }
+)
+
 const templates: Types.emailCompositor[] = [
     {
         queryKind: "leadgen",
         body: templateVerify.html,
+    },
+    {
+        queryKind: "verification",
+        body: templateVerificationSuccesful,
     },
 ]
 
@@ -156,7 +175,7 @@ export class Handler {
      *
      * ---
      */
-    private tables
+    private tables: { leads: Types.tableField[]; membership: Types.tableField[] }
 
     /**
      * ### Description
@@ -165,7 +184,7 @@ export class Handler {
      *
      * ---
      */
-    private request
+    private request: Request
 
     /**
      * ### Description
@@ -174,7 +193,7 @@ export class Handler {
      *
      * ---
      */
-    private response
+    private response: Response<any>
 
     /**
      * <script src="../assets/js/dagre.js"></script>
@@ -250,9 +269,7 @@ export class Handler {
      *
      * ---
      */
-    public leadgenQuery = (): void => {
-        debugger
-
+    public leadgen = (): void | Error => {
         const leadData = Utils.Functions.parseRequestData(this.request, this.tables.leads)
 
         leadData.rows[leadData.columns.indexOf("verification_token")] = (uid(
@@ -276,7 +293,9 @@ export class Handler {
 
             this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
 
-            return
+            return new Error(
+                `Invalid data: missing or invalid fields. \n Request body: ${this.request.body}`
+            )
         }
 
         const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../db/interesados.db"))
@@ -292,8 +311,6 @@ export class Handler {
         this.response.redirect("https://nodoambiental.org/leadgen/contact_success.html")
 
         const email = new Utils.Email.Handler(mailAuthConfig, templates)
-
-        debugger
 
         email.construct(
             "leadgen",
@@ -319,8 +336,7 @@ export class Handler {
         return
     }
 
-    public verificationQuery = (): number => {
-        // ! Email stuff missing yet
+    public verification = (): void | Error => {
         if (this.request.query.token) {
             const interesadosDB = new Utils.DB.Handler(
                 resolve(__dirname, "../../db/interesados.db")
@@ -338,11 +354,11 @@ export class Handler {
 
                 if (verification) {
                     const selectCallback = () => {
-                        debugger
-                        // FIXME Select query is failing even with right data
                         const verificationToken = (Object.entries(
                             interesadosDB.callbackData.result
                         )[0][1] as unknown) as string
+
+                        const userToken = uid(32)
 
                         if (verificationToken !== "ALREADY_VERIFIED") {
                             if (verificationToken === queriedToken) {
@@ -351,7 +367,7 @@ export class Handler {
                                         set: [
                                             {
                                                 column: "user_token",
-                                                data: uid(32),
+                                                data: userToken,
                                             },
                                             {
                                                 column: "verification_token",
@@ -377,21 +393,48 @@ export class Handler {
                                     "https://nodoambiental.org/leadgen/verification_success.html"
                                 )
 
-                                return 0
+                                const email = new Utils.Email.Handler(mailAuthConfig, templates)
+
+                                email.construct(
+                                    "verification",
+                                    {
+                                        from: subjectVerificationSuccesful.from,
+                                        to: this.request.body["email"],
+                                        subject: subjectVerificationSuccesful.subject,
+                                    },
+                                    [
+                                        {
+                                            target: "nombre-value",
+                                            content: this.request.body["name"],
+                                        },
+                                        {
+                                            target: "user-token-value",
+                                            content: userToken,
+                                        },
+                                    ]
+                                )
+
+                                email.send()
+
+                                return
                             }
 
                             this.response.redirect(
                                 "https://nodoambiental.org/leadgen/invalid_data.html"
                             )
 
-                            return 1
+                            return new Error(
+                                `Invalid data: token not present in DB. \n Token provided: ${queriedToken}`
+                            )
                         }
 
                         this.response.redirect(
                             "https://nodoambiental.org/leadgen/already_verified.html"
                         )
 
-                        return 1
+                        return new Error(
+                            `Already verified: user already verified. \n Token provided: ${queriedToken}`
+                        )
                     }
 
                     const selectionToMake: Types.selectField[] = [
@@ -400,7 +443,7 @@ export class Handler {
                             where: {
                                 query: {
                                     column: "verification_token",
-                                    data: this.request.query.token,
+                                    data: `'${this.request.query.token}'`,
                                     operator: "=",
                                 },
                             },
@@ -419,15 +462,19 @@ export class Handler {
 
             this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
 
-            return 1
+            return new Error(
+                `Invalid data: garbage token. \n Token provided: ${this.request.query.token}`
+            )
         }
 
         this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
 
-        return 1
+        return new Error(
+            `Invalid data: no token provided or malformed query. \n Query made: ${this.request.query}`
+        )
     }
 
-    public membershipQuery = (): number => {
+    public membership = (): number => {
         const membershipData = Utils.Functions.parseRequestData(
             this.request,
             this.tables.membership

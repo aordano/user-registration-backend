@@ -21,6 +21,26 @@
       .head { background: repeating-linear-gradient(90deg, rgb(134, 209, 176), rgb(161, 196, 235) ); } 
       .head svg { transform: scale(1.1); }
       .body { background: linear-gradient(45deg, rgb(101, 51, 185), rgb(072, 034, 119)); }
+      .info-text {
+          margin-top: 30px;
+          color: rgba(255,255,255,0.75);
+          font-size: 0.8em;
+          line-height: 1.2em;
+          margin-bottom: -10px;
+      }
+      .id-text {
+          margin-top: 20px;
+          color: rgba(255,255,255,0.8);
+          font-size: 1em;
+          line-height: 2.2em;
+          margin-left: -70px;
+          margin-right: -70px;
+          padding-left: 20px;
+          padding-right: 20px;
+          font-weight: 600;
+          background-color: rgba(0,0,0,0.5);
+          border-radius: 10px;
+      }
     </mj-style>
   </mj-head>
   <mj-body css-class="background" background-color="#F2F2F2">
@@ -83,7 +103,7 @@
     </mj-section>
     <mj-section css-class="block body" padding-bottom="60px" padding-top="60px" border-radius="20px" padding="20px 20px 0 20px" background-size="cover">
       <mj-column width="80%">
-        <mj-text css-class="main-text" align="center" font-weight="500" padding="30px 10px 10px 10px" font-size="22px" line-height="40px" color="#FFFFFF">¡Hola de nuevo, {{1//nombre//}}! <br></br>Tu correo electrónico fue verificado con éxito.<br></br>Te invito a recorrer nuestros proyectos, a contactarnos por cualquier duda que tengas y a que si quieres participar te unas como miembro adherente.</mj-text>
+        <mj-text css-class="main-text" align="center" font-weight="500" padding="30px 10px 10px 10px" font-size="22px" line-height="40px" color="#FFFFFF">¡Hola de nuevo, {{1//nombre//}}! <br></br><p style="font-size: 0.9em; margin-bottom:30px; color:rgba(255,210,0,0.75)">Tu correo electrónico fue verificado con éxito.</p>Tu ID de usuario es <p class="id-text">{{2//user-token-value//}}</p> <p class="info-text">Con este código podrás aplicar a una membresía completa, solicitar asistencia si tienes un problema con nuestra web, y realizar otras operaciones.<br></br>Esto es al mismo tiempo tu identificador de usuario y tu contraseña, asi que ¡no lo pierdas!. <br></br>Los botones de la parte inferior del correo ya contienen este código, por lo que si quieres usarlos no hace falta que lo copies.<br></br>Te invito a recorrer nuestros proyectos, a contactarnos por cualquier duda que tengas y a que si quieres participar te unas como miembro adherente.</p></mj-text>
       </mj-column>
     </mj-section>
     <mj-section padding="0 20px 30px 20px" background-color="#F2F2F200">
@@ -92,12 +112,12 @@
     </mj-section>
     <mj-section css-class="block cta" border-radius="20px" background-color="#00000015">
       <mj-column width="50%" border-radius="20px" width="100%">     
-        <mj-button css-class="cta-button" align="center" background-color="#70264c" color="#FFFFFF" border-radius="10px" href="mailto:contacto@nodoambiental.org" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero contactarlos</mj-button>         
-        <mj-button css-class="cta-button" align="center" background-color="#382057" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero saber más</mj-button>   
+        <mj-button css-class="cta-button" align="center" background-color="#70264c" color="#FFFFFF" border-radius="10px" href="https://nodoambiental.org/contact?token={{2//user-token-value//}}&origin=verification-email" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero contactarlos</mj-button>         
+        <mj-button css-class="cta-button" align="center" background-color="#382057" color="#FFFFFF" border-radius="10px" href="https://nodoambiental.org/leadgen/more-info?token={{2//user-token-value//}}&origin=verification-email" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero saber más</mj-button>   
       </mj-column>
       <mj-column width="50%" border-radius="20px" width="100%">
-        <mj-button css-class="cta-button" align="center" background-color="#204a57" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero colaborar</mj-button>
-        <mj-button css-class="cta-button" align="center" background-color="#20572f" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero una membresía</mj-button>
+        <mj-button css-class="cta-button" align="center" background-color="#204a57" color="#FFFFFF" border-radius="10px" href="https://nodoambiental.org/leadgen/working-with-us?token={{2//user-token-value//}}&origin=verification-email" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero colaborar</mj-button>
+        <mj-button css-class="cta-button" align="center" background-color="#20572f" color="#FFFFFF" border-radius="10px" href="https://nodoambiental.org/membership/form?token={{2//user-token-value//}}&origin=verification-email" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero una membresía</mj-button>
       </mj-column>
     </mj-section>
     <mj-section padding="10px 0 20px 0">
