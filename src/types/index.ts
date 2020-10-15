@@ -247,7 +247,7 @@ export type selectQuery = {
  * ---
  */
 export type extraSelectQuery = {
-    conditionType: "ALL" | "AND" | "ANY" | "BETWEEN" | "EXISTS" | "IN" | "LIKE" | "NOT" | "OR"
+    conditionType: "ALL" | "AND" | "ANY" | "BETWEEN" | "EXISTS" | "IN" | "LIKE" | "NOT" | "OR" | ""
     conditionQuery: selectQuery
 }
 

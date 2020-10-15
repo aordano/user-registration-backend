@@ -13,6 +13,7 @@
     "@types/mjml": "^4.0.4",
     "@types/nodemailer": "^6.4.0",
     "@types/sqlstring": "^2.2.1",
+    "base64-xor": "^0.10.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "debug": "~4.2.0",

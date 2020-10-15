@@ -27,12 +27,41 @@
  * * Imports
  * * ------------------------------->>
  */
-
 import { Request, Response } from "express"
+import { readFileSync } from "fs"
+import mjml2html from "mjml"
 import { resolve } from "path"
 import { uid } from "rand-token"
 import * as Types from "../types"
 import * as Utils from "../utils"
+
+const mailAuthConfig: Types.mailConfig = JSON.parse(
+    readFileSync(resolve(__dirname, "../../email/config/auth.jsonc")).toString()
+)
+
+/**
+ * * ----------------------------------------->>
+ * * Templates and related config parsing
+ * * ----------------------------------------->>
+ */
+
+const subjectVerify: Types.messageConfig = JSON.parse(
+    readFileSync(resolve(__dirname, "../../email/templates/verify_subject.jsonc")).toString()
+)
+
+const templateVerify: Types.MJMLParseResults = mjml2html(
+    readFileSync(resolve(__dirname, "../../email/templates/verify.mjml")).toString(),
+    {
+        minify: true,
+    }
+)
+
+const templates: Types.emailCompositor[] = [
+    {
+        queryKind: "leadgen",
+        body: templateVerify.html,
+    },
+]
 
 /**
  * * ---------------------------------------------------------->>
@@ -221,12 +250,18 @@ export class Handler {
      *
      * ---
      */
-    public leadgenQuery = (): number => {
+    public leadgenQuery = (): void => {
+        debugger
+
         const leadData = Utils.Functions.parseRequestData(this.request, this.tables.leads)
+
+        leadData.rows[leadData.columns.indexOf("verification_token")] = (uid(
+            32
+        ) as unknown) as Types.rowType // HACK Dunno how the heck make it understand that a string is valid stuff
 
         const rowsWithoutProtectedFields = leadData.rows.filter((row, rowIndex) => {
             if (
-                leadData.columns[rowIndex] !== "verification_token" ||
+                leadData.columns[rowIndex] !== "user_token" ||
                 leadData.columns[rowIndex] !== "autokey"
             ) {
                 return row
@@ -241,7 +276,7 @@ export class Handler {
 
             this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
 
-            return 1
+            return
         }
 
         const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../db/interesados.db"))
@@ -256,40 +291,135 @@ export class Handler {
 
         this.response.redirect("https://nodoambiental.org/leadgen/contact_success.html")
 
-        return 0
+        const email = new Utils.Email.Handler(mailAuthConfig, templates)
+
+        debugger
+
+        email.construct(
+            "leadgen",
+            {
+                from: subjectVerify.from,
+                to: this.request.body["email"],
+                subject: subjectVerify.subject,
+            },
+            [
+                {
+                    target: "nombre-value",
+                    content: this.request.body["name"],
+                },
+                {
+                    target: "verification-token-value",
+                    content: leadData.rows[leadData.columns.indexOf("verification_token")],
+                },
+            ]
+        )
+
+        email.send()
+
+        return
     }
 
     public verificationQuery = (): number => {
-        if (typeof parseInt(this.request.query.autokey) === "number") {
-            const updateTokenData: Types.rowFieldUpdate[] = [
-                {
-                    set: [
-                        {
-                            column: "verification_token",
-                            data: uid(32),
-                        },
-                    ],
-                    where: {
-                        column: "autokey",
-                        data: parseInt(this.request.query.autokey),
-                    },
-                },
-            ]
+        // ! Email stuff missing yet
+        if (this.request.query.token) {
             const interesadosDB = new Utils.DB.Handler(
                 resolve(__dirname, "../../db/interesados.db")
             )
 
-            interesadosDB.openDB()
+            if (
+                this.request.query.token !== undefined &&
+                this.request.query.token !== null &&
+                typeof this.request.query.token === "string" &&
+                this.request.query.token.length === 32
+            ) {
+                const queriedToken = this.request.query.token
 
-            interesadosDB.createTable("leads", this.tables.leads)
+                const verification = typeof queriedToken === "string" ? true : false
 
-            interesadosDB.updateRows("leads", updateTokenData)
+                if (verification) {
+                    const selectCallback = () => {
+                        debugger
+                        // FIXME Select query is failing even with right data
+                        const verificationToken = (Object.entries(
+                            interesadosDB.callbackData.result
+                        )[0][1] as unknown) as string
 
-            interesadosDB.closeDB()
+                        if (verificationToken !== "ALREADY_VERIFIED") {
+                            if (verificationToken === queriedToken) {
+                                const updateTokenData: Types.rowFieldUpdate[] = [
+                                    {
+                                        set: [
+                                            {
+                                                column: "user_token",
+                                                data: uid(32),
+                                            },
+                                            {
+                                                column: "verification_token",
+                                                data: "ALREADY_VERIFIED",
+                                            },
+                                        ],
+                                        where: {
+                                            column: "verification_token",
+                                            data: queriedToken,
+                                        },
+                                    },
+                                ]
 
-            this.response.redirect("https://nodoambiental.org/leadgen/verification_success.html")
+                                interesadosDB.openDB()
 
-            return 0
+                                interesadosDB.createTable("leads", this.tables.leads)
+
+                                interesadosDB.updateRows("leads", updateTokenData)
+
+                                interesadosDB.closeDB()
+
+                                this.response.redirect(
+                                    "https://nodoambiental.org/leadgen/verification_success.html"
+                                )
+
+                                return 0
+                            }
+
+                            this.response.redirect(
+                                "https://nodoambiental.org/leadgen/invalid_data.html"
+                            )
+
+                            return 1
+                        }
+
+                        this.response.redirect(
+                            "https://nodoambiental.org/leadgen/already_verified.html"
+                        )
+
+                        return 1
+                    }
+
+                    const selectionToMake: Types.selectField[] = [
+                        {
+                            columnsToSelect: ["verification_token"],
+                            where: {
+                                query: {
+                                    column: "verification_token",
+                                    data: this.request.query.token,
+                                    operator: "=",
+                                },
+                            },
+                        },
+                    ]
+
+                    interesadosDB.openDB()
+
+                    interesadosDB.select("leads", selectionToMake, function () {
+                        selectCallback()
+                    })
+
+                    return 3
+                }
+            }
+
+            this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
+
+            return 1
         }
 
         this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")

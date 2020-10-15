@@ -78,7 +78,7 @@
     </mj-section>
     <mj-section css-class="block body" padding-bottom="60px" padding-top="60px" border-radius="20px" padding="20px 20px 0 20px" background-size="cover">
       <mj-column width="80%">
-        <mj-text css-class="main-text" align="center" font-weight="500" padding="30px 10px 10px 10px" font-size="22px" line-height="40px" color="#FFFFFF">Hola, {{1//nombre//}}, <br></br>Mi nombre es Mariano Ordano, fundador de Nodo ambiental. Gracias por unirte a esta gran familia. <br></br>Te doy una cálida bienvenida a este espacio de crecimiento y cooperación.</mj-text>
+        <mj-text css-class="main-text" align="center" font-weight="500" padding="30px 10px 10px 10px" font-size="22px" line-height="40px" color="#FFFFFF">Hola, {{1//nombre-value//}}, <br></br>Mi nombre es Mariano Ordano, fundador de Nodo ambiental. Gracias por unirte a esta gran familia. <br></br>Te doy una cálida bienvenida a este espacio de crecimiento y cooperación.</mj-text>
       </mj-column>
     </mj-section>
     <mj-section padding="0 20px 30px 20px" background-color="#F2F2F200">
@@ -87,7 +87,7 @@
     </mj-section>
     <mj-section css-class="block cta" border-radius="20px" background-size="cover"  background-color="#00000015">
       <mj-column border-radius="20px" width="100%" >
-        <mj-button css-class="cta-button" align="center" background-color="#70264c" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 60px" padding-bottom="100px" padding-top="100px" font-size="20px" font-weight="bold">Clickeame para verificar tu e-mail</mj-button>
+        <mj-button css-class="cta-button" align="center" background-color="#70264c" color="#FFFFFF" border-radius="10px" href="https://nodoambiental.org/members-endpoint/verification?token={{2//verification-token-value//}}" inner-padding="25px 60px" padding-bottom="100px" padding-top="100px" font-size="20px" font-weight="bold">Clickeame para verificar tu e-mail</mj-button>
       </mj-column>
     </mj-section>
     <mj-section padding="10px 0 20px 0">

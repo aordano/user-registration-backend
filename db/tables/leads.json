@@ -32,6 +32,10 @@
         "datatype": "TEXT UNIQUE"
     },
     {
+        "column": "user_token",
+        "datatype": "TEXT UNIQUE"
+    },
+    {
         "column": "autokey",
         "datatype": "INTEGER PRIMARY KEY"
     }

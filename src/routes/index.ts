@@ -188,27 +188,7 @@ export const PostRoute = router.post("/", (request, response) => {
         const email = new Utils.Email.Handler(mailAuthConfig, templates)
         switch (query_kind) {
             case "leadgen": {
-                // debugger
-                const exitCode = query.leadgenQuery()
-
-                if (exitCode === 0) {
-                    email.construct(
-                        "leadgen",
-                        {
-                            from: subjectVerify.from,
-                            to: request.body["email"],
-                            subject: subjectVerify.subject,
-                        },
-                        [
-                            {
-                                target: "nombre",
-                                content: request.body["name"],
-                            },
-                        ]
-                    )
-                }
-
-                email.send()
+                query.leadgenQuery()
                 return
             }
 
@@ -231,16 +211,5 @@ export const GetRoute = router.get("/verification", (request, response) => {
         membership: membership_applicantsTable,
     })
 
-    const email = new Utils.Email.Handler(mailAuthConfig, templates)
-
-    debugger
-
-    const exitCode = query.verificationQuery()
-
-    if (exitCode === 0) {
-        // Then read the user data from the DB and construct the email
-        email.construct("verification", {}, exitCode)
-        email.send()
-        return
-    }
+    query.verificationQuery()
 })

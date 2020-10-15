@@ -317,7 +317,7 @@ export class Handler {
      *
      * ---
      */
-    public insertRows(table: string, data: Types.rowFields): void {
+    public insertRows = (table: string, data: Types.rowFields): void => {
         const columns = Object.entries(data)[0][1] // Retrieve columns array
         const allRows = Object.entries(data)[1][1] // Retrieve rows array
 
@@ -436,10 +436,9 @@ export class Handler {
      *
      * ---
      */
-    public updateRows(table: string, data: Types.rowFieldUpdate[]): void {
+    public updateRows = (table: string, data: Types.rowFieldUpdate[]): void => {
         this.database.serialize(() => {
             data.forEach((queryToExecute, index) => {
-                debugger
                 const sets = Object.entries(queryToExecute)[0][1] as Types.set[] // Retrieve sets array
                 const where = Object.entries(queryToExecute)[1][1] as Types.set //  Retrieve where object
 
@@ -550,7 +549,11 @@ export class Handler {
      *
      * ---
      */
-    public select(table: string, data: Types.selectField[], callback: () => void): void {
+    public select = async (
+        table: string,
+        data: Types.selectField[],
+        callback: () => any
+    ): Promise<any> => {
         data.forEach((select) => {
             const columns = select.columnsToSelect.join(", ")
             let whereQuery = `${select.where.query.column} ${select.where.query.operator} ${select.where.query.data}`
@@ -580,7 +583,7 @@ export class Handler {
      *
      * Closes the opened database to finalize the work being made. Not rocket science.
      */
-    public closeDB(): void {
+    public closeDB = (): void => {
         this.database.close()
         console.log("Closed the database. \n")
     }
