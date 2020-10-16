@@ -58,13 +58,13 @@ const templateVerify: Types.MJMLParseResults = mjml2html(
 
 const subjectVerificationSuccesful: Types.messageConfig = JSON.parse(
     readFileSync(
-        resolve(__dirname, "../../email/templates/verification_succesful_subject.jsonc")
+        resolve(__dirname, "../../email/templates/verification_successful_subject.jsonc")
     ).toString()
 )
 
 const templateVerificationSuccesful: Types.MJMLParseResults = mjml2html(
     readFileSync(
-        resolve(__dirname, "../../email/templates/verification_succesful.mjml")
+        resolve(__dirname, "../../email/templates/verification_successful.mjml")
     ).toString(),
     {
         minify: true,
@@ -78,7 +78,7 @@ const templates: Types.emailCompositor[] = [
     },
     {
         queryKind: "verification",
-        body: templateVerificationSuccesful,
+        body: templateVerificationSuccesful.html,
     },
 ]
 
@@ -291,7 +291,7 @@ export class Handler {
             // ? It is important that the form in the frontend passes the optative elements with some empty placeholder data
             // so it's not blackholed just because the person didn't fill a field.
 
-            this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
+            this.response.redirect("https://nodoambiental.org/leadgen/invalid-data.html")
 
             return new Error(
                 `Invalid data: missing or invalid fields. \n Request body: ${this.request.body}`
@@ -358,6 +358,19 @@ export class Handler {
                             interesadosDB.callbackData.result
                         )[0][1] as unknown) as string
 
+                        const dirtyEmailRecipient = (Object.entries(
+                            interesadosDB.callbackData.result
+                        )[1][1] as unknown) as string
+                        const emailRecipient = dirtyEmailRecipient.substring(
+                            1,
+                            dirtyEmailRecipient.length - 1
+                        )
+
+                        const dirtyName = (Object.entries(
+                            interesadosDB.callbackData.result
+                        )[2][1] as unknown) as string
+                        const name = dirtyName.substring(1, dirtyName.length - 1)
+
                         const userToken = uid(32)
 
                         if (verificationToken !== "ALREADY_VERIFIED") {
@@ -390,7 +403,7 @@ export class Handler {
                                 interesadosDB.closeDB()
 
                                 this.response.redirect(
-                                    "https://nodoambiental.org/leadgen/verification_success.html"
+                                    "https://nodoambiental.org/leadgen/verification-success.html"
                                 )
 
                                 const email = new Utils.Email.Handler(mailAuthConfig, templates)
@@ -399,13 +412,13 @@ export class Handler {
                                     "verification",
                                     {
                                         from: subjectVerificationSuccesful.from,
-                                        to: this.request.body["email"],
+                                        to: emailRecipient,
                                         subject: subjectVerificationSuccesful.subject,
                                     },
                                     [
                                         {
                                             target: "nombre-value",
-                                            content: this.request.body["name"],
+                                            content: name,
                                         },
                                         {
                                             target: "user-token-value",
@@ -420,7 +433,7 @@ export class Handler {
                             }
 
                             this.response.redirect(
-                                "https://nodoambiental.org/leadgen/invalid_data.html"
+                                "https://nodoambiental.org/leadgen/invalid-data.html"
                             )
 
                             return new Error(
@@ -429,7 +442,7 @@ export class Handler {
                         }
 
                         this.response.redirect(
-                            "https://nodoambiental.org/leadgen/already_verified.html"
+                            "https://nodoambiental.org/leadgen/already-verified.html"
                         )
 
                         return new Error(
@@ -439,7 +452,7 @@ export class Handler {
 
                     const selectionToMake: Types.selectField[] = [
                         {
-                            columnsToSelect: ["verification_token"],
+                            columnsToSelect: ["verification_token", "email", "name"],
                             where: {
                                 query: {
                                     column: "verification_token",
@@ -460,14 +473,14 @@ export class Handler {
                 }
             }
 
-            this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
+            this.response.redirect("https://nodoambiental.org/leadgen/invalid-data.html")
 
             return new Error(
                 `Invalid data: garbage token. \n Token provided: ${this.request.query.token}`
             )
         }
 
-        this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
+        this.response.redirect("https://nodoambiental.org/leadgen/invalid-data.html")
 
         return new Error(
             `Invalid data: no token provided or malformed query. \n Query made: ${this.request.query}`
@@ -514,7 +527,7 @@ export class Handler {
                     interesadosDB.closeDB()
 
                     this.response.redirect(
-                        "https://nodoambiental.org/membership/application_success.html"
+                        "https://nodoambiental.org/membership/application-success.html"
                     )
 
                     return 0
@@ -522,14 +535,14 @@ export class Handler {
 
                 interesadosDB.closeDB()
 
-                this.response.redirect("https://nodoambiental.org/membership/invalid_token.html")
+                this.response.redirect("https://nodoambiental.org/membership/invalid-data.html")
 
                 return 1
             }
 
             interesadosDB.closeDB()
 
-            this.response.redirect("https://nodoambiental.org/membership/invalid_data.html")
+            this.response.redirect("https://nodoambiental.org/membership/invalid-data.html")
 
             return 2
         }
@@ -537,7 +550,7 @@ export class Handler {
         const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../db/interesados.db"))
 
         if (membershipData.rows.indexOf(undefined) !== -1) {
-            this.response.redirect("https://nodoambiental.org/leadgen/invalid_data.html")
+            this.response.redirect("https://nodoambiental.org/leadgen/invalid-data.html")
             return
         } else {
             interesadosDB.openDB()

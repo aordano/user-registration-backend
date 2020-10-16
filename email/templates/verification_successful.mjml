@@ -31,10 +31,8 @@
       .id-text {
           margin-top: 20px;
           color: rgba(255,255,255,0.8);
-          font-size: 1em;
+          font-size: 0.65em;
           line-height: 2.2em;
-          margin-left: -70px;
-          margin-right: -70px;
           padding-left: 20px;
           padding-right: 20px;
           font-weight: 600;
@@ -103,7 +101,7 @@
     </mj-section>
     <mj-section css-class="block body" padding-bottom="60px" padding-top="60px" border-radius="20px" padding="20px 20px 0 20px" background-size="cover">
       <mj-column width="80%">
-        <mj-text css-class="main-text" align="center" font-weight="500" padding="30px 10px 10px 10px" font-size="22px" line-height="40px" color="#FFFFFF">¡Hola de nuevo, {{1//nombre//}}! <br></br><p style="font-size: 0.9em; margin-bottom:30px; color:rgba(255,210,0,0.75)">Tu correo electrónico fue verificado con éxito.</p>Tu ID de usuario es <p class="id-text">{{2//user-token-value//}}</p> <p class="info-text">Con este código podrás aplicar a una membresía completa, solicitar asistencia si tienes un problema con nuestra web, y realizar otras operaciones.<br></br>Esto es al mismo tiempo tu identificador de usuario y tu contraseña, asi que ¡no lo pierdas!. <br></br>Los botones de la parte inferior del correo ya contienen este código, por lo que si quieres usarlos no hace falta que lo copies.<br></br>Te invito a recorrer nuestros proyectos, a contactarnos por cualquier duda que tengas y a que si quieres participar te unas como miembro adherente.</p></mj-text>
+        <mj-text css-class="main-text" align="center" font-weight="500" padding="30px 10px 10px 10px" font-size="22px" line-height="40px" color="#FFFFFF">¡Hola de nuevo, {{1//nombre-value//}}! <br></br><p style="font-size: 0.9em; margin-bottom:30px; color:rgba(255,210,0,0.75)">Tu correo electrónico fue verificado con éxito.</p>Tu ID de usuario es <p class="id-text">{{2//user-token-value//}}</p> <p class="info-text">Con este código podrás aplicar a una membresía completa, solicitar asistencia si tienes un problema con nuestra web, y realizar otras operaciones.<br></br>Esto es al mismo tiempo tu identificador de usuario y tu contraseña, asi que ¡no lo pierdas!. <br></br>Los botones de la parte inferior del correo ya contienen este código, por lo que si quieres usarlos no hace falta que lo copies.<br></br>Te invito a recorrer nuestros proyectos, a contactarnos por cualquier duda que tengas y a que si quieres participar te unas como miembro adherente.</p></mj-text>
       </mj-column>
     </mj-section>
     <mj-section padding="0 20px 30px 20px" background-color="#F2F2F200">
