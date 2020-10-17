@@ -4,3 +4,4 @@ coverage
 db/*.db
 build/*
 .nyc_output
+.VSCodeCounter

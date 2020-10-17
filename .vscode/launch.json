@@ -10,5 +10,11 @@
             "request": "launch",
             "type": "node-terminal"
         },
+        {
+            "command": "npm run develop:remote",
+            "name": "Run program (remote)",
+            "request": "launch",
+            "type": "node-terminal"
+        },
     ]
 }

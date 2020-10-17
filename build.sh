@@ -13,15 +13,8 @@ mkdir ./build/db/tables
 cp -R ./db/tables/* ./build/db/tables
 mkdir ./build/email
 cp -R ./email/* ./build/email/
-cp ./execute.sh ./build
 echo 'Previous compilation cleaned.'
 # Compile TypeScript
 tsc
-echo 'Typescript compiled. Generating docs...'
-# Generate docs
-typedoc 
-# Copy support files for the docs
-cp -R ./docsDependencies/* ./docs/assets/js/
-cp ./.nojekyll ./docs/
-echo '...done.'
+echo 'Typescript compiled.'
 echo ''

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "bash ./build.sh",
     "start": "node ./start.js",
-    "develop": "bash ./develop.sh",
+    "docs": "bash ./docs.sh",
+    "develop": "bash ./build.sh && echo '...done. Starting now...' && node ./start.js",
     "test:unit": "mocha -r ts-node/register '__test__/unit/**/*.ts'",
     "test:e2e": "mocha -r ts-node/register '__test__/e2e/**/*.ts'"
   },
