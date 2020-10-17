@@ -29,7 +29,7 @@ export class Handler {
         replacements.forEach((replacement, index) => {
             const target = new RegExp(
                 // eslint-disable-next-line no-useless-escape
-                `\{\{${index + 1}\/\/(${replacement.target})+\/\/\}\}`,
+                `\{\{${index + 1}\/\/(${replacement.target}\-value)+\/\/\}\}`,
                 "gm"
             )
             htmlBody = htmlBody.replace(target, replacement.content)

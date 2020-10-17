@@ -36,11 +36,9 @@
 
 import * as express from "express"
 import { readFileSync } from "fs"
-import mjml2html from "mjml"
 import { resolve } from "path"
 import * as Logic from "../logic"
 import * as Types from "../types"
-import * as Utils from "../utils"
 // TODO Documentation!
 
 /**
@@ -57,47 +55,13 @@ const router = express.Router()
  * * ----------------------------------------->>
  */
 
-const leadsTable: Types.tableField[] = JSON.parse(
-    readFileSync(resolve(__dirname, "../../db/tables/leads.json")).toString()
-)
+const loadTable = (name: string): Types.table => {
+    return JSON.parse(readFileSync(resolve(__dirname, `../../db/tables/${name}.json`)).toString())
+}
 
-const membership_applicantsTable: Types.tableField[] = JSON.parse(
-    readFileSync(resolve(__dirname, "../../db/tables/membership_applicants.json")).toString()
-)
+const leadsTable = loadTable("leads")
 
-/**
- * * ----------------------------------------->>
- * * Data parsing from email definitions
- * * ----------------------------------------->>
- */
-
-const mailAuthConfig: Types.mailConfig = JSON.parse(
-    readFileSync(resolve(__dirname, "../../email/config/auth.jsonc")).toString()
-)
-
-/**
- * * ----------------------------------------->>
- * * Templates and related config parsing
- * * ----------------------------------------->>
- */
-
-const subjectVerify: Types.messageConfig = JSON.parse(
-    readFileSync(resolve(__dirname, "../../email/templates/verify_subject.jsonc")).toString()
-)
-
-const templateVerify: Types.MJMLParseResults = mjml2html(
-    readFileSync(resolve(__dirname, "../../email/templates/verify.mjml")).toString(),
-    {
-        minify: true,
-    }
-)
-
-const templates: Types.emailCompositor[] = [
-    {
-        queryKind: "leadgen",
-        body: templateVerify.html,
-    },
-]
+const membership_applicantsTable = loadTable("membership_applicants")
 
 /**
  * * ------------------------------->>
@@ -185,7 +149,6 @@ export const PostRoute = router.post("/", (request, response) => {
             membership: membership_applicantsTable,
         })
 
-        const email = new Utils.Email.Handler(mailAuthConfig, templates)
         switch (query_kind) {
             case "leadgen": {
                 query.leadgen()
@@ -193,10 +156,7 @@ export const PostRoute = router.post("/", (request, response) => {
             }
 
             case "membership": {
-                const exitCode = query.membership()
-                // Then grab the data from the request/DB to construct the email
-                email.construct("membership", {}, exitCode)
-                email.send()
+                query.membership()
                 return
             }
             default:

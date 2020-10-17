@@ -23,7 +23,6 @@
 import { Database } from "sqlite3"
 import { escape } from "sqlstring"
 import * as Types from "../types"
-import { getArrayDepth } from "./functions"
 
 /**
  * * ------------------------------->>
@@ -85,41 +84,6 @@ import { getArrayDepth } from "./functions"
 export class Handler {
     constructor(location?: string) {
         this.filename = location
-    }
-
-    /**
-     * ### Description
-     *
-     * This object holds the data relevant to a query, so it's readily available to be consumed by the callback function or something outside
-     * the scope of the method that fills this with data.
-     *
-     * For the structure, see {@link Types.callbackData}, where it's defined.
-     *
-     * The idea behind putting this information in a public object from the database originates from the need to avoid race conditions and unmanaged asynchronicity
-     * when doing the requests to `sqlite3`. Given that the library does not supply a `Promise` when anything is called, and continues execution nonetheless, race conditions
-     * are bound to happen where you keep doing stuff synchronously and there's missing data that appears later.
-     *
-     * Having this here sidesteps the issue altogether, so when the operation is completed and a callback is executed, you know than from that point onwards this
-     * will be populated with your data, and if it's not, then there's no data yet. (If we just go with the flow, because we don't have promises we can't know if it's working or the result is empty)
-     *
-     * It is filled by the fault with empty data.
-     *
-     * ---
-     */
-    public callbackData: Types.callbackData = {
-        error: new Error(""),
-        result: [{ placeholder: "" }],
-        query: "",
-        data: {
-            columnsToSelect: [""],
-            where: {
-                query: {
-                    column: "",
-                    data: "",
-                    operator: "=",
-                },
-            },
-        },
     }
 
     /**
@@ -317,60 +281,34 @@ export class Handler {
      *
      * ---
      */
-    public insertRows = (table: string, data: Types.rowFields): void => {
-        const columns = Object.entries(data)[0][1] // Retrieve columns array
-        const allRows = Object.entries(data)[1][1] // Retrieve rows array
-
-        const doQuery = (escapedValues: Types.data[]) => {
-            const placeholders = escapedValues.map(() => {
+    public insertRows = (table: string, data: Types.rowFields[]): void => {
+        const queryRow = (fields: Types.rowFields) => {
+            const placeholders = fields.columns.map(() => {
                 return `?`
             })
-
-            const query = `INSERT INTO ${table}(${columns.join(",")}) VALUES (${placeholders.join(
+            const query = `INSERT INTO ${table}(${fields.columns.join(
                 ","
-            )})`
+            )}) VALUES (${placeholders.join(",")})`
 
-            this.database.run(query, escapedValues, (error) => {
+            this.database.run(query, fields.rows, (error) => {
                 if (error) {
                     const errorMessage = `Error in data inserting, query failed: \n 
-                            INSERT INTO ${table}(${columns}) VALUES \n 
-                            ${escapedValues} \n
+                            INSERT INTO ${table}(${fields.columns}) VALUES \n 
+                            ${fields.rows} \n
                             `
 
                     console.log(errorMessage)
                     return console.error(error.message)
                 }
+                console.log(
+                    `Queried an INSERT in table ${table}, columns ${fields.columns} adding a new row.`
+                )
             })
-
-            console.log(
-                `Queried an INSERT in table ${table}, columns ${columns} adding ${allRows.length} rows.`
-            )
         }
-
         this.database.serialize(() => {
-            if (getArrayDepth(allRows) > 1) {
-                allRows.forEach((row) => {
-                    const escapedValues = row.map((value) => {
-                        if (typeof value === "string") {
-                            return escape(value)
-                        }
-                        return value
-                    })
-                    doQuery(escapedValues)
-                })
-            } else {
-                const escapedValues: Types.data[] = []
-
-                for (let index = 0; index < allRows.length; index += 1) {
-                    if (typeof allRows[index] === "string") {
-                        escapedValues.push(escape(allRows[index]))
-                        continue
-                    }
-                    escapedValues.push(allRows[index] as Types.data) // HACK Dunno how to fix this otherwise
-                }
-
-                doQuery(escapedValues)
-            }
+            data.forEach((rowFields: Types.rowFields) => {
+                queryRow(rowFields)
+            })
         })
     }
 
@@ -549,11 +487,11 @@ export class Handler {
      *
      * ---
      */
-    public select = async (
+    public select = (
         table: string,
         data: Types.selectField[],
-        callback: () => any
-    ): Promise<any> => {
+        callback: (callbackData: Types.callbackData) => any
+    ): void => {
         data.forEach((select) => {
             const columns = select.columnsToSelect.join(", ")
             let whereQuery = `${select.where.query.column} ${select.where.query.operator} ${select.where.query.data}`
@@ -569,11 +507,12 @@ export class Handler {
             const query = `SELECT ${columns} FROM ${table} WHERE ${whereQuery}`
 
             this.database.get(query, [], (error, result) => {
-                this.callbackData.data = select
-                this.callbackData.error = error
-                this.callbackData.query = query
-                this.callbackData.result = result
-                callback()
+                callback({
+                    data: select,
+                    error: error,
+                    query: query,
+                    result: result,
+                })
             })
         })
     }

@@ -97,7 +97,7 @@
 					<a href="#membership--post" id="membership--post" style="color: inherit; text-decoration: none;">
 						<h4>membership | <code>POST</code></h4>
 					</a>
-					<p><code>membership</code> grabs the data sent by the membership form page, stores it in the database and triggers an email to <a href="mailto:&#99;&#111;&#110;&#116;&#x61;&#99;&#116;&#111;&#64;&#x6e;&#x6f;&#x64;&#x6f;&#x61;&#109;&#98;&#x69;&#101;&#110;&#x74;&#x61;&#108;&#46;&#111;&#x72;&#103;">&#99;&#111;&#110;&#116;&#x61;&#99;&#116;&#111;&#64;&#x6e;&#x6f;&#x64;&#x6f;&#x61;&#109;&#98;&#x69;&#101;&#110;&#x74;&#x61;&#108;&#46;&#111;&#x72;&#103;</a> informing
+					<p><code>membership</code> grabs the data sent by the membership form page, stores it in the database and triggers an email to <a href="mailto:&#x63;&#111;&#110;&#116;&#x61;&#99;&#x74;&#x6f;&#x40;&#110;&#x6f;&#x64;&#x6f;&#97;&#109;&#98;&#x69;&#101;&#110;&#x74;&#97;&#108;&#x2e;&#111;&#114;&#103;">&#x63;&#111;&#110;&#116;&#x61;&#99;&#x74;&#x6f;&#x40;&#110;&#x6f;&#x64;&#x6f;&#97;&#109;&#98;&#x69;&#101;&#110;&#x74;&#97;&#108;&#x2e;&#111;&#114;&#103;</a> informing
 					that someon wants to apply for membership.</p>
 				</div>
 			</section>
@@ -108,10 +108,17 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_routes_index_.html#getroute" class="tsd-kind-icon">Get<wbr>Route</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_routes_index_.html#postroute" class="tsd-kind-icon">Post<wbr>Route</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_routes_index_.html#leadstable" class="tsd-kind-icon">leads<wbr>Table</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_routes_index_.html#membership_applicantstable" class="tsd-kind-icon">membership_<wbr>applicants<wbr>Table</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_routes_index_.html#router" class="tsd-kind-icon">router</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="_routes_index_.html#loadtable" class="tsd-kind-icon">load<wbr>Table</a></li>
 							</ul>
 						</section>
 					</div>
@@ -120,12 +127,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
-					<a name="postroute" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> Post<wbr>Route</h3>
-					<div class="tsd-signature tsd-kind-icon">Post<wbr>Route<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Router</span><span class="tsd-signature-symbol"> = router.post(&quot;/&quot;, (request, response) &#x3D;&gt; {const query_kind &#x3D; request.headers[&quot;query-kind&quot;] // Header required to know that it&#x27;s a valid request and not random stuffif (query_kind !&#x3D;&#x3D; undefined || query_kind !&#x3D;&#x3D; null) {const query &#x3D; new queryHandler(request, response, {leads: leadsTable,membership: membership_applicantsTable,})const mailConfig &#x3D; {host: &quot;c1630809.ferozo.com&quot;,port: 465,secure: true, // true for 465, false for other portsauth: {user: &quot;robot@nodoambiental.org&quot;,pass: &quot;SistemasComputacionales2020&quot;,},}const email &#x3D; new Utils.Email.emailHandler(mailConfig)switch (query_kind) {case &quot;leadgen&quot;:query.leadgenQuery()// email stuff goes hereemail.send({from: &quot;no-reply@nodoambiental.org&quot;,to: &quot;aordano@protonmail.com&quot;,subject: &quot;Test mail&quot;,},&quot;bla etc bla etc&quot;)returncase &quot;verification&quot;:query.verificationQuery()// email stuff goes herereturncase &quot;membership&quot;:query.membershipQuery()// email stuff goes herereturndefault:return}}})</span></div>
+					<a name="getroute" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Get<wbr>Route</h3>
+					<div class="tsd-signature tsd-kind-icon">Get<wbr>Route<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Router</span><span class="tsd-signature-symbol"> = router.get(&quot;/verification&quot;, (request, response) &#x3D;&gt; {const query &#x3D; new Logic.Registrar.Handler(request, response, {leads: leadsTable,membership: membership_applicantsTable,})query.verification()})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/routes/index.ts#L145">routes/index.ts:145</a></li>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/routes/index.ts#L168">routes/index.ts:168</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="postroute" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Post<wbr>Route</h3>
+					<div class="tsd-signature tsd-kind-icon">Post<wbr>Route<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Router</span><span class="tsd-signature-symbol"> = router.post(&quot;/&quot;, (request, response) &#x3D;&gt; {const query_kind &#x3D; request.headers[&quot;query-kind&quot;] // Header required to know that it&#x27;s a valid request and not random stuffif (query_kind !&#x3D;&#x3D; undefined || query_kind !&#x3D;&#x3D; null) {const query &#x3D; new Logic.Registrar.Handler(request, response, {leads: leadsTable,membership: membership_applicantsTable,})switch (query_kind) {case &quot;leadgen&quot;: {query.leadgen()return}case &quot;membership&quot;: {query.membership()return}default:return}}})</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/routes/index.ts#L143">routes/index.ts:143</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -197,29 +214,20 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
 					<a name="leadstable" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> leads<wbr>Table</h3>
-					<div class="tsd-signature tsd-kind-icon">leads<wbr>Table<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = JSON.parse(readFileSync(resolve(__dirname, &quot;../../db/tables/leads.json&quot;)).toString())</span></div>
+					<div class="tsd-signature tsd-kind-icon">leads<wbr>Table<span class="tsd-signature-symbol">:</span> <a href="_types_index_.html#table" class="tsd-signature-type">table</a><span class="tsd-signature-symbol"> = loadTable(&quot;leads&quot;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/routes/index.ts#L60">routes/index.ts:60</a></li>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/routes/index.ts#L62">routes/index.ts:62</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<ul>
-								<li>-----------------------------------------&gt;&gt;</li>
-								<li>Data parsing from table definition files</li>
-								<li>-----------------------------------------&gt;&gt;</li>
-							</ul>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
 					<a name="membership_applicantstable" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> membership_<wbr>applicants<wbr>Table</h3>
-					<div class="tsd-signature tsd-kind-icon">membership_<wbr>applicants<wbr>Table<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = JSON.parse(readFileSync(resolve(__dirname, &quot;../../db/tables/membership_applicants.json&quot;)).toString())</span></div>
+					<div class="tsd-signature tsd-kind-icon">membership_<wbr>applicants<wbr>Table<span class="tsd-signature-symbol">:</span> <a href="_types_index_.html#table" class="tsd-signature-type">table</a><span class="tsd-signature-symbol"> = loadTable(&quot;membership_applicants&quot;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/routes/index.ts#L64">routes/index.ts:64</a></li>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/routes/index.ts#L64">routes/index.ts:64</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -229,7 +237,7 @@
 					<div class="tsd-signature tsd-kind-icon">router<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Router</span><span class="tsd-signature-symbol"> = express.Router()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/routes/index.ts#L52">routes/index.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/routes/index.ts#L50">routes/index.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -243,6 +251,41 @@
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a name="loadtable" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> load<wbr>Table</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">load<wbr>Table<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.table</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/routes/index.ts#L58">routes/index.ts:58</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<ul>
+										<li>-----------------------------------------&gt;&gt;</li>
+										<li>Data parsing from table definition files</li>
+										<li>-----------------------------------------&gt;&gt;</li>
+									</ul>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Types.table</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
@@ -254,7 +297,10 @@
 						<a href="_app_.html">&quot;app&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_logic_db_.html">&quot;logic/db&quot;</a>
+						<a href="_logic_index_.html">&quot;logic/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_logic_registration_.html">&quot;logic/registration&quot;</a>
 					</li>
 					<li class="current tsd-kind-module">
 						<a href="_routes_index_.html">&quot;routes/index&quot;</a>
@@ -279,6 +325,9 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_routes_index_.html#getroute" class="tsd-kind-icon">Get<wbr>Route</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="_routes_index_.html#postroute" class="tsd-kind-icon">Post<wbr>Route</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
@@ -289,6 +338,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_routes_index_.html#router" class="tsd-kind-icon">router</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_routes_index_.html#loadtable" class="tsd-kind-icon">load<wbr>Table</a>
 					</li>
 				</ul>
 			</nav>
@@ -303,6 +355,9 @@
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

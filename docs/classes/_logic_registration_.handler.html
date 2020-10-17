@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>queryHandler | membership-form</title>
+	<title>Handler | membership-form</title>
 	<meta name="description" content="Documentation for membership-form">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_logic_db_.html">&quot;logic/db&quot;</a>
+					<a href="../modules/_logic_registration_.html">&quot;logic/registration&quot;</a>
 				</li>
 				<li>
-					<a href="_logic_db_.queryhandler.html">queryHandler</a>
+					<a href="_logic_registration_.handler.html">Handler</a>
 				</li>
 			</ul>
-			<h1>Class queryHandler</h1>
+			<h1>Class Handler</h1>
 		</div>
 	</div>
 </header>
@@ -125,7 +125,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">queryHandler</span>
+						<span class="target">Handler</span>
 					</li>
 				</ul>
 			</section>
@@ -136,23 +136,23 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_logic_db_.queryhandler.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_logic_registration_.handler.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_db_.queryhandler.html#request" class="tsd-kind-icon">request</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_db_.queryhandler.html#response" class="tsd-kind-icon">response</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_db_.queryhandler.html#tables" class="tsd-kind-icon">tables</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_registration_.handler.html#request" class="tsd-kind-icon">request</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_registration_.handler.html#response" class="tsd-kind-icon">response</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_logic_registration_.handler.html#tables" class="tsd-kind-icon">tables</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_db_.queryhandler.html#leadgenquery" class="tsd-kind-icon">leadgen<wbr>Query</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_db_.queryhandler.html#membershipquery" class="tsd-kind-icon">membership<wbr>Query</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_db_.queryhandler.html#verificationquery" class="tsd-kind-icon">verification<wbr>Query</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_registration_.handler.html#leadgen" class="tsd-kind-icon">leadgen</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_registration_.handler.html#membership" class="tsd-kind-icon">membership</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_logic_registration_.handler.html#verification" class="tsd-kind-icon">verification</a></li>
 							</ul>
 						</section>
 					</div>
@@ -164,13 +164,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new query<wbr>Handler<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Request</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, tables<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>leads<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>membership<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_logic_db_.queryhandler.html" class="tsd-signature-type">queryHandler</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Handler<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Request</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, tables<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Types.table</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_logic_registration_.handler.html" class="tsd-signature-type">Handler</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/logic/db.ts#L105">logic/db.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/logic/registration.ts#L155">logic/registration.ts:155</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -182,18 +182,10 @@
 									<h5>response: <span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5>tables: <span class="tsd-signature-symbol">{ </span>leads<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>membership<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>leads<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>membership<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.tableField</span><span class="tsd-signature-symbol">[]</span></h5>
-										</li>
-									</ul>
+									<h5>tables: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Types.table</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_logic_db_.queryhandler.html" class="tsd-signature-type">queryHandler</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_logic_registration_.handler.html" class="tsd-signature-type">Handler</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -203,10 +195,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="request" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> request</h3>
-					<div class="tsd-signature tsd-kind-icon">request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<div class="tsd-signature tsd-kind-icon">request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Request</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/logic/db.ts#L138">logic/db.ts:138</a></li>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/logic/registration.ts#L184">logic/registration.ts:184</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -222,10 +214,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="response" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> response</h3>
-					<div class="tsd-signature tsd-kind-icon">response<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<div class="tsd-signature tsd-kind-icon">response<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/logic/db.ts#L147">logic/db.ts:147</a></li>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/logic/registration.ts#L193">logic/registration.ts:193</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -241,10 +233,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="tables" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> tables</h3>
-					<div class="tsd-signature tsd-kind-icon">tables<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<div class="tsd-signature tsd-kind-icon">tables<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Types.table</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/logic/db.ts#L129">logic/db.ts:129</a></li>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/logic/registration.ts#L175">logic/registration.ts:175</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -264,16 +256,16 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="leadgenquery" class="tsd-anchor"></a>
-					<h3>leadgen<wbr>Query</h3>
+					<a name="leadgen" class="tsd-anchor"></a>
+					<h3>leadgen</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">leadgen<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">leadgen<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/logic/db.ts#L223">logic/db.ts:223</a></li>
+									<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/logic/registration.ts#L269">logic/registration.ts:269</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -339,41 +331,41 @@ query.leadgenQuery()
 								</a>
 								<hr>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="membershipquery" class="tsd-anchor"></a>
-					<h3>membership<wbr>Query</h3>
+					<a name="membership" class="tsd-anchor"></a>
+					<h3>membership</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">membership<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">membership<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/logic/db.ts#L288">logic/db.ts:288</a></li>
+									<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/logic/registration.ts#L543">logic/registration.ts:543</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="verificationquery" class="tsd-anchor"></a>
-					<h3>verification<wbr>Query</h3>
+					<a name="verification" class="tsd-anchor"></a>
+					<h3>verification</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">verification<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">verification<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aordano/membership-form/blob/073c992/src/logic/db.ts#L252">logic/db.ts:252</a></li>
+									<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/logic/registration.ts#L333">logic/registration.ts:333</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -388,8 +380,11 @@ query.leadgenQuery()
 					<li class=" tsd-kind-module">
 						<a href="../modules/_app_.html">&quot;app&quot;</a>
 					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_logic_index_.html">&quot;logic/index&quot;</a>
+					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_logic_db_.html">&quot;logic/db&quot;</a>
+						<a href="../modules/_logic_registration_.html">&quot;logic/registration&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_routes_index_.html">&quot;routes/index&quot;</a>
@@ -416,33 +411,51 @@ query.leadgenQuery()
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_logic_db_.queryhandler.html" class="tsd-kind-icon">query<wbr>Handler</a>
+						<a href="_logic_registration_.handler.html" class="tsd-kind-icon">Handler</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_logic_db_.queryhandler.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_logic_registration_.handler.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_logic_db_.queryhandler.html#request" class="tsd-kind-icon">request</a>
+								<a href="_logic_registration_.handler.html#request" class="tsd-kind-icon">request</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_logic_db_.queryhandler.html#response" class="tsd-kind-icon">response</a>
+								<a href="_logic_registration_.handler.html#response" class="tsd-kind-icon">response</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_logic_db_.queryhandler.html#tables" class="tsd-kind-icon">tables</a>
+								<a href="_logic_registration_.handler.html#tables" class="tsd-kind-icon">tables</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_logic_db_.queryhandler.html#leadgenquery" class="tsd-kind-icon">leadgen<wbr>Query</a>
+								<a href="_logic_registration_.handler.html#leadgen" class="tsd-kind-icon">leadgen</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_logic_db_.queryhandler.html#membershipquery" class="tsd-kind-icon">membership<wbr>Query</a>
+								<a href="_logic_registration_.handler.html#membership" class="tsd-kind-icon">membership</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_logic_db_.queryhandler.html#verificationquery" class="tsd-kind-icon">verification<wbr>Query</a>
+								<a href="_logic_registration_.handler.html#verification" class="tsd-kind-icon">verification</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_logic_registration_.html#mailauthconfig" class="tsd-kind-icon">mail<wbr>Auth<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_logic_registration_.html#templates" class="tsd-kind-icon">templates</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_logic_registration_.html#buildtemplates" class="tsd-kind-icon">build<wbr>Templates</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_logic_registration_.html#cleanstring" class="tsd-kind-icon">clean<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_logic_registration_.html#loadjson" class="tsd-kind-icon">loadJSON</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_logic_registration_.html#loadtemplate" class="tsd-kind-icon">load<wbr>Template</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -461,6 +474,9 @@ query.leadgenQuery()
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>emailHandler | membership-form</title>
+	<title>Handler | membership-form</title>
 	<meta name="description" content="Documentation for membership-form">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_utils_email_.html">&quot;utils/email&quot;</a>
 				</li>
 				<li>
-					<a href="_utils_email_.emailhandler.html">emailHandler</a>
+					<a href="_utils_email_.handler.html">Handler</a>
 				</li>
 			</ul>
-			<h1>Class emailHandler</h1>
+			<h1>Class Handler</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">emailHandler</span>
+						<span class="target">Handler</span>
 					</li>
 				</ul>
 			</section>
@@ -84,19 +84,22 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_utils_email_.emailhandler.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_utils_email_.handler.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_utils_email_.emailhandler.html#transporter" class="tsd-kind-icon">transporter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_utils_email_.handler.html#currentcomposition" class="tsd-kind-icon">current<wbr>Composition</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_utils_email_.handler.html#mailtemplates" class="tsd-kind-icon">mail<wbr>Templates</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_utils_email_.handler.html#transporter" class="tsd-kind-icon">transporter</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_email_.emailhandler.html#send" class="tsd-kind-icon">send</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_email_.handler.html#construct" class="tsd-kind-icon">construct</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_utils_email_.handler.html#send" class="tsd-kind-icon">send</a></li>
 							</ul>
 						</section>
 					</div>
@@ -108,22 +111,25 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new email<wbr>Handler<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.mailConfig</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_utils_email_.emailhandler.html" class="tsd-signature-type">emailHandler</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Handler<span class="tsd-signature-symbol">(</span>mailConfigData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.mailConfig</span>, mailTemplates<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.emailCompositor</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_utils_email_.handler.html" class="tsd-signature-type">Handler</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in utils/email.ts:4</li>
+									<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/utils/email.ts#L4">utils/email.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>config: <span class="tsd-signature-type">Types.mailConfig</span></h5>
+									<h5>mailConfigData: <span class="tsd-signature-type">Types.mailConfig</span></h5>
+								</li>
+								<li>
+									<h5>mailTemplates: <span class="tsd-signature-type">Types.emailCompositor</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_utils_email_.emailhandler.html" class="tsd-signature-type">emailHandler</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_utils_email_.handler.html" class="tsd-signature-type">Handler</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -131,12 +137,32 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="currentcomposition" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> current<wbr>Composition</h3>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>Composition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Types.composedEmail</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/utils/email.ts#L13">utils/email.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="mailtemplates" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> mail<wbr>Templates</h3>
+					<div class="tsd-signature tsd-kind-icon">mail<wbr>Templates<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Types.emailCompositor</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/utils/email.ts#L10">utils/email.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="transporter" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> transporter</h3>
 					<div class="tsd-signature tsd-kind-icon">transporter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in utils/email.ts:10</li>
+							<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/utils/email.ts#L11">utils/email.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -144,28 +170,48 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="send" class="tsd-anchor"></a>
-					<h3>send</h3>
+					<a name="construct" class="tsd-anchor"></a>
+					<h3>construct</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">send<span class="tsd-signature-symbol">(</span>mailData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.messageConfig</span>, body<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.messageHTML</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">construct<span class="tsd-signature-symbol">(</span>queryKind<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, messageConfig<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.messageConfig</span>, replacements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.templateReplaces</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in utils/email.ts:12</li>
+									<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/utils/email.ts#L15">utils/email.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>mailData: <span class="tsd-signature-type">Types.messageConfig</span></h5>
+									<h5>queryKind: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>body: <span class="tsd-signature-type">Types.messageHTML</span></h5>
+									<h5>messageConfig: <span class="tsd-signature-type">Types.messageConfig</span></h5>
+								</li>
+								<li>
+									<h5>replacements: <span class="tsd-signature-type">Types.templateReplaces</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="send" class="tsd-anchor"></a>
+					<h3>send</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">send<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/nodoambiental/user-registration-backend/blob/c51c151/src/utils/email.ts#L46">utils/email.ts:46</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -181,7 +227,10 @@
 						<a href="../modules/_app_.html">&quot;app&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_logic_db_.html">&quot;logic/db&quot;</a>
+						<a href="../modules/_logic_index_.html">&quot;logic/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_logic_registration_.html">&quot;logic/registration&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_routes_index_.html">&quot;routes/index&quot;</a>
@@ -208,16 +257,25 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_utils_email_.emailhandler.html" class="tsd-kind-icon">email<wbr>Handler</a>
+						<a href="_utils_email_.handler.html" class="tsd-kind-icon">Handler</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_utils_email_.emailhandler.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_utils_email_.handler.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_utils_email_.emailhandler.html#transporter" class="tsd-kind-icon">transporter</a>
+								<a href="_utils_email_.handler.html#currentcomposition" class="tsd-kind-icon">current<wbr>Composition</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_utils_email_.handler.html#mailtemplates" class="tsd-kind-icon">mail<wbr>Templates</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_utils_email_.handler.html#transporter" class="tsd-kind-icon">transporter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_utils_email_.emailhandler.html#send" class="tsd-kind-icon">send</a>
+								<a href="_utils_email_.handler.html#construct" class="tsd-kind-icon">construct</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_utils_email_.handler.html#send" class="tsd-kind-icon">send</a>
 							</li>
 						</ul>
 					</li>
@@ -241,6 +299,9 @@
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>

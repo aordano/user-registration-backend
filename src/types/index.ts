@@ -43,6 +43,11 @@ export type tableField = {
     datatype: string
 }
 
+export type table = {
+    fields: tableField[]
+    protected: string[]
+}
+
 /**
  * ### Description
  *
@@ -51,21 +56,6 @@ export type tableField = {
  * ---
  */
 export type data = string | number | null
-
-/**
- * ### Description
- *
- * Simple discriminator to bound the row information to accepted types.
- *
- * The _Type_ suffix is pointless given that this file is loaded as a namespace.
- *
- * ### Comment
- *
- * TODO Remove pointless _Type_ suffix.
- *
- * ---
- */
-export type rowType = data[]
 
 /**
  * @property **columns**: Array containing the name of the relevant columns.
@@ -109,7 +99,7 @@ export type rowType = data[]
  */
 export type rowFields = {
     columns: string[]
-    rows: rowType[]
+    rows: data[]
 }
 
 /**
@@ -363,7 +353,7 @@ export type selectField = {
  */
 export type callbackData = {
     error: Error
-    result: Record<string, data | undefined>[]
+    result: Record<string, data | undefined>
     query: string
     data: selectField
 }

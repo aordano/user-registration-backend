@@ -1,26 +1,29 @@
 <mjml>
   <mj-head>
-    <mj-title>Gracias por adherirte como miembro a Nodo Ambiental</mj-title>
-    <mj-preview>Adhesión a Nodo Ambiental</mj-preview>
+    <mj-title>Verifica tu correo electrónico en Nodo Ambiental</mj-title>
+    <mj-preview>Verificación de correo</mj-preview>
     <mj-attributes>
       <mj-all font-family="Arial, sans-serif"></mj-all>
       <mj-text font-weight="400" font-size="16px" color="#000000" line-height="24px"></mj-text>
       <mj-section padding="0px"></mj-section>
     </mj-attributes>
     <mj-style inline="inline">
-      .cta-button:hover { 
-          transform: scale(1.05); 
-          filter: brightness(120%) drop-shadow(0px 0px 4px black) hue-rotate(20deg);
-        } 
-      .cta-button { 
-          transition-duration: 400ms; 
-          border: 5px solid rgba(255,255,255,0);
-        }
+      .cta-button:hover { transform: scale(1.05);  
+          filter: brightness(120%) drop-shadow(0px 0px 4px black) hue-rotate(20deg);} 
+      .cta-button { transition-duration: 400ms; } 
       .background { background: repeating-linear-gradient( -45deg, #eee, #eee 2px,
       #fff 2px, #fff 10px ); } 
       .head { background: repeating-linear-gradient(90deg, rgb(134, 209, 176), rgb(161, 196, 235) ); } 
       .head svg { transform: scale(1.1); }
-      .body { background: linear-gradient(45deg, rgb(101, 51, 185), rgb(072, 034, 119)); }
+      .body { background-color: rgba(0,0,0,0.15); }
+      .data >{
+        line-height: 0.8em;
+        background-color: rgba(0,0,0,0.75);
+      }
+      .main >{
+        font-size: 1em;
+        line-height: 0.8em;
+      }
     </mj-style>
   </mj-head>
   <mj-body css-class="background" background-color="#F2F2F2">
@@ -81,28 +84,27 @@
       <mj-column width="80%">
       </mj-column>
     </mj-section>
-    <mj-section css-class="block body" padding-bottom="60px" padding-top="60px" border-radius="20px" padding="20px 20px 0 20px" background-size="cover">
-      <mj-column width="80%">
-        <mj-text css-class="main-text" align="center" font-weight="500" padding="30px 10px 10px 10px" font-size="22px" line-height="40px" color="#FFFFFF">¡De nuevo te doy la bienvenida, {{1//nombre//}}!<br></br> Gracias por adherir a una membresía en nuestra organización. <br></br>Tu solicitud de incorporación como miembro adherente fué procesada y prontro nos pondremos en contacto contigo para coordinar cómo nos incorporamos.<br></br>Mientras tanto te invito a recorrer nuestra wiki y nuestros proyectos.</mj-text>
+    <mj-section css-class="block body main" padding-bottom="60px" padding-top="60px" border-radius="20px" padding="20px 20px 0 20px" background-size="cover">
+      <mj-column width="90%">
+        <mj-text align="left" color="#000000">Administración de Nodo, este es un mensaje generado automáticamente por su querido robot, debido a que un nuevo usuario se registró en el sitio, y normalmente no sería algo que requiera un mail, simplemente quedando registrado en la base de datos, pero en este caso el usuario incluyó un <em>mensaje</em> de contacto.<br></br> En el resto de este correo electrónico se detallan los datos del usuario, y el mensaje que envió.<br></br>Este mensaje usa como remitente el correo de la persona que quiere contactarse, por lo que pueden responder directamente aquí a la dirección de origen.</mj-text>
       </mj-column>
     </mj-section>
     <mj-section padding="0 20px 30px 20px" background-color="#F2F2F200">
       <mj-column width="80%">
       </mj-column>
     </mj-section>
-    <mj-section css-class="block cta" border-radius="20px" background-color="#00000015">
-      <mj-column width="50%" border-radius="20px" width="100%">     
-        <mj-button css-class="cta-button" align="center" background-color="#70264c" color="#FFFFFF" border-radius="10px" href="https://wiki.nodoambiental.org" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero ver la Wiki</mj-button>         
-        <mj-button css-class="cta-button" align="center" background-color="#382057" color="#FFFFFF" border-radius="10px" href="mailto:contacto@nodoambiental.org" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero preguntar algo</mj-button>   
+    <mj-section css-class="block body data" padding-bottom="60px" padding-top="60px" border-radius="20px" padding="20px 20px 0 20px" background-size="cover">
+      <mj-column width="90%">
+        <mj-text align="left" color="#FFFFFF">¡Hola Nodo! Mi nombre es {{1//nombre-value//}}{{2//organization-value//}}{{3//role-value//}} y quiero decirles:<br><br/>{{4//message-value//}}<br><br/>Eso es todo. ¡Espero una respuesta pronto!</mj-text>
       </mj-column>
-      <mj-column width="50%" border-radius="20px" width="100%">
-        <mj-button css-class="cta-button" align="center" background-color="#204a57" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero ver los proyectos</mj-button>
-        <mj-button css-class="cta-button" align="center" background-color="#20572f" color="#FFFFFF" border-radius="10px" href="#" inner-padding="25px 50px" padding-bottom="30px" padding-top="30px" font-size="20px">Quiero volver a ver los ToS</mj-button>
+    </mj-section>
+    <mj-section padding="0 20px 30px 20px" background-color="#F2F2F200">
+      <mj-column width="80%">
       </mj-column>
     </mj-section>
     <mj-section padding="10px 0 20px 0">
       <mj-column>
-        <mj-text padding="5px" align="center" color="#9B9B9B" font-size="13px">Fundación Nodo Ambiental</mj-text>
+        <mj-text padding="5px" align="center" color="#9B9B9B" font-size="13px">Fundación Nodo Ambiental </mj-text>
         <mj-text padding="5px" align="center" color="#9B9B9B" font-size="11px">
           Personería Jurídica 2/2020 D.P.J.</mj-text>
       </mj-column>

@@ -10,6 +10,8 @@
  *
  * TODO Documentation
  *
+ * TODO:Patch This file is huge, break up the email stuff into another file and call email functions present there
+ *
  * TODO:Minor Add return type and data to pass to the email stuff that goes after this
  *
  * TODO:Patch Add error handling
@@ -45,42 +47,41 @@ const mailAuthConfig: Types.mailConfig = JSON.parse(
  * * ----------------------------------------->>
  */
 
-const subjectVerify: Types.messageConfig = JSON.parse(
-    readFileSync(resolve(__dirname, "../../email/templates/verify_subject.jsonc")).toString()
+const loadJSON = (name: string): Types.messageConfig => {
+    return JSON.parse(
+        readFileSync(resolve(__dirname, `../../email/templates/${name}_subject.jsonc`)).toString()
+    )
+}
+
+const loadTemplate = (name: string): Types.MJMLParseResults => {
+    return mjml2html(
+        readFileSync(resolve(__dirname, `../../email/templates/${name}.mjml`)).toString(),
+        {
+            minify: true,
+        }
+    )
+}
+
+const buildTemplates = (...args: string[]): Types.emailCompositor[] => {
+    return args.map((queryKind: string) => {
+        return {
+            queryKind,
+            body: loadTemplate(queryKind).html,
+        }
+    })
+}
+
+const templates = buildTemplates(
+    "verify",
+    "verification_successful",
+    "membership_application",
+    "user_registered"
 )
 
-const templateVerify: Types.MJMLParseResults = mjml2html(
-    readFileSync(resolve(__dirname, "../../email/templates/verify.mjml")).toString(),
-    {
-        minify: true,
-    }
-)
-
-const subjectVerificationSuccesful: Types.messageConfig = JSON.parse(
-    readFileSync(
-        resolve(__dirname, "../../email/templates/verification_successful_subject.jsonc")
-    ).toString()
-)
-
-const templateVerificationSuccesful: Types.MJMLParseResults = mjml2html(
-    readFileSync(
-        resolve(__dirname, "../../email/templates/verification_successful.mjml")
-    ).toString(),
-    {
-        minify: true,
-    }
-)
-
-const templates: Types.emailCompositor[] = [
-    {
-        queryKind: "leadgen",
-        body: templateVerify.html,
-    },
-    {
-        queryKind: "verification",
-        body: templateVerificationSuccesful.html,
-    },
-]
+// We need to clean all the strings that were previosuly escaped when loaded into the database
+const cleanString = (stringToClean: string) => {
+    return stringToClean.substring(1, stringToClean.length - 1)
+}
 
 /**
  * * ---------------------------------------------------------->>
@@ -152,11 +153,7 @@ const templates: Types.emailCompositor[] = [
  * ---
  */
 export class Handler {
-    constructor(
-        request: Request,
-        response: Response<any>,
-        tables: { leads: Types.tableField[]; membership: Types.tableField[] }
-    ) {
+    constructor(request: Request, response: Response<any>, tables: Record<string, Types.table>) {
         this.request = request
         this.response = response
         this.tables = tables
@@ -175,7 +172,7 @@ export class Handler {
      *
      * ---
      */
-    private tables: { leads: Types.tableField[]; membership: Types.tableField[] }
+    private tables: Record<string, Types.table>
 
     /**
      * ### Description
@@ -270,17 +267,12 @@ export class Handler {
      * ---
      */
     public leadgen = (): void | Error => {
-        const leadData = Utils.Functions.parseRequestData(this.request, this.tables.leads)
+        const leadData = Utils.Functions.parseRequestData(this.request, this.tables.leads.fields)
 
-        leadData.rows[leadData.columns.indexOf("verification_token")] = (uid(
-            32
-        ) as unknown) as Types.rowType // HACK Dunno how the heck make it understand that a string is valid stuff
+        leadData.rows[leadData.columns.indexOf("verification_token")] = uid(32)
 
         const rowsWithoutProtectedFields = leadData.rows.filter((row, rowIndex) => {
-            if (
-                leadData.columns[rowIndex] !== "user_token" ||
-                leadData.columns[rowIndex] !== "autokey"
-            ) {
+            if (this.tables.leads.protected.indexOf(leadData.columns[rowIndex]) === -1) {
                 return row
             }
         })
@@ -302,9 +294,9 @@ export class Handler {
 
         interesadosDB.openDB()
 
-        interesadosDB.createTable("leads", this.tables.leads)
+        interesadosDB.createTable("leads", this.tables.leads.fields)
 
-        interesadosDB.insertRows("leads", leadData)
+        interesadosDB.insertRows("leads", [leadData])
 
         interesadosDB.closeDB()
 
@@ -312,20 +304,22 @@ export class Handler {
 
         const email = new Utils.Email.Handler(mailAuthConfig, templates)
 
+        const subject = loadJSON("verify")
+
         email.construct(
-            "leadgen",
+            "verify",
             {
-                from: subjectVerify.from,
+                from: subject.from,
                 to: this.request.body["email"],
-                subject: subjectVerify.subject,
+                subject: subject.subject,
             },
             [
                 {
-                    target: "nombre-value",
+                    target: "nombre",
                     content: this.request.body["name"],
                 },
                 {
-                    target: "verification-token-value",
+                    target: "verification-token",
                     content: leadData.rows[leadData.columns.indexOf("verification_token")],
                 },
             ]
@@ -343,38 +337,39 @@ export class Handler {
             )
 
             if (
-                this.request.query.token !== undefined &&
-                this.request.query.token !== null &&
+                this.request.query.token !== (undefined || null) &&
                 typeof this.request.query.token === "string" &&
                 this.request.query.token.length === 32
             ) {
                 const queriedToken = this.request.query.token
 
-                const verification = typeof queriedToken === "string" ? true : false
+                const tokenQueryVerification = typeof queriedToken === "string" ? true : false
 
-                if (verification) {
-                    const selectCallback = () => {
-                        const verificationToken = (Object.entries(
-                            interesadosDB.callbackData.result
-                        )[0][1] as unknown) as string
+                if (tokenQueryVerification) {
+                    const selectCallback = (callbackData: Types.callbackData) => {
+                        // The ordering of the expected values at every index is the same of the columns to select in the database query
 
-                        const dirtyEmailRecipient = (Object.entries(
-                            interesadosDB.callbackData.result
-                        )[1][1] as unknown) as string
-                        const emailRecipient = dirtyEmailRecipient.substring(
-                            1,
-                            dirtyEmailRecipient.length - 1
-                        )
+                        // Because we read this from a text field, even if the type is Types.data, this will always be a string
+                        const verificationToken = Object.entries(
+                            callbackData.result
+                        )[0][1] as string
 
-                        const dirtyName = (Object.entries(
-                            interesadosDB.callbackData.result
-                        )[2][1] as unknown) as string
-                        const name = dirtyName.substring(1, dirtyName.length - 1)
+                        // We need to remove first and last character because the SELECT query reads the text field as-is
+                        // so instead of returning {column: "value"}, it returns {column: "'value'"}
+                        // It is this way for any text field, so we reapeat the procedure for every requested value
+
+                        const emailRecipient = Object.entries(callbackData.result)[1][1] as string
+
+                        const name = Object.entries(callbackData.result)[2][1] as string
 
                         const userToken = uid(32)
 
                         if (verificationToken !== "ALREADY_VERIFIED") {
+                            // The conditions are not joined in one check because the redirect is different
+                            // according to the error type
                             if (verificationToken === queriedToken) {
+                                // The verification token needs to be destroyed and replaced by a filler that prevents executing
+                                // the verification flow a second time.
                                 const updateTokenData: Types.rowFieldUpdate[] = [
                                     {
                                         set: [
@@ -396,7 +391,7 @@ export class Handler {
 
                                 interesadosDB.openDB()
 
-                                interesadosDB.createTable("leads", this.tables.leads)
+                                interesadosDB.createTable("leads", this.tables.leads.fields)
 
                                 interesadosDB.updateRows("leads", updateTokenData)
 
@@ -408,20 +403,22 @@ export class Handler {
 
                                 const email = new Utils.Email.Handler(mailAuthConfig, templates)
 
+                                const subject = loadJSON("verification_successful")
+
                                 email.construct(
-                                    "verification",
+                                    "verification_successful",
                                     {
-                                        from: subjectVerificationSuccesful.from,
+                                        from: subject.from,
                                         to: emailRecipient,
-                                        subject: subjectVerificationSuccesful.subject,
+                                        subject: subject.subject,
                                     },
                                     [
                                         {
-                                            target: "nombre-value",
+                                            target: "nombre",
                                             content: name,
                                         },
                                         {
-                                            target: "user-token-value",
+                                            target: "user-token",
                                             content: userToken,
                                         },
                                     ]
@@ -429,6 +426,57 @@ export class Handler {
 
                                 email.send()
 
+                                const queriedOrg = Object.entries(callbackData.result)[3][1]
+                                const organization =
+                                    typeof queriedOrg === "string" ? queriedOrg : false
+
+                                const queriedRole = Object.entries(
+                                    callbackData.result
+                                )[4][1] as string
+                                const role = typeof queriedRole === "string" ? queriedRole : false
+
+                                const queriedMessage = Object.entries(
+                                    callbackData.result
+                                )[5][1] as string
+                                const message =
+                                    typeof queriedMessage === "string" ? queriedMessage : false
+
+                                if (message) {
+                                    const subject = loadJSON("user_registered")
+
+                                    email.construct(
+                                        "user_registered",
+                                        {
+                                            from: emailRecipient,
+                                            to: subject.to,
+                                            subject: subject.subject,
+                                        },
+                                        [
+                                            {
+                                                target: "nombre",
+                                                content: name,
+                                            },
+                                            {
+                                                target: "organization",
+                                                content: organization
+                                                    ? `, pertenezco a ${organization}`
+                                                    : "",
+                                            },
+                                            {
+                                                target: "role",
+                                                content: role ? `, como ${role},` : ",",
+                                            },
+                                            {
+                                                target: "message",
+                                                content: message,
+                                            },
+                                        ]
+                                    )
+
+                                    email.send()
+
+                                    return
+                                }
                                 return
                             }
 
@@ -452,7 +500,14 @@ export class Handler {
 
                     const selectionToMake: Types.selectField[] = [
                         {
-                            columnsToSelect: ["verification_token", "email", "name"],
+                            columnsToSelect: [
+                                "verification_token",
+                                "email",
+                                "name",
+                                "organization",
+                                "role",
+                                "message",
+                            ],
                             where: {
                                 query: {
                                     column: "verification_token",
@@ -465,11 +520,9 @@ export class Handler {
 
                     interesadosDB.openDB()
 
-                    interesadosDB.select("leads", selectionToMake, function () {
-                        selectCallback()
-                    })
+                    interesadosDB.select("leads", selectionToMake, selectCallback)
 
-                    return 3
+                    return
                 }
             }
 
@@ -487,81 +540,149 @@ export class Handler {
         )
     }
 
-    public membership = (): number => {
+    public membership = (): void | Error => {
+        // TODO:Patch add error handling for executing the logic after parsing the request
         const membershipData = Utils.Functions.parseRequestData(
             this.request,
-            this.tables.membership
+            this.tables.membership.fields
         )
 
-        const selectionToMake: Types.selectField[] = [
+        // TODO:Minor Make it so the ID type is fixed between a set of options to be selected from a dropdown;
+        // the logic here should discriminate between the allowed ID types and a 'Other' value.
+
+        const leadsSelectionToMake: Types.selectField[] = [
             {
-                columnsToSelect: ["verification_token"],
+                columnsToSelect: ["user_token", "name", "email"],
                 where: {
                     query: {
-                        column: "verification_token",
-                        data: `"${String(this.request.body.verification_token)}"`,
+                        column: "user_token",
+                        data: `"${String(this.request.body.user_token)}"`,
                         operator: "=",
                     },
                 },
             },
         ]
 
-        const selectCallback = () => {
-            if (
-                interesadosDB.callbackData.result !== undefined &&
-                interesadosDB.callbackData.result !== null &&
-                typeof interesadosDB.callbackData.result === "object" &&
-                interesadosDB.callbackData.result.length === undefined
-            ) {
-                const result = Object.entries(interesadosDB.callbackData.result)[0][1]
+        const membershipApplicantsSelectionToMake: Types.selectField[] = [
+            {
+                columnsToSelect: ["user_token"],
+                where: {
+                    query: {
+                        column: "user_token",
+                        data: `"${String(this.request.body.user_token)}"`,
+                        operator: "=",
+                    },
+                },
+            },
+        ]
 
-                const verification =
-                    typeof result === "string" && result === this.request.body.verification_token
-                        ? true
-                        : false
+        const membershipApplicantsSelectCallback = (
+            callbackData: Types.callbackData,
+            name: string,
+            emailRecipient: string,
+            queriedToken: string
+        ) => {
+            membershipData.rows[membershipData.columns.indexOf("user_token")] = queriedToken
+            const membershipApplicantsQueryToken = callbackData.result
 
-                if (verification) {
-                    interesadosDB.createTable("membership_applicants", this.tables.membership)
-                    interesadosDB.insertRows("membership_applicants", membershipData)
-
-                    interesadosDB.closeDB()
-
-                    this.response.redirect(
-                        "https://nodoambiental.org/membership/application-success.html"
-                    )
-
-                    return 0
-                }
+            if (membershipApplicantsQueryToken === undefined) {
+                interesadosDB.createTable("membership_applicants", this.tables.membership.fields)
+                interesadosDB.insertRows("membership_applicants", [membershipData])
 
                 interesadosDB.closeDB()
 
-                this.response.redirect("https://nodoambiental.org/membership/invalid-data.html")
+                this.response.redirect(
+                    "https://nodoambiental.org/membership/application-success.html"
+                )
 
-                return 1
+                const email = new Utils.Email.Handler(mailAuthConfig, templates)
+
+                const subject = loadJSON("membership_application")
+
+                email.construct(
+                    "membership_application",
+                    {
+                        from: subject.from,
+                        to: emailRecipient,
+                        subject: subject.subject,
+                    },
+                    [
+                        {
+                            target: "nombre",
+                            content: name,
+                        },
+                    ]
+                )
+
+                email.send()
+
+                return
             }
 
             interesadosDB.closeDB()
 
             this.response.redirect("https://nodoambiental.org/membership/invalid-data.html")
 
-            return 2
+            return new Error(
+                `Invalid data: token already present in the membership applicants table
+                \n Token provided: ${this.request.body.user_token}`
+            )
+        }
+
+        const leadsSelectCallback = (callbackData: Types.callbackData) => {
+            const queriedToken = Object.entries(callbackData.result)[0][1] as string
+            const name = Object.entries(callbackData.result)[1][1]
+            const emailRecipient = Object.entries(callbackData.result)[2][1]
+            if (
+                queriedToken !== (undefined || null) &&
+                typeof queriedToken === "string" &&
+                typeof name === "string" &&
+                typeof emailRecipient === "string" &&
+                queriedToken.length === 32 &&
+                queriedToken === this.request.body.user_token
+            ) {
+                interesadosDB.select(
+                    "membership_applicants",
+                    membershipApplicantsSelectionToMake,
+                    (membershipCallbackData: Types.callbackData) => {
+                        membershipApplicantsSelectCallback(
+                            membershipCallbackData,
+                            name,
+                            emailRecipient,
+                            queriedToken
+                        )
+                    }
+                )
+                return
+            }
+
+            interesadosDB.closeDB()
+
+            this.response.redirect("https://nodoambiental.org/membership/invalid-data.html")
+
+            return new Error(
+                `Invalid data: provided token is not found in the database or is garbage 
+                \n Token provided: ${this.request.body.user_token}`
+            )
         }
 
         const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../db/interesados.db"))
 
-        if (membershipData.rows.indexOf(undefined) !== -1) {
-            this.response.redirect("https://nodoambiental.org/leadgen/invalid-data.html")
-            return
+        const rowsWithoutProtectedFields = membershipData.rows.filter((row, rowIndex) => {
+            if (this.tables.leads.protected.indexOf(membershipData.columns[rowIndex]) === -1) {
+                return row
+            }
+        })
+
+        if (rowsWithoutProtectedFields.indexOf(undefined) !== -1) {
+            this.response.redirect("https://nodoambiental.org/membership/invalid-data.html")
+            return new Error(
+                `Invalid data: missing or malformed field.  \n Request body: ${this.request.body}`
+            )
         } else {
             interesadosDB.openDB()
 
-            let exitCode
-
-            interesadosDB.select("leads", selectionToMake, () => {
-                exitCode = selectCallback()
-            })
-
-            return exitCode // I think this does not work, maybe i should try to await the call
+            interesadosDB.select("leads", leadsSelectionToMake, leadsSelectCallback)
         }
     }
 }
