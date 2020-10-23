@@ -13,6 +13,7 @@ mkdir ./build/db/tables
 cp -R ./db/tables/* ./build/db/tables
 mkdir ./build/email
 cp -R ./email/* ./build/email/
+cp -R ./execute.sh ./build/execute.sh
 echo 'Previous compilation cleaned.'
 # Compile TypeScript
 tsc

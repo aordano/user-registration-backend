@@ -14,6 +14,7 @@
 // Imports
 import * as bodyParser from "body-parser"
 import cookieParser from "cookie-parser"
+import cors from "cors"
 import express from "express"
 import { createerror } from "http-errors"
 import logger from "morgan"
@@ -30,6 +31,22 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, "public")))
+
+app.options("/", cors())
+
+//CORS middleware
+const corsMiddleware = (req, res, next) => {
+    res.header(
+        "Access-Control-Allow-Origin",
+        req.app.get("env") === "development" ? "http://localhost:4000" : "https://nodoambiental.org"
+    )
+    res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST")
+    res.header("Access-Control-Allow-Headers", "Content-Type, query-kind")
+
+    next()
+}
+
+app.use(corsMiddleware)
 
 // Route selection
 app.use("/", PostRoute)
