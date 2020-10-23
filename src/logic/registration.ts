@@ -290,7 +290,7 @@ export class Handler {
             )
         }
 
-        const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../db/interesados.db"))
+        const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../../db/interesados.db"))
 
         interesadosDB.openDB()
 
@@ -333,7 +333,7 @@ export class Handler {
     public verification = (): void | Error => {
         if (this.request.query.token) {
             const interesadosDB = new Utils.DB.Handler(
-                resolve(__dirname, "../../db/interesados.db")
+                resolve(__dirname, "../../../db/interesados.db")
             )
 
             if (
@@ -666,7 +666,7 @@ export class Handler {
             )
         }
 
-        const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../db/interesados.db"))
+        const interesadosDB = new Utils.DB.Handler(resolve(__dirname, "../../../db/interesados.db"))
 
         const rowsWithoutProtectedFields = membershipData.rows.filter((row, rowIndex) => {
             if (this.tables.leads.protected.indexOf(membershipData.columns[rowIndex]) === -1) {

@@ -56,7 +56,9 @@ const router = express.Router()
  */
 
 const loadTable = (name: string): Types.table => {
-    return JSON.parse(readFileSync(resolve(__dirname, `../../db/tables/${name}.json`)).toString())
+    return JSON.parse(
+        readFileSync(resolve(__dirname, `../../../db/tables/${name}.json`)).toString()
+    )
 }
 
 const leadsTable = loadTable("leads")
