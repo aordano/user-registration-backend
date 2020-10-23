@@ -38,7 +38,7 @@ app.options("/", cors())
 const corsMiddleware = (req, res, next) => {
     res.header(
         "Access-Control-Allow-Origin",
-        req.app.get("env") === "development" ? "localhost:4000" : "nodoambiental.org"
+        req.app.get("env") === "development" ? "http://localhost:4000" : "https://nodoambiental.org"
     )
     res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST")
     res.header("Access-Control-Allow-Headers", "Content-Type, query-kind")
