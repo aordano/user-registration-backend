@@ -136,8 +136,6 @@ const membership_applicantsTable = loadTable("membership_applicants")
  *
  * TODO:Major Add part of the workflow that incorporates donations once that part is more ready to be presented to the world
  *
- * TODO:Minor Add the email stuff; the cleanliness will be important to make sure this file is not a hodgepodge of code thrown together.
- *
  * ---
  */
 export const PostRoute = router.post("/", (request, response) => {
