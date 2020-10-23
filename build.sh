@@ -1,5 +1,4 @@
 #!/bin/bash
-cd "${0%/*}"
 echo ' ~~~~~ Membership/Leads Backend ~~~~~ '
 echo ''
 echo 'Microservice to handle the reception and manipulation of leads or potential members data'
