@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "bash ./build.sh",
-    "start": "node ./start.js",
+    "start": "node ./build/start.js",
     "docs": "bash ./docs.sh",
     "develop": "bash ./build.sh && echo '...done. Starting now...' && node ./start.js",
     "test:unit": "mocha -r ts-node/register '__test__/unit/**/*.ts'",

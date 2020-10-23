@@ -10,6 +10,7 @@ rm -rfd build/
 mkdir build
 mkdir ./build/email
 cp -R ./email/* ./build/email/
+cp -R ./start.js ./build/start.js
 cp -R ./execute.sh ./build/execute.sh
 echo 'Previous compilation cleaned.'
 #  Compile TypeScript
