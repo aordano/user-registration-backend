@@ -15,7 +15,7 @@ mkdir ./build/email
 cp -R ./email/* ./build/email/
 cp -R ./execute.sh ./build/execute.sh
 echo 'Previous compilation cleaned.'
-# Compile TypeScript
+#  Compile TypeScript
 tsc
 echo 'Typescript compiled.'
 echo ''
