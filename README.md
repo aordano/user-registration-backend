@@ -17,7 +17,7 @@ npm install
 npm run execute
 ```
 
-For further info see [the docs](https://aordano.github.io/membership-form/).
+For further info see [the docs](https://nodoambiental.github.io/membership-form/).
 
 ## Powered by
 
