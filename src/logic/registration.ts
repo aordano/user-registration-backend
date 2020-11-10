@@ -347,108 +347,72 @@ export class Handler {
 
                 if (tokenQueryVerification) {
                     const selectCallback = (callbackData: Types.callbackData) => {
-                        // The ordering of the expected values at every index is the same of the columns to select in the database query
+                        if (callbackData.result) {
+                            // The ordering of the expected values at every index is the same of the columns to select in the database query
 
-                        // Because we read this from a text field, even if the type is Types.data, this will always be a string
-                        const verificationToken = Object.entries(
-                            callbackData.result
-                        )[0][1] as string
+                            // Because we read this from a text field, even if the type is Types.data, this will always be a string
+                            const verificationToken = Object.entries(
+                                callbackData.result
+                            )[0][1] as string
 
-                        // We need to remove first and last character because the SELECT query reads the text field as-is
-                        // so instead of returning {column: "value"}, it returns {column: "'value'"}
-                        // It is this way for any text field, so we reapeat the procedure for every requested value
+                            // We need to remove first and last character because the SELECT query reads the text field as-is
+                            // so instead of returning {column: "value"}, it returns {column: "'value'"}
+                            // It is this way for any text field, so we reapeat the procedure for every requested value
 
-                        const emailRecipient = Object.entries(callbackData.result)[1][1] as string
+                            const emailRecipient = Object.entries(
+                                callbackData.result
+                            )[1][1] as string
 
-                        const name = Object.entries(callbackData.result)[2][1] as string
+                            const name = Object.entries(callbackData.result)[2][1] as string
 
-                        const userToken = uid(32)
+                            const userToken = uid(32)
 
-                        if (verificationToken !== "ALREADY_VERIFIED") {
-                            // The conditions are not joined in one check because the redirect is different
-                            // according to the error type
-                            if (verificationToken === queriedToken) {
-                                // The verification token needs to be destroyed and replaced by a filler that prevents executing
-                                // the verification flow a second time.
-                                const updateTokenData: Types.rowFieldUpdate[] = [
-                                    {
-                                        set: [
-                                            {
-                                                column: "user_token",
-                                                data: userToken,
-                                            },
-                                            {
+                            if (verificationToken !== "ALREADY_VERIFIED") {
+                                // The conditions are not joined in one check because the redirect is different
+                                // according to the error type
+                                if (verificationToken === queriedToken) {
+                                    // The verification token needs to be destroyed and replaced by a filler that prevents executing
+                                    // the verification flow a second time.
+                                    const updateTokenData: Types.rowFieldUpdate[] = [
+                                        {
+                                            set: [
+                                                {
+                                                    column: "user_token",
+                                                    data: userToken,
+                                                },
+                                                {
+                                                    column: "verification_token",
+                                                    data: "ALREADY_VERIFIED",
+                                                },
+                                            ],
+                                            where: {
                                                 column: "verification_token",
-                                                data: "ALREADY_VERIFIED",
+                                                data: queriedToken,
                                             },
-                                        ],
-                                        where: {
-                                            column: "verification_token",
-                                            data: queriedToken,
-                                        },
-                                    },
-                                ]
-
-                                interesadosDB.openDB()
-
-                                interesadosDB.createTable("leads", this.tables.leads.fields)
-
-                                interesadosDB.updateRows("leads", updateTokenData)
-
-                                interesadosDB.closeDB()
-
-                                this.response.redirect(
-                                    "https://nodoambiental.org/leadgen/verification-success.html"
-                                )
-
-                                const email = new Utils.Email.Handler(mailAuthConfig, templates)
-
-                                const subject = loadJSON("verification_successful")
-
-                                email.construct(
-                                    "verification_successful",
-                                    {
-                                        from: subject.from,
-                                        to: emailRecipient,
-                                        subject: subject.subject,
-                                    },
-                                    [
-                                        {
-                                            target: "nombre",
-                                            content: name,
-                                        },
-                                        {
-                                            target: "user-token",
-                                            content: userToken,
                                         },
                                     ]
-                                )
 
-                                email.send()
+                                    interesadosDB.openDB()
 
-                                const queriedOrg = Object.entries(callbackData.result)[3][1]
-                                const organization =
-                                    typeof queriedOrg === "string" ? queriedOrg : false
+                                    interesadosDB.createTable("leads", this.tables.leads.fields)
 
-                                const queriedRole = Object.entries(
-                                    callbackData.result
-                                )[4][1] as string
-                                const role = typeof queriedRole === "string" ? queriedRole : false
+                                    interesadosDB.updateRows("leads", updateTokenData)
 
-                                const queriedMessage = Object.entries(
-                                    callbackData.result
-                                )[5][1] as string
-                                const message =
-                                    typeof queriedMessage === "string" ? queriedMessage : false
+                                    interesadosDB.closeDB()
 
-                                if (message) {
-                                    const subject = loadJSON("user_registered")
+                                    this.response.redirect(
+                                        "https://nodoambiental.org/leadgen/verification-success.html"
+                                    )
+
+                                    const email = new Utils.Email.Handler(mailAuthConfig, templates)
+
+                                    const subject = loadJSON("verification_successful")
 
                                     email.construct(
-                                        "user_registered",
+                                        "verification_successful",
                                         {
-                                            from: emailRecipient,
-                                            to: subject.to,
+                                            from: subject.from,
+                                            to: emailRecipient,
                                             subject: subject.subject,
                                         },
                                         [
@@ -457,35 +421,84 @@ export class Handler {
                                                 content: name,
                                             },
                                             {
-                                                target: "organization",
-                                                content: organization
-                                                    ? `, pertenezco a ${organization}`
-                                                    : "",
-                                            },
-                                            {
-                                                target: "role",
-                                                content: role ? `, como ${role},` : ",",
-                                            },
-                                            {
-                                                target: "message",
-                                                content: message,
+                                                target: "user-token",
+                                                content: userToken,
                                             },
                                         ]
                                     )
 
                                     email.send()
 
+                                    const queriedOrg = Object.entries(callbackData.result)[3][1]
+                                    const organization =
+                                        typeof queriedOrg === "string" ? queriedOrg : false
+
+                                    const queriedRole = Object.entries(
+                                        callbackData.result
+                                    )[4][1] as string
+                                    const role =
+                                        typeof queriedRole === "string" ? queriedRole : false
+
+                                    const queriedMessage = Object.entries(
+                                        callbackData.result
+                                    )[5][1] as string
+                                    const message =
+                                        typeof queriedMessage === "string" ? queriedMessage : false
+
+                                    if (message) {
+                                        const subject = loadJSON("user_registered")
+
+                                        email.construct(
+                                            "user_registered",
+                                            {
+                                                from: emailRecipient,
+                                                to: subject.to,
+                                                subject: subject.subject,
+                                            },
+                                            [
+                                                {
+                                                    target: "nombre",
+                                                    content: name,
+                                                },
+                                                {
+                                                    target: "organization",
+                                                    content: organization
+                                                        ? `, pertenezco a ${organization}`
+                                                        : "",
+                                                },
+                                                {
+                                                    target: "role",
+                                                    content: role ? `, como ${role},` : ",",
+                                                },
+                                                {
+                                                    target: "message",
+                                                    content: message,
+                                                },
+                                            ]
+                                        )
+
+                                        email.send()
+
+                                        return
+                                    }
                                     return
                                 }
-                                return
+
+                                this.response.redirect(
+                                    "https://nodoambiental.org/leadgen/invalid-data.html"
+                                )
+
+                                return new Error(
+                                    `Invalid data: token not present in DB. \n Token provided: ${queriedToken}`
+                                )
                             }
 
                             this.response.redirect(
-                                "https://nodoambiental.org/leadgen/invalid-data.html"
+                                "https://nodoambiental.org/leadgen/already-verified.html"
                             )
 
                             return new Error(
-                                `Invalid data: token not present in DB. \n Token provided: ${queriedToken}`
+                                `Already verified: user already verified. \n Token provided: ${queriedToken}`
                             )
                         }
 

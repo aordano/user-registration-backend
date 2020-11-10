@@ -6,7 +6,7 @@
     "build": "bash ./build.sh",
     "start": "node ./build/start.js",
     "docs": "bash ./docs.sh",
-    "develop": "bash ./build.sh && echo '...done. Starting now...' && node ./start.js",
+    "develop": "bash ./build.sh && echo '...done. Starting now...' && node ./build/start.js",
     "test:unit": "mocha -r ts-node/register '__test__/unit/**/*.ts'",
     "test:e2e": "mocha -r ts-node/register '__test__/e2e/**/*.ts'"
   },
